@@ -17,7 +17,7 @@ namespace WinFormTester
 
             // Initialize the SignalR connection
             _hubConnection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/chathub")
+                .WithUrl("http://localhost/chathub")
                 .Build();
 
             // Register event handlers
@@ -34,13 +34,16 @@ namespace WinFormTester
             StartConnection();
         }
 
+        #region DEPENDENCY INYECTION
         private void btnInyection_Click(object sender, EventArgs e)
         {
             errorProvider1.BlinkRate = 0;
 
             rtResult.Text = _inyectionTester.DevuelveStringTrim(txtTester.Text);
-        }
+        } 
+        #endregion
 
+        #region DELEGADOS
         private void btnDelegate_Click(object sender, EventArgs e)
         {
             errorProvider1.BlinkRate = 0;
@@ -64,7 +67,9 @@ namespace WinFormTester
             op = _delegateTester.Resta;
             rtResult.Text += Environment.NewLine + "Resta: " + op.Invoke(val1, val2).ToString();
         }
+        #endregion
 
+        #region SIGNALIR
         private async void StartConnection()
         {
             try
@@ -85,5 +90,6 @@ namespace WinFormTester
                 _hubConnection.InvokeAsync("SendMessage", "User", textBoxMessage.Text);
             }
         }
+        #endregion
     }
 }

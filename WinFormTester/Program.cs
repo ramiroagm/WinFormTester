@@ -20,8 +20,8 @@ namespace WinFormTester
             var inyectionTester = services.GetRequiredService<IInyectionTester>();
             var delegateTester = services.GetRequiredService<IDelegateTester>();
 
-            // Pass the instance to the Form1 constructor
-            Application.Run(new Form1(inyectionTester, delegateTester));
+            Application.Run(new LoginForm(inyectionTester, delegateTester));
+            //Application.Run(new Form1(inyectionTester, delegateTester));
         }
 
         static IHostBuilder CreateHostBuilder() =>
