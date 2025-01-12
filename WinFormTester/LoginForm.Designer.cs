@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             btnLogin = new Button();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
+            txtUsername = new TextBox();
+            txtPassword = new TextBox();
             label1 = new Label();
             label2 = new Label();
             btnFgtPwd = new Button();
@@ -39,7 +39,7 @@
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(158, 160);
+            btnLogin.Location = new Point(126, 160);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(75, 23);
             btnLogin.TabIndex = 0;
@@ -47,20 +47,20 @@
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
             // 
-            // textBox1
+            // txtUsername
             // 
-            textBox1.Location = new Point(126, 94);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(307, 23);
-            textBox1.TabIndex = 1;
+            txtUsername.Location = new Point(126, 94);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(307, 23);
+            txtUsername.TabIndex = 1;
             // 
-            // textBox2
+            // txtPassword
             // 
-            textBox2.Location = new Point(126, 131);
-            textBox2.Name = "textBox2";
-            textBox2.PasswordChar = '*';
-            textBox2.Size = new Size(307, 23);
-            textBox2.TabIndex = 2;
+            txtPassword.Location = new Point(126, 131);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '*';
+            txtPassword.Size = new Size(307, 23);
+            txtPassword.TabIndex = 2;
             // 
             // label1
             // 
@@ -82,7 +82,7 @@
             // 
             // btnFgtPwd
             // 
-            btnFgtPwd.Location = new Point(252, 160);
+            btnFgtPwd.Location = new Point(207, 160);
             btnFgtPwd.Name = "btnFgtPwd";
             btnFgtPwd.Size = new Size(128, 23);
             btnFgtPwd.TabIndex = 5;
@@ -91,7 +91,7 @@
             // 
             // btnCreateAcc
             // 
-            btnCreateAcc.Location = new Point(183, 189);
+            btnCreateAcc.Location = new Point(54, 278);
             btnCreateAcc.Name = "btnCreateAcc";
             btnCreateAcc.Size = new Size(135, 23);
             btnCreateAcc.TabIndex = 6;
@@ -108,8 +108,8 @@
             Controls.Add(btnFgtPwd);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(txtPassword);
+            Controls.Add(txtUsername);
             Controls.Add(btnLogin);
             Name = "LoginForm";
             Text = "LoginForm";
@@ -121,8 +121,8 @@
         #endregion
 
         private Button btnLogin;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox txtUsername;
+        private TextBox txtPassword;
         private Label label1;
         private Label label2;
         private Button btnFgtPwd;

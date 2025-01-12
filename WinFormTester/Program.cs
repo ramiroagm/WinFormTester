@@ -2,11 +2,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TesterProyect;
 using TesterProyect.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace WinFormTester
 {
     static class Program
     {
+        // TODO: Mask the connection string
+        private static readonly string connectionString = "Data Source=MP200;TrustServerCertificate=True;Integrated Security=SSPI;Initial Catalog=TesterGen";
+       
         [STAThread]
         static void Main()
         {
@@ -20,7 +24,7 @@ namespace WinFormTester
             var inyectionTester = services.GetRequiredService<IInyectionTester>();
             var delegateTester = services.GetRequiredService<IDelegateTester>();
 
-            Application.Run(new LoginForm(inyectionTester, delegateTester));
+            Application.Run(new LoginForm(inyectionTester, delegateTester, connectionString));
             //Application.Run(new Form1(inyectionTester, delegateTester));
         }
 
@@ -28,6 +32,7 @@ namespace WinFormTester
             Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
+                    services.AddTransient(_ => new SqlConnection(connectionString));
                     services.AddSingleton<IInyectionTester, InyectionTester>();
                     services.AddSingleton<IDelegateTester, DelegateTester>();
                     //services.AddSignalR();

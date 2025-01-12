@@ -32,9 +32,10 @@
             btnInyection = new Button();
             testing1 = new GroupBox();
             rtResult = new RichTextBox();
-            groupBox1 = new GroupBox();
-            buttonSend = new Button();
             listBoxMessages = new ListBox();
+            groupBox1 = new GroupBox();
+            textBoxMessage = new TextBox();
+            buttonSend = new Button();
             label2 = new Label();
             label1 = new Label();
             txtVal2 = new TextBox();
@@ -42,10 +43,11 @@
             btnDelegate = new Button();
             txtTester = new TextBox();
             errorProvider1 = new ErrorProvider(components);
-            textBoxMessage = new TextBox();
+            groupBox2 = new GroupBox();
             testing1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // btnInyection
@@ -61,10 +63,9 @@
             // testing1
             // 
             testing1.Controls.Add(rtResult);
-            testing1.Controls.Add(listBoxMessages);
             testing1.Location = new Point(12, 12);
             testing1.Name = "testing1";
-            testing1.Size = new Size(436, 536);
+            testing1.Size = new Size(454, 305);
             testing1.TabIndex = 1;
             testing1.TabStop = false;
             testing1.Text = "Resultados";
@@ -73,9 +74,17 @@
             // 
             rtResult.Location = new Point(6, 22);
             rtResult.Name = "rtResult";
-            rtResult.Size = new Size(429, 277);
+            rtResult.Size = new Size(442, 277);
             rtResult.TabIndex = 0;
             rtResult.Text = "";
+            // 
+            // listBoxMessages
+            // 
+            listBoxMessages.FormattingEnabled = true;
+            listBoxMessages.Location = new Point(6, 22);
+            listBoxMessages.Name = "listBoxMessages";
+            listBoxMessages.Size = new Size(442, 214);
+            listBoxMessages.TabIndex = 7;
             // 
             // groupBox1
             // 
@@ -95,6 +104,13 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Acciones";
             // 
+            // textBoxMessage
+            // 
+            textBoxMessage.Location = new Point(87, 80);
+            textBoxMessage.Name = "textBoxMessage";
+            textBoxMessage.Size = new Size(197, 23);
+            textBoxMessage.TabIndex = 9;
+            // 
             // buttonSend
             // 
             buttonSend.Location = new Point(6, 80);
@@ -104,14 +120,6 @@
             buttonSend.Text = "SignalIR";
             buttonSend.UseVisualStyleBackColor = true;
             buttonSend.Click += buttonSend_ClickAsync;
-            // 
-            // listBoxMessages
-            // 
-            listBoxMessages.FormattingEnabled = true;
-            listBoxMessages.Location = new Point(6, 305);
-            listBoxMessages.Name = "listBoxMessages";
-            listBoxMessages.Size = new Size(424, 229);
-            listBoxMessages.TabIndex = 7;
             // 
             // label2
             // 
@@ -166,26 +174,32 @@
             // 
             errorProvider1.ContainerControl = this;
             // 
-            // textBoxMessage
+            // groupBox2
             // 
-            textBoxMessage.Location = new Point(87, 80);
-            textBoxMessage.Name = "textBoxMessage";
-            textBoxMessage.Size = new Size(197, 23);
-            textBoxMessage.TabIndex = 9;
+            groupBox2.Controls.Add(listBoxMessages);
+            groupBox2.Location = new Point(12, 323);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(454, 254);
+            groupBox2.TabIndex = 8;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "SignalIR Resultados";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(953, 589);
+            ClientSize = new Size(795, 608);
+            Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(testing1);
+            HelpButton = true;
             Name = "Form1";
             Text = "Form1";
             testing1.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            groupBox2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -205,5 +219,6 @@
         private ListBox listBoxMessages;
         private Button buttonSend;
         private TextBox textBoxMessage;
+        private GroupBox groupBox2;
     }
 }
