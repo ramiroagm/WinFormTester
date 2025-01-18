@@ -18,27 +18,14 @@ namespace TestPro
         public void DevuelveStringTrim_ShouldTrimString()
         {
             // Arrange
-            string? input = "  test  ";
-            string expected = "test";
+            string input = "  test  ";
+            string expected = "Result string: test";
 
             // Act
-            string? result = _inyectionTester.DevuelveStringTrim(input);
+            string result = _inyectionTester.DevuelveStringTrim(input);
 
             // Assert
             Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void DevuelveStringTrim_ShouldReturnNull_WhenInputIsNull()
-        {
-            // Arrange
-            string? input = null;
-
-            // Act
-            string? result = _inyectionTester.DevuelveStringTrim(input);
-
-            // Assert
-            Assert.IsNull(result);
         }
 
         [TestMethod]

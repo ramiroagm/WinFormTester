@@ -8,7 +8,7 @@ namespace TesterProyect.Interfaces
 {
     public interface IInyectionTester
     {
-        string? DevuelveStringTrim(string miString);
+        string DevuelveStringTrim(string miString);
         int DevuelveSuma(int sumA, int sumB);
     }
 }

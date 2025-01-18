@@ -4,9 +4,10 @@ namespace TesterProyect
 {
     public class InyectionTester : IInyectionTester
     {
-        public string? DevuelveStringTrim(string miString)
+        public string DevuelveStringTrim(string miString)
         {
-            return "Result string: " + miString?.Trim();
+            string result = string.IsNullOrEmpty(miString) ? "" : miString.Trim();
+            return "Result string: " + result;
         }
 
         public int DevuelveSuma(int sumA, int sumB)
