@@ -13,6 +13,7 @@ namespace TesterAPI.Controllers
         {
             string connectionString = "Data Source=MP200;TrustServerCertificate=True;Integrated Security=SSPI;Initial Catalog=TesterGen;Max Pool Size=100";
             using SqlConnection connection = new(connectionString);
+            // TESTING ONLY
             SqlCommand sqlCommand = new("SELECT Test_UserName FROM Test_Users", connection);
             connection.Open();
             SqlDataReader reader = sqlCommand.ExecuteReader();

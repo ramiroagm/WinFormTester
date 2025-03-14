@@ -40,7 +40,7 @@ namespace WinFormTester
             errorProvider1.BlinkRate = 0;
 
             rtResult.Text = _inyectionTester.DevuelveStringTrim(txtTester.Text);
-        } 
+        }
         #endregion
 
         #region DELEGADOS
@@ -91,5 +91,16 @@ namespace WinFormTester
             }
         }
         #endregion
+
+        private void menúPrincipalToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void botTelegramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TelegramBot create = new();
+            create.Show();
+        }
     }
 }

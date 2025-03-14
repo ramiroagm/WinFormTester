@@ -44,10 +44,20 @@
             txtTester = new TextBox();
             errorProvider1 = new ErrorProvider(components);
             groupBox2 = new GroupBox();
+            menuStrip1 = new MenuStrip();
+            consultasABaseDirectoToolStripMenuItem = new ToolStripMenuItem();
+            menúPrincipalToolStripMenuItem = new ToolStripMenuItem();
+            consultasPorServicioToolStripMenuItem = new ToolStripMenuItem();
+            menúPrincipalToolStripMenuItem1 = new ToolStripMenuItem();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            sdfaToolStripMenuItem = new ToolStripMenuItem();
+            botTelegramToolStripMenuItem = new ToolStripMenuItem();
             testing1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             groupBox2.SuspendLayout();
+            menuStrip1.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // btnInyection
@@ -63,7 +73,7 @@
             // testing1
             // 
             testing1.Controls.Add(rtResult);
-            testing1.Location = new Point(12, 12);
+            testing1.Location = new Point(12, 52);
             testing1.Name = "testing1";
             testing1.Size = new Size(454, 305);
             testing1.TabIndex = 1;
@@ -97,7 +107,7 @@
             groupBox1.Controls.Add(btnDelegate);
             groupBox1.Controls.Add(txtTester);
             groupBox1.Controls.Add(btnInyection);
-            groupBox1.Location = new Point(472, 12);
+            groupBox1.Location = new Point(472, 52);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(302, 305);
             groupBox1.TabIndex = 2;
@@ -177,30 +187,90 @@
             // groupBox2
             // 
             groupBox2.Controls.Add(listBoxMessages);
-            groupBox2.Location = new Point(12, 323);
+            groupBox2.Location = new Point(12, 363);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(454, 254);
             groupBox2.TabIndex = 8;
             groupBox2.TabStop = false;
             groupBox2.Text = "SignalIR Resultados";
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { consultasABaseDirectoToolStripMenuItem, consultasPorServicioToolStripMenuItem, botTelegramToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(890, 24);
+            menuStrip1.TabIndex = 9;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // consultasABaseDirectoToolStripMenuItem
+            // 
+            consultasABaseDirectoToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menúPrincipalToolStripMenuItem });
+            consultasABaseDirectoToolStripMenuItem.Name = "consultasABaseDirectoToolStripMenuItem";
+            consultasABaseDirectoToolStripMenuItem.Size = new Size(147, 20);
+            consultasABaseDirectoToolStripMenuItem.Text = "Consultas a base directo";
+            // 
+            // menúPrincipalToolStripMenuItem
+            // 
+            menúPrincipalToolStripMenuItem.Name = "menúPrincipalToolStripMenuItem";
+            menúPrincipalToolStripMenuItem.Size = new Size(154, 22);
+            menúPrincipalToolStripMenuItem.Text = "Menú principal";
+            // 
+            // consultasPorServicioToolStripMenuItem
+            // 
+            consultasPorServicioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menúPrincipalToolStripMenuItem1 });
+            consultasPorServicioToolStripMenuItem.Name = "consultasPorServicioToolStripMenuItem";
+            consultasPorServicioToolStripMenuItem.Size = new Size(135, 20);
+            consultasPorServicioToolStripMenuItem.Text = "Consultas por servicio";
+            // 
+            // menúPrincipalToolStripMenuItem1
+            // 
+            menúPrincipalToolStripMenuItem1.Name = "menúPrincipalToolStripMenuItem1";
+            menúPrincipalToolStripMenuItem1.Size = new Size(180, 22);
+            menúPrincipalToolStripMenuItem1.Text = "Menú principal";
+            menúPrincipalToolStripMenuItem1.Click += menúPrincipalToolStripMenuItem1_Click;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { sdfaToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(97, 26);
+            // 
+            // sdfaToolStripMenuItem
+            // 
+            sdfaToolStripMenuItem.Name = "sdfaToolStripMenuItem";
+            sdfaToolStripMenuItem.Size = new Size(96, 22);
+            sdfaToolStripMenuItem.Text = "sdfa";
+            // 
+            // botTelegramToolStripMenuItem
+            // 
+            botTelegramToolStripMenuItem.Name = "botTelegramToolStripMenuItem";
+            botTelegramToolStripMenuItem.Size = new Size(89, 20);
+            botTelegramToolStripMenuItem.Text = "Bot Telegram";
+            botTelegramToolStripMenuItem.Click += botTelegramToolStripMenuItem_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(795, 608);
+            ClientSize = new Size(890, 724);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(testing1);
+            Controls.Add(menuStrip1);
             HelpButton = true;
             Name = "Form1";
-            Text = "Form1";
+            Text = "a";
             testing1.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             groupBox2.ResumeLayout(false);
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -220,5 +290,13 @@
         private Button buttonSend;
         private TextBox textBoxMessage;
         private GroupBox groupBox2;
+        private MenuStrip menuStrip1;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem sdfaToolStripMenuItem;
+        private ToolStripMenuItem consultasABaseDirectoToolStripMenuItem;
+        private ToolStripMenuItem menúPrincipalToolStripMenuItem;
+        private ToolStripMenuItem consultasPorServicioToolStripMenuItem;
+        private ToolStripMenuItem menúPrincipalToolStripMenuItem1;
+        private ToolStripMenuItem botTelegramToolStripMenuItem;
     }
 }
