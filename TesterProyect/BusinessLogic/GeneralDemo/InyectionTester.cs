@@ -1,6 +1,6 @@
-﻿using TesterProyect.Interfaces;
+﻿using TesterProyect.BusinessLogic.Interfaces;
 
-namespace TesterProyect
+namespace TesterProyect.BusinessLogic.GeneralDemo
 {
     public class InyectionTester : IInyectionTester
     {

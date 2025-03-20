@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="7ef6eb67-93d0-48cf-83ea-498a1bbf45d9" ChangeDateTime="03/16/2025 22:41:21">
+    <Property Name="ElementName" Value="[dbo].[Telegram_MessageLog].[MessageId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Telegram_MessageLog]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChatId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e353e956-432a-4450-a61b-5c503c47cdcf" ChangeDateTime="03/16/2025 22:42:55">
+    <Property Name="ElementName" Value="[dbo].[Telegram_MessageType].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Telegram_MessageType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TypeId" />
+  </Operation>
+</Operations>

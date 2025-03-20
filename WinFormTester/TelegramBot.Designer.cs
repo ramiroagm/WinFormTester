@@ -76,6 +76,7 @@
             btnSendMsg.TabIndex = 3;
             btnSendMsg.Text = "Enviar mensaje";
             btnSendMsg.UseVisualStyleBackColor = true;
+            btnSendMsg.Click += btnSendMsg_Click;
             // 
             // groupBox1
             // 

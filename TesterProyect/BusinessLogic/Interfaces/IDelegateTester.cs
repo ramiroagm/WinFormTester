@@ -1,4 +1,4 @@
-﻿namespace TesterProyect.Interfaces
+﻿namespace TesterProyect.BusinessLogic.Interfaces
 {
     public interface IDelegateTester
     {

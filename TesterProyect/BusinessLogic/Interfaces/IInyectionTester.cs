@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TesterProyect.Interfaces
+namespace TesterProyect.BusinessLogic.Interfaces
 {
     public interface IInyectionTester
     {

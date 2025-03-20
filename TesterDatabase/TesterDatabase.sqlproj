@@ -123,6 +123,8 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="Security\" />
     <Folder Include="dbo\StoredProcedure" />
+    <Folder Include="Scripts" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Test_Users.sql">
@@ -131,5 +133,18 @@
     </Build>
     <Build Include="Security\Permissions.sql" />
     <Build Include="dbo\StoredProcedure\UserCreation.sql" />
+    <Build Include="dbo\Tables\Telegram_MessageLog.sql" />
+    <Build Include="dbo\Tables\Telegram_MessageType.sql" />
+    <Build Include="dbo\StoredProcedure\TelegramMessageLog.sql" />
+    <Build Include="dbo\StoredProcedure\TelegramGetMessagesById.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="TesterDatabase.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Telegram_InsertMessageType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Snapshots\TesterDatabase_20250316_20-23-00.dacpac" />
   </ItemGroup>
 </Project>

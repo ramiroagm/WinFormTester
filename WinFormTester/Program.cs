@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TesterProyect;
-using TesterProyect.Interfaces;
 using Microsoft.Data.SqlClient;
+using TesterProyect.BusinessLogic.Interfaces;
+using TesterProyect.BusinessLogic.GeneralDemo;
 
 namespace WinFormTester
 {

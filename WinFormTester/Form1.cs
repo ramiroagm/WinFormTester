@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.SignalR.Client;
-using TesterProyect.Interfaces;
+using TesterProyect.BusinessLogic.Interfaces;
 
 namespace WinFormTester
 {
@@ -12,7 +12,7 @@ namespace WinFormTester
         public Form1(IInyectionTester inyectionTester, IDelegateTester delegateTester)
         {
             _inyectionTester = inyectionTester ?? throw new ArgumentNullException(nameof(inyectionTester));
-            _delegateTester = delegateTester ?? throw new ArgumentException(nameof(delegateTester));
+            _delegateTester = delegateTester ?? throw new ArgumentException(null, nameof(delegateTester));
             InitializeComponent();
 
             // Initialize the SignalR connection

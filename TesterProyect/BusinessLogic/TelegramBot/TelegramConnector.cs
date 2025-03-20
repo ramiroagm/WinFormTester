@@ -8,7 +8,7 @@ namespace TelegramBot
 {
     public class TelegramConnector
     {
-        private TelegramResult result;
+        private TelegramResult? result;
 
         public async Task<TelegramResult>  InitializeBot()
         {
@@ -26,7 +26,7 @@ namespace TelegramBot
             return result = new()
             {
                 ChatId = null,
-                Message = "Conectado...",
+                Message = "[Bot inicializado]",
                 MsgTypeId = (int)TypeEnum.CORRECT_RESPONSE
             };
         }

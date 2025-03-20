@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace TesterProyect
+namespace TesterProyect.BusinessLogic.GeneralDemo
 {
     public class ChatHub /*: Hub*/
     {

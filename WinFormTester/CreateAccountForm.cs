@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
-using TesterProyect;
+using TesterProyect.BusinessLogic.PasswordManager;
 
 namespace WinFormTester
 {
