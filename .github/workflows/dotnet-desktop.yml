@@ -33,9 +33,12 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
 
+    - name: Update Chocolatey
+      run: choco upgrade chocolatey
+
     - name: Install SSDT
       run: |
-        choco install sql-server-data-tools -y
+        choco install sql-server-data-tools -y --pre --
         
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
