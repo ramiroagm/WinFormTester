@@ -32,6 +32,10 @@ jobs:
         
     - name: Install dependencies
       run: dotnet restore
+
+    - name: Install SSDT
+      run: |
+        choco install sql-server-data-tools --version=17.0.61812.05130 -y
         
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
