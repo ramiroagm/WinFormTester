@@ -38,8 +38,3 @@ jobs:
 
     - name: Execute unit tests
       run: dotnet test
-
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }
