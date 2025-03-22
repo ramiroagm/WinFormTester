@@ -18,7 +18,7 @@ jobs:
       Solution_Name: WinFormTester.sln
       Test_Project_Path: TestPro\TestPro.csproj 
       Wap_Project_Directory: TesterProyect
-      DatabaseProj: TesterDatabase
+      DatabaseProj: TesterDatabase\TesterDatabase.sqlproj
 
     steps:
     - name: Checkout
