@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Telegram_MessageLog]
 (
-	[Id] UNIQUEIDENTIFIER NOT NULL , 
+	[Id] BIGINT NOT NULL IDENTITY(0, 1), 
     [ChatId] BIGINT NULL, 
     [Message] NVARCHAR(MAX) NULL, 
     [MessageTypeId] SMALLINT NOT NULL, 

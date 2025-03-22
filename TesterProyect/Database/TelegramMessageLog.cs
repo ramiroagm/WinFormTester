@@ -15,9 +15,9 @@ namespace TesterProyect.Database
                 CommandType = System.Data.CommandType.StoredProcedure
             };
 
-            command.Parameters.AddWithValue("@ChatId", result.ChatId);
-            command.Parameters.AddWithValue("@Message", result.Message);
-            command.Parameters.AddWithValue("@MsgTypeId", result.MsgTypeId);
+            command.Parameters.AddWithValue("@chatId", result.ChatId);
+            command.Parameters.AddWithValue("@message", result.Message);
+            command.Parameters.AddWithValue("@messageTypeId", result.MsgTypeId);
             connection.Open();
             command.ExecuteNonQuery();
         }

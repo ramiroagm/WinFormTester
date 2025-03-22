@@ -3,14 +3,28 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TesterProyect.BusinessLogic.Interfaces;
+using TesterProyect.BusinessLogic.TelegramBot;
 
 namespace TelegramBot
 {
     public class TelegramConnector
     {
+        private readonly ITelegramDatabaseInformation _databaseInfo;
         private TelegramResult? result;
 
-        public async Task<TelegramResult>  InitializeBot()
+        public event EventHandler<TelegramResult>? MessageReceived;
+        public event EventHandler<TelegramResult>? ErrorOccurred;
+        public event EventHandler<TelegramResult>? UpdateOccurred;
+
+        public TelegramConnector() : this(new TelegramDatabaseInformation()) { }
+
+        public TelegramConnector(ITelegramDatabaseInformation databaseInfo)
+        {
+            _databaseInfo = databaseInfo;
+        }
+
+        public async Task<TelegramResult> InitializeBot()
         {
             // TODO: Testing string
             string token = "7635895694:AAHZN_ZAlZVkmm5I7jiXNfpmz8bgCqiLyR0";
@@ -29,73 +43,89 @@ namespace TelegramBot
                 Message = "[Bot inicializado]",
                 MsgTypeId = (int)TypeEnum.CORRECT_RESPONSE
             };
-        }
 
-        public async Task<TelegramResult> OnMessage(TelegramBotClient bot, Message msg, UpdateType type)
-        {
-            using CancellationTokenSource cts = new();
-            int responseId;
-            switch (msg.Text)
+            async Task OnMessage(TelegramBotClient bot, Message msg, UpdateType type)
             {
-                case "/start":
-                    _ = await bot.SendMessage(msg.Chat, "Elegir una dirección",
-                        replyMarkup: new InlineKeyboardMarkup(new[]
-                        {
-                                InlineKeyboardButton.WithCallbackData("Izquierda"),
-                                InlineKeyboardButton.WithCallbackData("Derecha")
-                        }));
-                    responseId = (int)TypeEnum.CORRECT_RESPONSE;
-                    break;
-                case "/quit":
-                    _ = await bot.SendMessage(msg.Chat, "Adiós");
-                    responseId = (int)TypeEnum.CORRECT_RESPONSE;
-                    cts.Cancel();
-                    break;
-                default:
-                    _ = await bot.SendMessage(msg.Chat, "Por favor, comienze el chat con \"/start\"");
-                    responseId = (int)TypeEnum.CORRECT_RESPONSE;
-                    break;
-            }
-
-            result = new TelegramResult
-            {
-                ChatId = msg.Chat.Id,
-                Message = msg.Text,
-                MsgTypeId = responseId
-            };
-
-            return result;
-        }
-
-        public async Task<TelegramResult> OnError(Exception exception, HandleErrorSource source)
-        {
-            result = new TelegramResult
-            {
-                ChatId = null,
-                Message = exception.Message,
-                MsgTypeId = (int)TypeEnum.EXCEPTION
-            };
-
-            return result;
-        }
-
-        public async Task<TelegramResult> OnUpdate(TelegramBotClient bot, Update update)
-        {
-            if (update.CallbackQuery != null)
-            {
-                var query = update.CallbackQuery;
-                await bot.AnswerCallbackQuery(query.Id, $"Eligió {query.Data}");
-                _ = await bot.SendMessage(query.Message!.Chat, $"El usuario {query.From} hizo clic en {query.Data}");
+                using CancellationTokenSource cts = new();
+                int responseId;
+                switch (msg.Text)
+                {
+                    case "/start":
+                        _ = await bot.SendMessage(msg.Chat, "Elegir una dirección",
+                            replyMarkup: new InlineKeyboardMarkup(new[]
+                            {
+                                        InlineKeyboardButton.WithCallbackData("Izquierda"),
+                                        InlineKeyboardButton.WithCallbackData("Derecha")
+                            }));
+                        responseId = (int)TypeEnum.CORRECT_RESPONSE;
+                        break;
+                    case "/quit":
+                        _ = await bot.SendMessage(msg.Chat, "Adiós");
+                        responseId = (int)TypeEnum.CORRECT_RESPONSE;
+                        cts.Cancel();
+                        break;
+                    default:
+                        _ = await bot.SendMessage(msg.Chat, "Por favor, comienze el chat con \"/start\"");
+                        responseId = (int)TypeEnum.CORRECT_RESPONSE;
+                        break;
+                }
 
                 result = new TelegramResult
                 {
-                    ChatId = query.Message.Chat.Id,
-                    Message = query.Message.Text,
-                    MsgTypeId = (int)TypeEnum.CORRECT_RESPONSE
+                    ChatId = msg.Chat.Id,
+                    Message = msg.Text,
+                    MsgTypeId = responseId
                 };
+
+                MessageReceived?.Invoke(this, result);
+                _databaseInfo.InsertInformation(result);
             }
 
-            return result;
+            async Task OnError(Exception exception, HandleErrorSource source)
+            {
+                result = new TelegramResult
+                {
+                    ChatId = null,
+                    Message = exception.Message,
+                    MsgTypeId = (int)TypeEnum.EXCEPTION
+                };
+
+                ErrorOccurred?.Invoke(this, result);
+            }
+
+            async Task OnUpdate(TelegramBotClient bot, Update update)
+            {
+                result = null;
+
+                if (update.CallbackQuery != null)
+                {
+                    var query = update.CallbackQuery;
+                    await bot.AnswerCallbackQuery(query.Id, $"Eligió {query.Data}");
+                    _ = await bot.SendMessage(query.Message!.Chat, $"El usuario {query.From} hizo clic en {query.Data}");
+
+                    result = new TelegramResult
+                    {
+                        ChatId = query.Message.Chat.Id,
+                        Message = query.Message.Text,
+                        MsgTypeId = (int)TypeEnum.CORRECT_RESPONSE
+                    };
+                }
+                else
+                {
+                    string messageType = update.Type.ToString();
+                    
+                }
+
+                    result ??= new TelegramResult
+                    {
+                        ChatId = 0,
+                        Message = "[No update]",
+                        MsgTypeId = (int)TypeEnum.INCORRECT_RESPONSE
+                    };
+
+                UpdateOccurred?.Invoke(this, result);
+                _databaseInfo.InsertInformation(result);
+            }
         }
     }
 }
