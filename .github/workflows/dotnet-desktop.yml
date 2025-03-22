@@ -29,12 +29,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-
-    - name: Install SSDT tools
-      run: |
-        choco install sqlpackage --confirm
-        choco install microsoft-build-tools --confirm
-    
+        
     - name: Restore dependencies
       run: dotnet restore
         
