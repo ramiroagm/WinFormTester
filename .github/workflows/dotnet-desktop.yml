@@ -18,6 +18,7 @@ jobs:
       Solution_Name: WinFormTester.sln
       Test_Project_Path: TestPro\TestPro.csproj 
       Wap_Project_Directory: TesterProyect
+      DatabaseProj: TesterDatabase
 
     steps:
     - name: Checkout
@@ -33,15 +34,12 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
 
-    - name: Update Chocolatey
-      run: choco upgrade chocolatey
-
-    - name: Install SSDT
-      run: |
-        choco install sql-server-data-tools -y --pre --
-        
+    
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
+    - name: Build solution excluding SSDT project
+      run: dotnet build ${{ env.Solution_Name }} -c ${{ matrix.configuration }} /p:ExcludeProjects=env.DatabaseProj
+     
     - name: Execute unit tests
       run: dotnet test
