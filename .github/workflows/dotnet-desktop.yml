@@ -30,6 +30,9 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
+    - name: Install SQL Server Data Tools Workload
+      run: dotnet workload install microsoft.data.sqlclient
         
     - name: Install dependencies
       run: dotnet restore
