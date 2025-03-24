@@ -3,6 +3,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using TesterProyect.BusinessEntities;
 using TesterProyect.BusinessLogic.Interfaces;
 using TesterProyect.BusinessLogic.TelegramBot;
 
@@ -51,12 +52,12 @@ namespace TelegramBot
                 switch (msg.Text)
                 {
                     case "/start":
-                        _ = await bot.SendMessage(msg.Chat, "Elegir una dirección",
-                            replyMarkup: new InlineKeyboardMarkup(new[]
-                            {
-                                        InlineKeyboardButton.WithCallbackData("Izquierda"),
-                                        InlineKeyboardButton.WithCallbackData("Derecha")
-                            }));
+                        _ = await bot.SendMessage(msg.Chat, "Bienvenido al chat de test.");
+                        _ = await bot.SendMessage(msg.Chat, "Elija una de las siguientes opciones disponibles.",
+                            replyMarkup: new InlineKeyboardMarkup(
+                            [
+                                TelegramInlineKeyboardAction.InlineRequest()
+                            ]));
                         responseId = (int)TypeEnum.CORRECT_RESPONSE;
                         break;
                     case "/quit":
@@ -103,6 +104,8 @@ namespace TelegramBot
                     await bot.AnswerCallbackQuery(query.Id, $"Eligió {query.Data}");
                     _ = await bot.SendMessage(query.Message!.Chat, $"El usuario {query.From} hizo clic en {query.Data}");
 
+                    await new TelegramInlineKeyboardAction(_databaseInfo).InlineAction(query.Data, query.Message.Chat.Id);
+
                     result = new TelegramResult
                     {
                         ChatId = query.Message.Chat.Id,
@@ -113,15 +116,14 @@ namespace TelegramBot
                 else
                 {
                     string messageType = update.Type.ToString();
-                    
                 }
 
-                    result ??= new TelegramResult
-                    {
-                        ChatId = 0,
-                        Message = "[No update]",
-                        MsgTypeId = (int)TypeEnum.INCORRECT_RESPONSE
-                    };
+                result ??= new TelegramResult
+                {
+                    ChatId = 0,
+                    Message = "[No update]",
+                    MsgTypeId = (int)TypeEnum.INCORRECT_RESPONSE
+                };
 
                 UpdateOccurred?.Invoke(this, result);
                 _databaseInfo.InsertInformation(result);

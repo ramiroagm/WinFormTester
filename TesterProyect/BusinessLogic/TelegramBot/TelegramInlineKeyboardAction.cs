@@ -1,0 +1,32 @@
+﻿using System.Security.AccessControl;
+using Telegram.Bot.Types.ReplyMarkups;
+using TelegramBot;
+using TesterProyect.BusinessEntities;
+using TesterProyect.BusinessLogic.Interfaces;
+
+namespace TesterProyect.BusinessLogic.TelegramBot
+{
+    public class TelegramInlineKeyboardAction(ITelegramDatabaseInformation databaseInfo)
+    {
+        private readonly ITelegramDatabaseInformation _databaseInfo = databaseInfo;
+
+        public static List<InlineKeyboardButton> InlineRequest()
+        {
+            List<InlineKeyboardButton> l =
+            [
+                InlineKeyboardButton.WithCallbackData(TelegramBotMenu.GetMessageLog),
+                InlineKeyboardButton.WithCallbackData("Prueba 2"),
+            ];
+            return l;
+        }
+
+        public async Task<IEnumerable<TelegramResult>> InlineAction(string action, long chatId)
+        {
+            return action switch
+            {
+                nameof(TelegramBotMenu.GetMessageLog) => await _databaseInfo.GetInformation(chatId),
+                _ => [],
+            };
+        }
+    }
+}
