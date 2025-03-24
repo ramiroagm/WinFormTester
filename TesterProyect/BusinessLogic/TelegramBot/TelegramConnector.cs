@@ -104,7 +104,22 @@ namespace TelegramBot
                     await bot.AnswerCallbackQuery(query.Id, $"Eligió {query.Data}");
                     _ = await bot.SendMessage(query.Message!.Chat, $"El usuario {query.From} hizo clic en {query.Data}");
 
-                    await new TelegramInlineKeyboardAction(_databaseInfo).InlineAction(query.Data, query.Message.Chat.Id);
+                    if (query.Data != null)
+                    {
+                        IEnumerable<TelegramResult> t = await new TelegramInlineKeyboardAction(_databaseInfo).InlineAction(query.Data, query.Message.Chat.Id);
+                        List<TelegramResult> results = [];
+                        foreach (TelegramResult? a in t)
+                        {
+                            result = new TelegramResult
+                            {
+                                ChatId = a.ChatId,
+                                Message = a.Message,
+                                MsgTypeId = a.MsgTypeId
+                            };
+
+                            UpdateOccurred?.Invoke(this, result);
+                        }                        
+                    }
 
                     result = new TelegramResult
                     {
