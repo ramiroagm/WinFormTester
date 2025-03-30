@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Data.SqlClient;
 using TesterProyect.BusinessLogic.Interfaces;
 using TesterProyect.BusinessLogic.GeneralDemo;
+using TesterProyect.BusinessLogic.Instagram;
 
 namespace WinFormTester
 {
@@ -23,8 +24,9 @@ namespace WinFormTester
             // Create an instance of the concrete implementation
             var inyectionTester = services.GetRequiredService<IInyectionTester>();
             var delegateTester = services.GetRequiredService<IDelegateTester>();
+            var instagramConnector = services.GetRequiredService<IInstagramConnector>();
 
-            Application.Run(new LoginForm(inyectionTester, delegateTester, connectionString));
+            Application.Run(new LoginForm(inyectionTester, delegateTester, instagramConnector, connectionString));
             //Application.Run(new Form1(inyectionTester, delegateTester));
         }
 
@@ -35,6 +37,7 @@ namespace WinFormTester
                     services.AddTransient(_ => new SqlConnection(connectionString));
                     services.AddSingleton<IInyectionTester, InyectionTester>();
                     services.AddSingleton<IDelegateTester, DelegateTester>();
+                    services.AddSingleton<IInstagramConnector, InstagramConnector>();
                     //services.AddSignalR();
                 });
     }

@@ -49,9 +49,10 @@
             menúPrincipalToolStripMenuItem = new ToolStripMenuItem();
             consultasPorServicioToolStripMenuItem = new ToolStripMenuItem();
             menúPrincipalToolStripMenuItem1 = new ToolStripMenuItem();
+            botTelegramToolStripMenuItem = new ToolStripMenuItem();
             contextMenuStrip1 = new ContextMenuStrip(components);
             sdfaToolStripMenuItem = new ToolStripMenuItem();
-            botTelegramToolStripMenuItem = new ToolStripMenuItem();
+            instagramToolStripMenuItem = new ToolStripMenuItem();
             testing1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
@@ -196,7 +197,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { consultasABaseDirectoToolStripMenuItem, consultasPorServicioToolStripMenuItem, botTelegramToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { consultasABaseDirectoToolStripMenuItem, consultasPorServicioToolStripMenuItem, botTelegramToolStripMenuItem, instagramToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(890, 24);
@@ -226,9 +227,16 @@
             // menúPrincipalToolStripMenuItem1
             // 
             menúPrincipalToolStripMenuItem1.Name = "menúPrincipalToolStripMenuItem1";
-            menúPrincipalToolStripMenuItem1.Size = new Size(180, 22);
+            menúPrincipalToolStripMenuItem1.Size = new Size(154, 22);
             menúPrincipalToolStripMenuItem1.Text = "Menú principal";
             menúPrincipalToolStripMenuItem1.Click += menúPrincipalToolStripMenuItem1_Click;
+            // 
+            // botTelegramToolStripMenuItem
+            // 
+            botTelegramToolStripMenuItem.Name = "botTelegramToolStripMenuItem";
+            botTelegramToolStripMenuItem.Size = new Size(89, 20);
+            botTelegramToolStripMenuItem.Text = "Bot Telegram";
+            botTelegramToolStripMenuItem.Click += botTelegramToolStripMenuItem_Click;
             // 
             // contextMenuStrip1
             // 
@@ -242,12 +250,12 @@
             sdfaToolStripMenuItem.Size = new Size(96, 22);
             sdfaToolStripMenuItem.Text = "sdfa";
             // 
-            // botTelegramToolStripMenuItem
+            // instagramToolStripMenuItem
             // 
-            botTelegramToolStripMenuItem.Name = "botTelegramToolStripMenuItem";
-            botTelegramToolStripMenuItem.Size = new Size(89, 20);
-            botTelegramToolStripMenuItem.Text = "Bot Telegram";
-            botTelegramToolStripMenuItem.Click += botTelegramToolStripMenuItem_Click;
+            instagramToolStripMenuItem.Name = "instagramToolStripMenuItem";
+            instagramToolStripMenuItem.Size = new Size(72, 20);
+            instagramToolStripMenuItem.Text = "Instagram";
+            instagramToolStripMenuItem.Click += instagramToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -298,5 +306,6 @@
         private ToolStripMenuItem consultasPorServicioToolStripMenuItem;
         private ToolStripMenuItem menúPrincipalToolStripMenuItem1;
         private ToolStripMenuItem botTelegramToolStripMenuItem;
+        private ToolStripMenuItem instagramToolStripMenuItem;
     }
 }

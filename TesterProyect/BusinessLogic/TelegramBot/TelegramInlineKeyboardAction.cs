@@ -1,5 +1,4 @@
-﻿using System.Security.AccessControl;
-using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot;
 using TesterProyect.BusinessEntities;
 using TesterProyect.BusinessLogic.Interfaces;
@@ -15,7 +14,7 @@ namespace TesterProyect.BusinessLogic.TelegramBot
             List<InlineKeyboardButton> l =
             [
                 InlineKeyboardButton.WithCallbackData(TelegramBotMenu.GetMessageLog),
-                InlineKeyboardButton.WithCallbackData("Prueba 2"),
+                InlineKeyboardButton.WithCallbackData("Test 2"),
             ];
             return l;
         }

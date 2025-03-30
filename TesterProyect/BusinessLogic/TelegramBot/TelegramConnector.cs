@@ -3,11 +3,10 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using TesterProyect.BusinessEntities;
+using TelegramBot;
 using TesterProyect.BusinessLogic.Interfaces;
-using TesterProyect.BusinessLogic.TelegramBot;
 
-namespace TelegramBot
+namespace TesterProyect.BusinessLogic.TelegramBot
 {
     public class TelegramConnector
     {
@@ -100,7 +99,7 @@ namespace TelegramBot
 
                 if (update.CallbackQuery != null)
                 {
-                    var query = update.CallbackQuery;
+                    CallbackQuery query = update.CallbackQuery;
                     await bot.AnswerCallbackQuery(query.Id, $"Eligió {query.Data}");
                     _ = await bot.SendMessage(query.Message!.Chat, $"El usuario {query.From} hizo clic en {query.Data}");
 
@@ -118,7 +117,7 @@ namespace TelegramBot
                             };
 
                             UpdateOccurred?.Invoke(this, result);
-                        }                        
+                        }
                     }
 
                     result = new TelegramResult

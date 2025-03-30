@@ -8,12 +8,14 @@ namespace WinFormTester
     {
         private readonly IInyectionTester _inyectionTester;
         private readonly IDelegateTester _delegateTester;
+        private readonly IInstagramConnector _instagramConnector;
         private readonly string _connectionString;
 
-        public LoginForm(IInyectionTester inyectionTester, IDelegateTester delegateTester, string connectionString)
+        public LoginForm(IInyectionTester inyectionTester, IDelegateTester delegateTester, IInstagramConnector instagramConnector, string connectionString)
         {
             _inyectionTester = inyectionTester ?? throw new ArgumentNullException(nameof(inyectionTester));
             _delegateTester = delegateTester ?? throw new ArgumentNullException(nameof(delegateTester));
+            _instagramConnector = instagramConnector ?? throw new ArgumentNullException(nameof(instagramConnector));
             _connectionString = connectionString;
             InitializeComponent();
         }
@@ -25,7 +27,7 @@ namespace WinFormTester
             {
                 if (VerifyPassword(txtPassword.Text, passwordVerifier.Hash, passwordVerifier.Salt))
                 {
-                    Form1 form1 = new(_inyectionTester, _delegateTester);
+                    Form1 form1 = new(_inyectionTester, _delegateTester, _instagramConnector);
                     form1.Show();
                     Hide(); 
                 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR.Client;
+using TesterProyect.BusinessLogic.Instagram;
 using TesterProyect.BusinessLogic.Interfaces;
 
 namespace WinFormTester
@@ -8,11 +9,13 @@ namespace WinFormTester
         private HubConnection _hubConnection;
         private readonly IInyectionTester _inyectionTester;
         private readonly IDelegateTester _delegateTester;
+        private readonly IInstagramConnector _instagramConnector;
 
-        public Form1(IInyectionTester inyectionTester, IDelegateTester delegateTester)
+        public Form1(IInyectionTester inyectionTester, IDelegateTester delegateTester, IInstagramConnector instagramConnector)
         {
             _inyectionTester = inyectionTester ?? throw new ArgumentNullException(nameof(inyectionTester));
             _delegateTester = delegateTester ?? throw new ArgumentException(null, nameof(delegateTester));
+            _instagramConnector = instagramConnector ?? throw new ArgumentNullException(null, nameof(InstagramConnectorForm));
             InitializeComponent();
 
             // Initialize the SignalR connection
@@ -100,6 +103,12 @@ namespace WinFormTester
         private void botTelegramToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TelegramBot create = new();
+            create.Show();
+        }
+
+        private void instagramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InstagramConnectorForm create = new(_instagramConnector);
             create.Show();
         }
     }
