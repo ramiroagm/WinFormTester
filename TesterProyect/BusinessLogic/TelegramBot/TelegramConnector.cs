@@ -5,6 +5,10 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot;
 using TesterProyect.BusinessLogic.Interfaces;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using TesterProyect.BusinessLogic.PasswordManager;
+using TesterProyect.BusinessEntities;
 
 namespace TesterProyect.BusinessLogic.TelegramBot
 {
@@ -26,8 +30,7 @@ namespace TesterProyect.BusinessLogic.TelegramBot
 
         public async Task<TelegramResult> InitializeBot()
         {
-            // TODO: Testing string
-            string token = "7635895694:AAHZN_ZAlZVkmm5I7jiXNfpmz8bgCqiLyR0";
+            string token = await KeyVaultHelper.GetTokenFromKeyVaultAsync(ConstantValues.TelegramKeyValue);
 
             using CancellationTokenSource cts = new();
             TelegramBotClient bot = new(token, cancellationToken: cts.Token);
