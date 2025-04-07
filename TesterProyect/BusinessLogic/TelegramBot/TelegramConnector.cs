@@ -30,7 +30,8 @@ namespace TesterProyect.BusinessLogic.TelegramBot
 
         public async Task<TelegramResult> InitializeBot()
         {
-            string token = await KeyVaultHelper.GetTokenFromKeyVaultAsync(ConstantValues.TelegramKeyValue);
+            // string token = await KeyVaultHelper.GetTokenFromKeyVaultAsync(ConstantValues.TelegramKeyValue);
+            string token = await SecretManagerHelper.AccessSecret(ConstantValues.G_ProjectId, ConstantValues.G_TelegramKey);
 
             using CancellationTokenSource cts = new();
             TelegramBotClient bot = new(token, cancellationToken: cts.Token);

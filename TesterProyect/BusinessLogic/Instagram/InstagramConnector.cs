@@ -22,7 +22,7 @@ namespace TesterProyect.BusinessLogic.Instagram
 
             IInstaApi instaApi = InstaApiBuilder.CreateBuilder()
                 .SetUser(userSession)
-                .UseLogger(new DebugLogger(LogLevel.All)) // Opcional: Registro para depuración
+                .UseLogger(new DebugLogger(LogLevel.All))
                 .Build();
 
             IResult<InstaLoginResult> loginResult = await instaApi.LoginAsync();

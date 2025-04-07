@@ -21,19 +21,18 @@ namespace WinFormTester
                 string username = txtUserName.Text;
                 string password = txtPassword.Text;
 
-                rtxtLog.Text = $"[Connecting to Instagram with user {username}]";
+                rtxtLog.AppendText($"[Connecting to Instagram with user {username}]{Environment.NewLine}");
                 _instaApi = await _instagramConnector.CreateConnection(username, password);
                 if (_instaApi != null)
                 {
                     btnConnect.Enabled = false;
                     btnSend.Enabled = true;
                 }
-                rtxtLog.Text = "[Connected to Instagram]";
-
+                rtxtLog.AppendText("[Connected to Instagram]{Environment.NewLine}");
             }
             catch (Exception ex)
             {
-                rtxtLog.Text = $"ERROR [Error connecting to Instagram: {ex.InnerException}]";
+                rtxtLog.AppendText($"ERROR [Error connecting to Instagram: {ex.InnerException}]{Environment.NewLine}");
             }
         }
 
@@ -43,20 +42,20 @@ namespace WinFormTester
             {
                 if (_instaApi == null)
                 {
-                    rtxtLog.Text = "ERROR [Please connect to Instagram first]";
+                    rtxtLog.AppendText("ERROR [Please connect to Instagram first]{Environment.NewLine}");
                     return;
                 }
 
                 string userToMessage = txtUserToSend.Text;
                 string textMessage = txtMessage.Text;
 
-                rtxtLog.Text = "[Sending message]";
-                _ = await _instagramConnector.SendMessage(_instaApi, userToMessage, textMessage);
-                rtxtLog.Text = $"[Message \"{txtMessage.Text}\" sent to {txtUserToSend.Text}]";
+                rtxtLog.AppendText("[Sending message]{Environment.NewLine}");
+                _ = await _instagramConnector.SendMessage(_instaApi, textMessage, userToMessage);
+                rtxtLog.AppendText($"[Message \"{txtMessage.Text}\" sent to {txtUserToSend.Text}]{Environment.NewLine}");
             }
             catch (Exception ex)
             {
-                rtxtLog.Text = $"Error: {ex.Message}";
+                rtxtLog.AppendText($"Error: {ex.Message}{Environment.NewLine}");
             }
         }
 
@@ -66,26 +65,23 @@ namespace WinFormTester
             {
                 if (_instaApi == null)
                 {
-                    rtxtLog.Text = "ERROR: [Please connect to Instagram first]";
+                    rtxtLog.AppendText("ERROR: [Please connect to Instagram first]{Environment.NewLine}");
                     return;
                 }
 
                 int cantMessages = string.IsNullOrEmpty(txtCantMsg.Text) ? 1 : Convert.ToInt32(txtCantMsg.Text);
 
-                rtxtLog.Text = "[Getting messages]";
+                rtxtLog.AppendText("[Getting messages]{Environment.NewLine}");
                 List<TesterProyect.BusinessEntities.InstagramMessage> result = await _instagramConnector.ReceiveMessages(_instaApi, cantMessages);
-                List<TesterProyect.BusinessEntities.InstagramMessage> orderedResult = result.OrderByDescending(x => x.UserId).ToList();
-                string resultWindow = "";
+                List<TesterProyect.BusinessEntities.InstagramMessage> orderedResult = [.. result.OrderByDescending(x => x.UserId)];
                 foreach (TesterProyect.BusinessEntities.InstagramMessage? a in orderedResult)
                 {
-                    resultWindow += $"From {a.UserId}:  {a.Message}";
+                    rtxtLog.AppendText($"From {a.UserId}:  {a.Message}");
                 }
-
-                rtxtLog.Text = resultWindow;
             }
             catch (Exception ex)
             {
-                rtxtLog.Text = $"Error: {ex.Message}";
+                rtxtLog.AppendText($"Error: {ex.Message}{Environment.NewLine}");
             }
         }
     }

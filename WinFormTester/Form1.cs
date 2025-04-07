@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.SignalR.Client;
 using TesterProyect.BusinessLogic.Instagram;
 using TesterProyect.BusinessLogic.Interfaces;
@@ -6,7 +7,6 @@ namespace WinFormTester
 {
     public partial class Form1 : Form
     {
-        private HubConnection _hubConnection;
         private readonly IInyectionTester _inyectionTester;
         private readonly IDelegateTester _delegateTester;
         private readonly IInstagramConnector _instagramConnector;
@@ -17,24 +17,6 @@ namespace WinFormTester
             _delegateTester = delegateTester ?? throw new ArgumentException(null, nameof(delegateTester));
             _instagramConnector = instagramConnector ?? throw new ArgumentNullException(null, nameof(InstagramConnectorForm));
             InitializeComponent();
-
-            // Initialize the SignalR connection
-            _hubConnection = new HubConnectionBuilder()
-                .WithUrl("http://localhost/chathub")
-                .Build();
-
-            // Register event handlers
-            _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-            {
-                Invoke(() =>
-                {
-                    // Update the UI with the received message
-                    listBoxMessages.Items.Add($"{user}: {message}");
-                });
-            });
-
-            // Start the connection
-            StartConnection();
         }
 
         #region DEPENDENCY INYECTION
@@ -72,28 +54,6 @@ namespace WinFormTester
         }
         #endregion
 
-        #region SIGNALIR
-        private async void StartConnection()
-        {
-            try
-            {
-                await _hubConnection.StartAsync();
-                listBoxMessages.Items.Add("Connection started");
-            }
-            catch (Exception ex)
-            {
-                listBoxMessages.Items.Add($"Connection error: {ex.Message}");
-            }
-        }
-
-        private void buttonSend_ClickAsync(object sender, EventArgs e)
-        {
-            if (_hubConnection.State == HubConnectionState.Connected)
-            {
-                _hubConnection.InvokeAsync("SendMessage", "User", textBoxMessage.Text);
-            }
-        }
-        #endregion
 
         private void menúPrincipalToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -110,6 +70,29 @@ namespace WinFormTester
         {
             InstagramConnectorForm create = new(_instagramConnector);
             create.Show();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.linkedin.com/in/ramiroagm/",
+                UseShellExecute = true
+            });
+        }
+
+        private void linkLabel2_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/ramiroagm",
+                UseShellExecute = true
+            });
         }
     }
 }
