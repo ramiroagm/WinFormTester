@@ -1,6 +1,6 @@
 ﻿using TelegramBot;
 
-namespace TesterProyect.BusinessLogic.Interfaces
+namespace TesterProject.BusinessLogic.Interfaces
 {
     public interface ITelegramDatabaseInformation
     {

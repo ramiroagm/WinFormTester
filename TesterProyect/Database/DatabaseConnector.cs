@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TesterProyect.BusinessEntities;
-using TesterProyect.BusinessLogic.PasswordManager;
+﻿using TesterProject.BusinessEntities;
+using TesterProject.BusinessLogic.PasswordManager;
 
-namespace TesterProyect.Database
+namespace TesterProject.Database
 {
     public class DatabaseConnector
     {

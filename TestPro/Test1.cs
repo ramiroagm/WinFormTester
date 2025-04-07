@@ -1,5 +1,5 @@
-﻿using TesterProyect.BusinessLogic.GeneralDemo;
-using TesterProyect.BusinessLogic.Interfaces;
+﻿using TesterProject.BusinessLogic.GeneralDemo;
+using TesterProject.BusinessLogic.Interfaces;
 
 namespace TestPro
 {

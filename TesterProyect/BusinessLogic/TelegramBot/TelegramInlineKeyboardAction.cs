@@ -1,9 +1,9 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot;
-using TesterProyect.BusinessEntities;
-using TesterProyect.BusinessLogic.Interfaces;
+using TesterProject.BusinessEntities;
+using TesterProject.BusinessLogic.Interfaces;
 
-namespace TesterProyect.BusinessLogic.TelegramBot
+namespace TesterProject.BusinessLogic.TelegramBot
 {
     public class TelegramInlineKeyboardAction(ITelegramDatabaseInformation databaseInfo)
     {

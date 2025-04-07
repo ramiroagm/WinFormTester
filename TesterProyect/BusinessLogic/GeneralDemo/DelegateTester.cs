@@ -1,7 +1,6 @@
-﻿using System.Data;
-using TesterProyect.BusinessLogic.Interfaces;
+﻿using TesterProject.BusinessLogic.Interfaces;
 
-namespace TesterProyect.BusinessLogic.GeneralDemo
+namespace TesterProject.BusinessLogic.GeneralDemo
 {
     public class DelegateTester : IDelegateTester
     {

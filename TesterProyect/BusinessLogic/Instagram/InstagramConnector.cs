@@ -3,10 +3,10 @@ using InstagramApiSharp.API;
 using InstagramApiSharp.API.Builder;
 using InstagramApiSharp.Classes;
 using InstagramApiSharp.Logger;
-using TesterProyect.BusinessEntities;
-using TesterProyect.BusinessLogic.Interfaces;
+using TesterProject.BusinessEntities;
+using TesterProject.BusinessLogic.Interfaces;
 
-namespace TesterProyect.BusinessLogic.Instagram
+namespace TesterProject.BusinessLogic.Instagram
 {
     public class InstagramConnector : IInstagramConnector
     {

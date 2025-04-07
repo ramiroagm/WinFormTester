@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace TesterProyect.BusinessLogic.PasswordManager
+namespace TesterProject.BusinessLogic.PasswordManager
 {
     public static class PasswordHasher
     {

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InstagramApiSharp;
+﻿using InstagramApiSharp;
 using InstagramApiSharp.API;
 using InstagramApiSharp.Classes;
-using TesterProyect.BusinessEntities;
+using TesterProject.BusinessEntities;
 
-namespace TesterProyect.BusinessLogic.Interfaces
+namespace TesterProject.BusinessLogic.Interfaces
 {
     public interface IInstagramConnector
     {

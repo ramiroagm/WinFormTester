@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using TelegramBot;
 
-namespace TesterProyect.Database
+namespace TesterProject.Database
 {
     public class TelegramMessageLog : DatabaseConnector
     {

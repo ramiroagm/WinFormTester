@@ -4,13 +4,11 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TelegramBot;
-using TesterProyect.BusinessLogic.Interfaces;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using TesterProyect.BusinessLogic.PasswordManager;
-using TesterProyect.BusinessEntities;
+using TesterProject.BusinessEntities;
+using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.PasswordManager;
 
-namespace TesterProyect.BusinessLogic.TelegramBot
+namespace TesterProject.BusinessLogic.TelegramBot
 {
     public class TelegramConnector
     {

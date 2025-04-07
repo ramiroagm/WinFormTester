@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Data.SqlClient;
-using TesterProyect.BusinessLogic.Interfaces;
-using TesterProyect.BusinessLogic.GeneralDemo;
-using TesterProyect.BusinessLogic.Instagram;
+using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.GeneralDemo;
+using TesterProject.BusinessLogic.Instagram;
 
 namespace WinFormTester
 {

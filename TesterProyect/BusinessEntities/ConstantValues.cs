@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TesterProyect.BusinessEntities
+namespace TesterProject.BusinessEntities
 {
     public static class ConstantValues
     {

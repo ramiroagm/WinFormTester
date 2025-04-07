@@ -1,5 +1,5 @@
 ﻿using TelegramBot;
-using TesterProyect.BusinessLogic.TelegramBot;
+using TesterProject.BusinessLogic.TelegramBot;
 
 namespace WinFormTester
 {

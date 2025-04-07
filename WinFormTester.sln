@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormTester", "WinFormTester\WinFormTester.csproj", "{292AA0FA-BD7A-4C8C-9EF3-D5BFB4D3D1DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesterProyect", "TesterProyect\TesterProyect.csproj", "{CAC36575-9BB7-492D-813C-0BDF369E1228}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesterProject", "TesterProyect\TesterProject.csproj", "{CAC36575-9BB7-492D-813C-0BDF369E1228}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPro", "TestPro\TestPro.csproj", "{0E9808C8-729B-4130-92B2-EE22B5F8DC77}"
 EndProject

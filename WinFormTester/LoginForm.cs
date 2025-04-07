@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
-using TesterProyect.BusinessLogic.Interfaces;
-using static TesterProyect.BusinessLogic.PasswordManager.PasswordHasher;
+using TesterProject.BusinessLogic.Interfaces;
+using static TesterProject.BusinessLogic.PasswordManager.PasswordHasher;
 
 namespace WinFormTester
 {

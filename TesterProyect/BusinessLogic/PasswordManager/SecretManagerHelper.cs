@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Google.Cloud.SecretManager.V1;
-using TesterProyect.BusinessLogic.Interfaces;
+﻿using Google.Cloud.SecretManager.V1;
 
-namespace TesterProyect.BusinessLogic.PasswordManager
+namespace TesterProject.BusinessLogic.PasswordManager
 {
     public class SecretManagerHelper
     {

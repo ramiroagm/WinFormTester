@@ -1,7 +1,7 @@
 ﻿using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 
-namespace TesterProyect.BusinessLogic.PasswordManager
+namespace TesterProject.BusinessLogic.PasswordManager
 {
     public class KeyVaultHelper
     {
