@@ -17,7 +17,7 @@ jobs:
     env:
       Solution_Name: WinFormTester.sln
       Test_Project_Path: TestPro\TestPro.csproj 
-      Wap_Project_Directory: TesterProyect
+      Wap_Project_Directory: TesterProject
       DatabaseProj: TesterDatabase\TesterDatabase.sqlproj
 
     steps:
@@ -45,3 +45,5 @@ jobs:
   
     - name: Execute unit tests
       run: dotnet test
+
+    
