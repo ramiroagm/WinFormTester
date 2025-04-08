@@ -11,6 +11,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TesterDatabase", "TesterDat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesterProject", "TesterProject\TesterProject.csproj", "{96645887-F468-A3EC-13B5-0B2A8266F4BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesterBlazor", "TesterBlazor\TesterBlazor.csproj", "{39AC6F33-CB2F-4C94-9C72-F72D45E4C0AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{96645887-F468-A3EC-13B5-0B2A8266F4BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96645887-F468-A3EC-13B5-0B2A8266F4BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96645887-F468-A3EC-13B5-0B2A8266F4BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39AC6F33-CB2F-4C94-9C72-F72D45E4C0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AC6F33-CB2F-4C94-9C72-F72D45E4C0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AC6F33-CB2F-4C94-9C72-F72D45E4C0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AC6F33-CB2F-4C94-9C72-F72D45E4C0AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,133 @@
+.navbar-toggler {
+    appearance: none;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 2.5rem;
+    color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler:checked {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.top-row {
+    min-height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+}
+
+.bi {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    top: -1px;
+    background-size: cover;
+}
+
+.bi-house-door-fill-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-house-door-fill' viewBox='0 0 16 16'%3E%3Cpath d='M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z'/%3E%3C/svg%3E");
+}
+
+.bi-plus-square-fill-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-plus-square-fill' viewBox='0 0 16 16'%3E%3Cpath d='M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z'/%3E%3C/svg%3E");
+}
+
+.bi-list-nested-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-list-nested' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5z'/%3E%3C/svg%3E");
+}
+
+.bi-lock-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-list-nested' viewBox='0 0 16 16'%3E%3Cpath d='M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z'/%3E%3C/svg%3E");
+}
+
+.bi-person-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-person' viewBox='0 0 16 16'%3E%3Cpath d='M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z'/%3E%3C/svg%3E");
+}
+
+.bi-person-badge-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-person-badge' viewBox='0 0 16 16'%3E%3Cpath d='M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath d='M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z'/%3E%3C/svg%3E");
+}
+
+.bi-person-fill-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-person-fill' viewBox='0 0 16 16'%3E%3Cpath d='M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'/%3E%3C/svg%3E");
+}
+
+.bi-arrow-bar-left-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-arrow-bar-left' viewBox='0 0 16 16'%3E%3Cpath d='M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5ZM10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5Z'/%3E%3C/svg%3E");
+}
+
+.bi-telegram-ico-figma {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi telegram-ico-figma' viewBox='0 0 16 16'%3E%3Cpath d='M16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8ZM8.28672 5.90599C7.50861 6.22963 5.95346 6.8995 3.6213 7.91558C3.2426 8.06618 3.04421 8.21351 3.02615 8.35757C2.99563 8.60103 3.30052 8.6969 3.71569 8.82745C3.77216 8.8452 3.83068 8.8636 3.89067 8.8831C4.29913 9.01588 4.84859 9.17121 5.13423 9.17738C5.39334 9.18298 5.68253 9.07616 6.0018 8.85692C8.18081 7.38603 9.30563 6.64258 9.37625 6.62655C9.42607 6.61524 9.49511 6.60102 9.54188 6.6426C9.58866 6.68418 9.58406 6.76291 9.57911 6.78404C9.5489 6.9128 8.35212 8.02543 7.73279 8.60121C7.53971 8.78071 7.40276 8.90804 7.37476 8.93712C7.31204 9.00226 7.24812 9.06388 7.18669 9.1231C6.80722 9.48891 6.52265 9.76324 7.20245 10.2112C7.52913 10.4265 7.79055 10.6045 8.05134 10.7821C8.33616 10.9761 8.62023 11.1695 8.98778 11.4105C9.08142 11.4718 9.17086 11.5356 9.25796 11.5977C9.58942 11.834 9.88721 12.0463 10.2551 12.0124C10.4689 11.9928 10.6897 11.7918 10.8018 11.1923C11.0668 9.77545 11.5878 6.70567 11.7082 5.44069C11.7187 5.32986 11.7055 5.18802 11.6948 5.12576C11.6842 5.06349 11.6619 4.97478 11.581 4.90911C11.4851 4.83133 11.3371 4.81493 11.2709 4.8161C10.9701 4.8214 10.5084 4.98192 8.28672 5.90599Z'/%3E%3C/svg%3E");
+}
+
+.bi-instagram-ico-figma {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi instagram-ico-figma' viewBox='0 0 16 16'%3E%3Cpath d='M8.00075 0C5.82806 0 5.55539 0.00950025 4.70205 0.048334C3.85037 0.0873344 3.26903 0.222169 2.76036 0.420004C2.23419 0.62434 1.78785 0.897676 1.34318 1.34251C0.898176 1.78719 0.62484 2.23352 0.419838 2.75953C0.221502 3.26837 0.0865008 3.84987 0.0481671 4.70122C0.01 5.55456 0 5.82739 0 8.00008C0 10.1728 0.00966692 10.4446 0.048334 11.298C0.0875011 12.1496 0.222336 12.731 0.420004 13.2396C0.624507 13.7658 0.897843 14.2121 1.34268 14.6568C1.78719 15.1018 2.23352 15.3758 2.75936 15.5802C3.26837 15.778 3.84987 15.9128 4.70138 15.9518C5.55472 15.9907 5.82723 16.0002 7.99975 16.0002C10.1726 16.0002 10.4444 15.9907 11.2978 15.9518C12.1495 15.9128 12.7315 15.778 13.2405 15.5802C13.7665 15.3758 14.2121 15.1018 14.6567 14.6568C15.1017 14.2121 15.375 13.7658 15.58 13.2398C15.7767 12.731 15.9117 12.1495 15.9517 11.2981C15.99 10.4448 16 10.1728 16 8.00008C16 5.82739 15.99 5.55472 15.9517 4.70138C15.9117 3.84971 15.7767 3.26837 15.58 2.7597C15.375 2.23352 15.1017 1.78719 14.6567 1.34251C14.2116 0.897509 13.7666 0.624173 13.24 0.420004C12.73 0.222169 12.1483 0.0873344 11.2966 0.048334C10.4433 0.00950025 10.1716 0 7.99825 0H8.00075ZM7.28308 1.44168C7.49608 1.44135 7.73375 1.44168 8.00075 1.44168C10.1368 1.44168 10.3899 1.44935 11.2335 1.48768C12.0135 1.52335 12.4368 1.65368 12.7188 1.76319C13.0921 1.90819 13.3583 2.08152 13.6381 2.36152C13.9181 2.64153 14.0915 2.9082 14.2368 3.28153C14.3463 3.5632 14.4768 3.98654 14.5123 4.76655C14.5507 5.60989 14.559 5.86323 14.559 7.99825C14.559 10.1333 14.5507 10.3866 14.5123 11.2299C14.4767 12.01 14.3463 12.4333 14.2368 12.715C14.0918 13.0883 13.9181 13.3541 13.6381 13.634C13.3581 13.914 13.0923 14.0873 12.7188 14.2323C12.4371 14.3423 12.0135 14.4723 11.2335 14.508C10.3901 14.5463 10.1368 14.5547 8.00075 14.5547C5.86456 14.5547 5.61139 14.5463 4.76805 14.508C3.98804 14.472 3.5647 14.3416 3.28253 14.2321C2.9092 14.0871 2.64253 13.9138 2.36252 13.6338C2.08252 13.3538 1.90919 13.0878 1.76385 12.7143C1.65435 12.4326 1.52385 12.0093 1.48835 11.2293C1.45002 10.3859 1.44235 10.1326 1.44235 7.99625C1.44235 5.85989 1.45002 5.60789 1.48835 4.76455C1.52402 3.98454 1.65435 3.5612 1.76385 3.2792C1.90885 2.90586 2.08252 2.63919 2.36252 2.35919C2.64253 2.07919 2.9092 1.90585 3.28253 1.76052C3.56454 1.65052 3.98804 1.52052 4.76805 1.48468C5.50606 1.45135 5.79206 1.44135 7.28308 1.43968V1.44168ZM12.2711 2.77003C11.7411 2.77003 11.3111 3.19953 11.3111 3.72971C11.3111 4.25971 11.7411 4.68972 12.2711 4.68972C12.8011 4.68972 13.2311 4.25971 13.2311 3.72971C13.2311 3.1997 12.8011 2.7697 12.2711 2.7697V2.77003ZM8.00075 3.89171C5.73189 3.89171 3.89237 5.73123 3.89237 8.00008C3.89237 10.2689 5.73189 12.1076 8.00075 12.1076C10.2696 12.1076 12.1085 10.2689 12.1085 8.00008C12.1085 5.73123 10.2694 3.89171 8.00058 3.89171H8.00075ZM8.00075 5.33339C9.47343 5.33339 10.6674 6.52723 10.6674 8.00008C10.6674 9.47277 9.47343 10.6668 8.00075 10.6668C6.5279 10.6668 5.33406 9.47277 5.33406 8.00008C5.33406 6.52723 6.5279 5.33339 8.00075 5.33339V5.33339Z'/%3E%3C/svg%3E");
+}
+
+.nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item ::deep .nav-link {
+        color: #d7d7d7;
+        background: none;
+        border: none;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        width: 100%;
+    }
+
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.37);
+    color: white;
+}
+
+.nav-item ::deep .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-scrollable {
+    display: none;
+}
+
+.navbar-toggler:checked ~ .nav-scrollable {
+    display: block;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .nav-scrollable {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+
+        /* Allow sidebar to scroll for tall menus */
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}
