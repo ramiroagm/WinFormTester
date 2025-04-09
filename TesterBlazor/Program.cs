@@ -5,6 +5,9 @@ using TesterBlazor.Components;
 using TesterBlazor.Components.Account;
 using TesterBlazor.Data;
 
+// Custom usings
+using TesterProject.BusinessLogic.TelegramBot;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +18,9 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+// Custom services
+builder.Services.AddScoped<TelegramConnector>();
 
 builder.Services.AddAuthentication(options =>
     {

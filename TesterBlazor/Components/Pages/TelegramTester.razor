@@ -1,39 +1,55 @@
-﻿@page "/telegram"
+﻿@using TesterProject
+@inject TesterProject.BusinessLogic.TelegramBot.TelegramConnector TelegramConnector
+
+@page "/telegram"
 
 <PageTitle>Tester de Telegram</PageTitle>
 
 <h2> 🤖 Tester de Telegram</h2>
 
-<div>
+<div class="input-group mb-3">
     <strong>A continuación se mostrará un ejemplo básico de conexión y obtención de información con un bot de Telegram.</strong>
 </div>
-
-<br />
-
-<div>
+<div class ="input-group mb-3">
     El bot al que nos estaremos conectando se llama <a href="https://t.me/del_monte_bot" target="_blank">@@DelMonteTester</a> y se podrá encontrar escaneando el siguiente código QR:
-
-    <br />
-
-    <img src="../src/del_monte_bot.png" />
+    <div class="input-group mb-3" style="margin-top: 30px;">
+        <img class="img-thumbnail rounded mx-auto d-block" width="30%" src="../src/del_monte_bot.png" />
+    </div>
 </div>
 
-<br />
-
-<div>
+<div class="input-group mb-3">
     <h3> 🧪 Zona de prueba</h3>
-    <table>
-    <tr>
-        <td>
-            <h4>Ventana de resultado:</h4>
-        </td>
-        <td>
-            <h4>Imputs:</h4>
-        </td>
-    </tr>
-</table>
+    <div class="input-group mb-3" style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+                <legend>Ventana de Resultado</legend>
+                <textarea class="form-control" rows="5" style="width: 100%;margin-bottom: 10px"></textarea>
+                <button class="btn btn-secondary style="margin-top: 10px; width: 100%;">Limpiar</button>
+            </fieldset>
+            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+                <legend>Logs y Excepciones</legend>
+                <textarea class="form-control" rows="5" style="width: 100%; margin-bottom: 10px"></textarea>
+                <button class="btn btn-secondary style="margin-top: 10px; width: 100%;>Limpiar</button>
+            </fieldset>
+        </div>
+
+        <div class="form-floating" style="flex: 1;">
+            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+                <legend>Servicio de Telegram</legend>
+                <button class="btn btn-primary style="width: 100%; margin-bottom: 10px;" >Conectar</button>
+                <div style="display: flex; gap: 10px;margin-top: 10px">
+                    <button class="btn btn-secondary style="flex: 1;" @onclick="ConnectToTelegram">Enviar mensaje</button>
+                    <input class="form-control" type="text" style="flex: 2;" placeholder="Mensaje...">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
 </div>
 
 @code {
-
+    private async Task<TelegramBot.TelegramResult> ConnectToTelegram()
+    {
+        var res = await TelegramConnector.InitializeBot();
+    }
 }
