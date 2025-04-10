@@ -1,5 +1,8 @@
 ﻿@using TesterProject
+@using TesterProject.BusinessEntities
+
 @inject TesterProject.BusinessLogic.TelegramBot.TelegramConnector TelegramConnector
+
 
 @page "/telegram"
 
@@ -23,22 +26,22 @@
         <div style="flex: 1;">
             <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                 <legend>Ventana de Resultado</legend>
-                <textarea class="form-control" rows="5" style="width: 100%;margin-bottom: 10px"></textarea>
-                <button class="btn btn-secondary style="margin-top: 10px; width: 100%;">Limpiar</button>
+                <textarea class="form-control" rows="5" style="width: 100%;margin-bottom: 10px" @bind=ResultMessage readonly></textarea>
+                <button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" @onclick="ClearResultMessage">Limpiar</button>
             </fieldset>
             <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                 <legend>Logs y Excepciones</legend>
-                <textarea class="form-control" rows="5" style="width: 100%; margin-bottom: 10px"></textarea>
-                <button class="btn btn-secondary style="margin-top: 10px; width: 100%;>Limpiar</button>
+                <textarea class="form-control" rows="5" style="width: 100%; margin-bottom: 10px" @bind=ErrorMessage readonly></textarea>
+                <button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" @onclick="ClearLogWindow">Limpiar</button>
             </fieldset>
         </div>
 
         <div class="form-floating" style="flex: 1;">
             <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
                 <legend>Servicio de Telegram</legend>
-                <button class="btn btn-primary style="width: 100%; margin-bottom: 10px;" >Conectar</button>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" @onclick="ConnectToTelegram" >Conectar</button>
                 <div style="display: flex; gap: 10px;margin-top: 10px">
-                    <button class="btn btn-secondary style="flex: 1;" @onclick="ConnectToTelegram">Enviar mensaje</button>
+                    <button class="btn btn-secondary style="flex: 1;">Enviar mensaje</button>
                     <input class="form-control" type="text" style="flex: 2;" placeholder="Mensaje...">
                 </div>
             </fieldset>
@@ -48,8 +51,61 @@
 </div>
 
 @code {
-    private async Task<TelegramBot.TelegramResult> ConnectToTelegram()
+    private string ResultMessage { get; set; } = string.Empty;
+    private string ErrorMessage { get; set; } = string.Empty;
+
+    private int MessageCounter { get; set; } = 1;
+    private int ErrorLineCounter { get; set; } = 1;
+
+    protected override void OnInitialized()
+    {
+        TelegramConnector.MessageReceived += OnMessageReceived;
+        TelegramConnector.UpdateOccurred += OnUpdateOccured;
+        TelegramConnector.ErrorOccurred += OnErrorOccurred;
+    }
+
+    public void Dispose()
+    {
+        TelegramConnector.MessageReceived -= OnMessageReceived;
+    }
+
+    private async Task ConnectToTelegram()
     {
         var res = await TelegramConnector.InitializeBot();
+        ResultMessage += $"[{MessageCounter}] - {res.ChatId} {res.Message}{Environment.NewLine}";
+        MessageCounter++;
+    }
+
+    private void OnMessageReceived(object? sender, TelegramResult e)
+    {
+        ResultMessage += $"[{MessageCounter}] - {e.ChatId} {e.Message}{Environment.NewLine}";
+        MessageCounter++;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnUpdateOccured(object? sender, TelegramResult e)
+    {
+        ResultMessage += $"[{MessageCounter}] - {e.ChatId} {e.Message}{Environment.NewLine}";
+        MessageCounter++;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnErrorOccurred(object? sender, TelegramResult e)
+    {
+        ErrorMessage += $"[{ErrorLineCounter}] - {e.MsgTypeId} {e.Message}";
+        ErrorLineCounter++;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void ClearResultMessage()
+    {
+        ResultMessage = string.Empty;
+        MessageCounter = 1;
+    }
+
+    private void ClearLogWindow()
+    {
+        ErrorMessage = string.Empty;
+        ErrorLineCounter = 1;
     }
 }

@@ -1,4 +1,4 @@
-﻿using TelegramBot;
+﻿using TesterProject.BusinessEntities;
 
 namespace TesterProject.BusinessLogic.Interfaces
 {

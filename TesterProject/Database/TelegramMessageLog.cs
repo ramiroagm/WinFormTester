@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using TelegramBot;
+using TesterProject.BusinessEntities;
 
 namespace TesterProject.Database
 {

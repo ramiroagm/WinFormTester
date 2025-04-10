@@ -1,4 +1,4 @@
-﻿namespace TelegramBot
+﻿namespace TesterProject.BusinessEntities
 {
     public class TelegramResult
     {

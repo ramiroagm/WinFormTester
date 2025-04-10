@@ -1,5 +1,4 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
-using TelegramBot;
 using TesterProject.BusinessEntities;
 using TesterProject.BusinessLogic.Interfaces;
 
