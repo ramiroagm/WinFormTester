@@ -14,7 +14,7 @@
     <strong>A continuación se mostrará un ejemplo básico de conexión y obtención de información con un bot de Telegram.</strong>
 </div>
 <div class ="input-group mb-3">
-    El bot al que nos estaremos conectando se llama <a href="https://t.me/del_monte_bot" target="_blank">@@DelMonteTester</a> y se podrá encontrar escaneando el siguiente código QR:
+    <label>El bot al que nos estaremos conectando se llama</label>&nbsp;<a href="https://t.me/del_monte_bot" target="_blank">@@DelMonteTester</a>&nbsp;<label>y se podrá encontrar escaneando el siguiente código QR:</label>
     <div class="input-group mb-3" style="margin-top: 30px;">
         <img class="img-thumbnail rounded mx-auto d-block" width="30%" src="../src/del_monte_bot.png" />
     </div>
@@ -72,20 +72,20 @@
     private async Task ConnectToTelegram()
     {
         var res = await TelegramConnector.InitializeBot();
-        ResultMessage += $"[{MessageCounter}] - {res.ChatId} {res.Message}{Environment.NewLine}";
+        ResultMessage += $"[{MessageCounter}] - {res.UserName} {res.Message}{Environment.NewLine}";
         MessageCounter++;
     }
 
     private void OnMessageReceived(object? sender, TelegramResult e)
     {
-        ResultMessage += $"[{MessageCounter}] - {e.ChatId} {e.Message}{Environment.NewLine}";
+        ResultMessage += $"[{MessageCounter}] - {e.UserName} {e.Message}{Environment.NewLine}";
         MessageCounter++;
         InvokeAsync(StateHasChanged);
     }
 
     private void OnUpdateOccured(object? sender, TelegramResult e)
     {
-        ResultMessage += $"[{MessageCounter}] - {e.ChatId} {e.Message}{Environment.NewLine}";
+        ResultMessage += $"[{MessageCounter}] - {e.UserName} {e.Message}{Environment.NewLine}";
         MessageCounter++;
         InvokeAsync(StateHasChanged);
     }

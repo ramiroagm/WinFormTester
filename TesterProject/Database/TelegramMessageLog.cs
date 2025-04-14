@@ -18,6 +18,8 @@ namespace TesterProject.Database
             command.Parameters.AddWithValue("@chatId", result.ChatId);
             command.Parameters.AddWithValue("@message", result.Message);
             command.Parameters.AddWithValue("@messageTypeId", result.MsgTypeId);
+            command.Parameters.AddWithValue("@userName", result.UserName);
+            command.Parameters.AddWithValue("@msgSentTime", result.MsgSentTime);
             connection.Open();
             command.ExecuteNonQuery();
         }
@@ -39,7 +41,10 @@ namespace TesterProject.Database
                 {
                     ChatId = Convert.ToInt64(reader["ChatId"].ToString()),
                     Message = reader["Message"].ToString(),
-                    MsgTypeId = Convert.ToInt32(reader["MsgTypeId"].ToString())
+                    MsgTypeId = Convert.ToInt32(reader["TypeId"].ToString()),
+                    MsgSentTime = Convert.ToDateTime(reader["MsgSentTime"].ToString()),
+                    RequestMediaType = (int)RequestMediaType.TEXT,
+                    UserName = reader["UserName"].ToString()
                 });
             }
             return results;

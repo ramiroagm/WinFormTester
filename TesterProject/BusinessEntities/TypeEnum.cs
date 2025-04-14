@@ -7,4 +7,16 @@
         ERROR,
         EXCEPTION
     }
+
+    public enum RequestMediaType
+    {
+        TEXT,
+        IMAGE,
+        VIDEO,
+        AUDIO,
+        DOCUMENT,
+        STICKER,
+        LOCATION,
+        CONTACT
+    }
 }

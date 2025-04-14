@@ -1,29 +1,50 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 using TesterProject.BusinessEntities;
 using TesterProject.BusinessLogic.Interfaces;
 
 namespace TesterProject.BusinessLogic.TelegramBot
 {
-    public class TelegramInlineKeyboardAction(ITelegramDatabaseInformation databaseInfo)
+    public class TelegramInlineKeyboardAction
     {
-        private readonly ITelegramDatabaseInformation _databaseInfo = databaseInfo;
+        private readonly ITelegramDatabaseInformation _databaseInfo;
+
+        public TelegramInlineKeyboardAction(ITelegramDatabaseInformation databaseInfo)
+        {
+            _databaseInfo = databaseInfo;
+        }
 
         public static List<InlineKeyboardButton> InlineRequest()
         {
             List<InlineKeyboardButton> l =
-            [
-                InlineKeyboardButton.WithCallbackData(TelegramBotMenu.GetMessageLog),
-                InlineKeyboardButton.WithCallbackData("Test 2"),
-            ];
+                [
+                    InlineKeyboardButton.WithCallbackData(TelegramBotMenu.GetMessageLog),
+                    InlineKeyboardButton.WithCallbackData(TelegramBotMenu.GetSingleImage)
+                ];
             return l;
         }
 
-        public async Task<IEnumerable<TelegramResult>> InlineAction(string action, long chatId)
+        public async Task<TelegramResult> InlineAction(CallbackQuery query)
         {
-            return action switch
+            return query.Data switch
             {
-                nameof(TelegramBotMenu.GetMessageLog) => await _databaseInfo.GetInformation(chatId),
-                _ => [],
+                TelegramBotMenu.GetMessageLog => await _databaseInfo.GetSingleInformation(query),
+                TelegramBotMenu.GetSingleImage => new TelegramResult
+                {
+                    ChatId = query.From.Id,
+                    Message = "Imagen de prueba",
+                    MsgTypeId = (int)TypeEnum.CORRECT_RESPONSE,
+                    MsgSentTime = DateTime.Now,
+                    RequestMediaType = (int)RequestMediaType.IMAGE
+                },
+                _ => new TelegramResult
+                {
+                    ChatId = query.From.Id,
+                    Message = "Mensaje inline incorrecto",
+                    MsgTypeId = (int)TypeEnum.INCORRECT_RESPONSE,
+                    MsgSentTime = DateTime.Now,
+                    RequestMediaType = (int)RequestMediaType.TEXT
+                }
             };
         }
     }

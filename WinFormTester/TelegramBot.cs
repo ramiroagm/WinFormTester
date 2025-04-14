@@ -1,4 +1,4 @@
-﻿using TelegramBot;
+﻿using TesterProject.BusinessEntities;
 using TesterProject.BusinessLogic.TelegramBot;
 
 namespace WinFormTester

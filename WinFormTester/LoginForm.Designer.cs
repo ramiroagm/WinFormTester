@@ -35,11 +35,12 @@
             label2 = new Label();
             btnFgtPwd = new Button();
             btnCreateAcc = new Button();
+            label3 = new Label();
             SuspendLayout();
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(126, 160);
+            btnLogin.Location = new Point(79, 112);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(75, 23);
             btnLogin.TabIndex = 0;
@@ -49,23 +50,23 @@
             // 
             // txtUsername
             // 
-            txtUsername.Location = new Point(126, 94);
+            txtUsername.Location = new Point(79, 46);
             txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(307, 23);
+            txtUsername.Size = new Size(330, 23);
             txtUsername.TabIndex = 1;
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(126, 131);
+            txtPassword.Location = new Point(79, 83);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
-            txtPassword.Size = new Size(307, 23);
+            txtPassword.Size = new Size(330, 23);
             txtPassword.TabIndex = 2;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(54, 97);
+            label1.Location = new Point(7, 49);
             label1.Name = "label1";
             label1.Size = new Size(66, 15);
             label1.TabIndex = 3;
@@ -74,7 +75,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(54, 131);
+            label2.Location = new Point(7, 83);
             label2.Name = "label2";
             label2.Size = new Size(60, 15);
             label2.TabIndex = 4;
@@ -82,7 +83,7 @@
             // 
             // btnFgtPwd
             // 
-            btnFgtPwd.Location = new Point(207, 160);
+            btnFgtPwd.Location = new Point(160, 112);
             btnFgtPwd.Name = "btnFgtPwd";
             btnFgtPwd.Size = new Size(128, 23);
             btnFgtPwd.TabIndex = 5;
@@ -91,20 +92,30 @@
             // 
             // btnCreateAcc
             // 
-            btnCreateAcc.Location = new Point(54, 278);
+            btnCreateAcc.Location = new Point(294, 112);
             btnCreateAcc.Name = "btnCreateAcc";
-            btnCreateAcc.Size = new Size(135, 23);
+            btnCreateAcc.Size = new Size(115, 23);
             btnCreateAcc.TabIndex = 6;
             btnCreateAcc.Text = "Create account";
             btnCreateAcc.UseVisualStyleBackColor = true;
             btnCreateAcc.Click += btnCreateAcc_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(119, 18);
+            label3.Name = "label3";
+            label3.Size = new Size(220, 15);
+            label3.TabIndex = 7;
+            label3.Text = "Inicio de sesión para ventanas de prueba";
             // 
             // LoginForm
             // 
             AcceptButton = btnLogin;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(478, 313);
+            ClientSize = new Size(437, 178);
+            Controls.Add(label3);
             Controls.Add(btnCreateAcc);
             Controls.Add(btnFgtPwd);
             Controls.Add(label2);
@@ -128,5 +139,6 @@
         private Label label2;
         private Button btnFgtPwd;
         private Button btnCreateAcc;
+        private Label label3;
     }
 }

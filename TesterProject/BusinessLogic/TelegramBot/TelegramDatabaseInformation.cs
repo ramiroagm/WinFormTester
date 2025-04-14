@@ -1,4 +1,5 @@
-﻿using TesterProject.BusinessEntities;
+﻿using Telegram.Bot.Types;
+using TesterProject.BusinessEntities;
 using TesterProject.BusinessLogic.Interfaces;
 
 namespace TesterProject.BusinessLogic.TelegramBot
@@ -10,6 +11,33 @@ namespace TesterProject.BusinessLogic.TelegramBot
         public async Task<IEnumerable<TelegramResult>> GetInformation(long ChatId)
         {
             return await Database.TelegramMessageLog.GetLogInformation(ChatId);
+        }
+
+        public async Task<TelegramResult> GetSingleInformation(CallbackQuery query)
+        {
+            var messagesTask = GetInformation(query.From.Id);
+            var result = await MapToSingleChatMessage(messagesTask, query.From.Username);
+            return result ?? throw new InvalidOperationException("No message found for the given ChatId.");
+        }
+
+        private async Task<TelegramResult?> MapToSingleChatMessage(Task<IEnumerable<TelegramResult>> messagesTask, string? UserName)
+        {
+            var messages = await messagesTask;
+            string newReturn = $"Messages from {UserName ?? "[Unnamed user]"}: {Environment.NewLine}:";
+            foreach (var message in messages)
+            {
+                newReturn += $"{message} {Environment.NewLine}";
+            }
+
+            return new TelegramResult
+            {
+                UserName = UserName,
+                ChatId = messages.FirstOrDefault()?.ChatId,
+                Message = newReturn,
+                MsgSentTime = DateTime.Now,
+                MsgTypeId = (int)TypeEnum.CORRECT_RESPONSE,
+                RequestMediaType = (int)RequestMediaType.TEXT
+            };
         }
     }
 }

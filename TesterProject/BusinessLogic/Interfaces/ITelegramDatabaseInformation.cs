@@ -1,4 +1,5 @@
-﻿using TesterProject.BusinessEntities;
+﻿using Telegram.Bot.Types;
+using TesterProject.BusinessEntities;
 
 namespace TesterProject.BusinessLogic.Interfaces
 {
@@ -6,5 +7,6 @@ namespace TesterProject.BusinessLogic.Interfaces
     {
         void InsertInformation(TelegramResult result);
         Task<IEnumerable<TelegramResult>> GetInformation(long ChatId);
+        Task<TelegramResult> GetSingleInformation(CallbackQuery query);
     }
 }

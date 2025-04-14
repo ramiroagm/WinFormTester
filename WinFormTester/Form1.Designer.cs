@@ -51,9 +51,9 @@
             contextMenuStrip1 = new ContextMenuStrip(components);
             sdfaToolStripMenuItem = new ToolStripMenuItem();
             groupBox2 = new GroupBox();
+            label3 = new Label();
             linkLabel2 = new LinkLabel();
             linkLabel1 = new LinkLabel();
-            label3 = new Label();
             testing1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
@@ -64,22 +64,31 @@
             // 
             // btnInyection
             // 
-            resources.ApplyResources(btnInyection, "btnInyection");
+            btnInyection.Location = new Point(6, 22);
             btnInyection.Name = "btnInyection";
+            btnInyection.Size = new Size(75, 23);
+            btnInyection.TabIndex = 0;
+            btnInyection.Text = "Inyección";
             btnInyection.UseVisualStyleBackColor = true;
             btnInyection.Click += btnInyection_Click;
             // 
             // testing1
             // 
             testing1.Controls.Add(rtResult);
-            resources.ApplyResources(testing1, "testing1");
+            testing1.Location = new Point(12, 52);
             testing1.Name = "testing1";
+            testing1.Size = new Size(454, 305);
+            testing1.TabIndex = 1;
             testing1.TabStop = false;
+            testing1.Text = "Resultados";
             // 
             // rtResult
             // 
-            resources.ApplyResources(rtResult, "rtResult");
+            rtResult.Location = new Point(6, 22);
             rtResult.Name = "rtResult";
+            rtResult.Size = new Size(442, 277);
+            rtResult.TabIndex = 0;
+            rtResult.Text = "";
             // 
             // groupBox1
             // 
@@ -90,41 +99,61 @@
             groupBox1.Controls.Add(btnDelegate);
             groupBox1.Controls.Add(txtTester);
             groupBox1.Controls.Add(btnInyection);
-            resources.ApplyResources(groupBox1, "groupBox1");
+            groupBox1.Location = new Point(18, 363);
             groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(448, 104);
+            groupBox1.TabIndex = 2;
             groupBox1.TabStop = false;
+            groupBox1.Text = "Acciones básicas";
             // 
             // label2
             // 
-            resources.ApplyResources(label2, "label2");
+            label2.AutoSize = true;
+            label2.Location = new Point(87, 55);
             label2.Name = "label2";
+            label2.Size = new Size(45, 15);
+            label2.TabIndex = 6;
+            label2.Text = "Valor 1:";
             // 
             // label1
             // 
-            resources.ApplyResources(label1, "label1");
+            label1.AutoSize = true;
+            label1.Location = new Point(180, 55);
             label1.Name = "label1";
+            label1.Size = new Size(45, 15);
+            label1.TabIndex = 5;
+            label1.Text = "Valor 2:";
             // 
             // txtVal2
             // 
-            resources.ApplyResources(txtVal2, "txtVal2");
+            txtVal2.Location = new Point(231, 52);
             txtVal2.Name = "txtVal2";
+            txtVal2.Size = new Size(53, 23);
+            txtVal2.TabIndex = 4;
             // 
             // txtVal1
             // 
-            resources.ApplyResources(txtVal1, "txtVal1");
+            txtVal1.Location = new Point(131, 51);
             txtVal1.Name = "txtVal1";
+            txtVal1.Size = new Size(46, 23);
+            txtVal1.TabIndex = 3;
             // 
             // btnDelegate
             // 
-            resources.ApplyResources(btnDelegate, "btnDelegate");
+            btnDelegate.Location = new Point(6, 51);
             btnDelegate.Name = "btnDelegate";
+            btnDelegate.Size = new Size(75, 23);
+            btnDelegate.TabIndex = 2;
+            btnDelegate.Text = "Delegado";
             btnDelegate.UseVisualStyleBackColor = true;
             btnDelegate.Click += btnDelegate_Click;
             // 
             // txtTester
             // 
-            resources.ApplyResources(txtTester, "txtTester");
+            txtTester.Location = new Point(87, 22);
             txtTester.Name = "txtTester";
+            txtTester.Size = new Size(355, 23);
+            txtTester.TabIndex = 1;
             // 
             // errorProvider1
             // 
@@ -133,97 +162,125 @@
             // menuStrip1
             // 
             menuStrip1.Items.AddRange(new ToolStripItem[] { consultasABaseDirectoToolStripMenuItem, consultasPorServicioToolStripMenuItem, botTelegramToolStripMenuItem, instagramToolStripMenuItem });
-            resources.ApplyResources(menuStrip1, "menuStrip1");
+            menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(971, 24);
+            menuStrip1.TabIndex = 9;
+            menuStrip1.Text = "menuStrip1";
             // 
             // consultasABaseDirectoToolStripMenuItem
             // 
             consultasABaseDirectoToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menúPrincipalToolStripMenuItem });
             consultasABaseDirectoToolStripMenuItem.Name = "consultasABaseDirectoToolStripMenuItem";
-            resources.ApplyResources(consultasABaseDirectoToolStripMenuItem, "consultasABaseDirectoToolStripMenuItem");
+            consultasABaseDirectoToolStripMenuItem.Size = new Size(147, 20);
+            consultasABaseDirectoToolStripMenuItem.Text = "Consultas a base directo";
             // 
             // menúPrincipalToolStripMenuItem
             // 
             menúPrincipalToolStripMenuItem.Name = "menúPrincipalToolStripMenuItem";
-            resources.ApplyResources(menúPrincipalToolStripMenuItem, "menúPrincipalToolStripMenuItem");
+            menúPrincipalToolStripMenuItem.Size = new Size(154, 22);
+            menúPrincipalToolStripMenuItem.Text = "Menú principal";
             // 
             // consultasPorServicioToolStripMenuItem
             // 
             consultasPorServicioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menúPrincipalToolStripMenuItem1 });
             consultasPorServicioToolStripMenuItem.Name = "consultasPorServicioToolStripMenuItem";
-            resources.ApplyResources(consultasPorServicioToolStripMenuItem, "consultasPorServicioToolStripMenuItem");
+            consultasPorServicioToolStripMenuItem.Size = new Size(135, 20);
+            consultasPorServicioToolStripMenuItem.Text = "Consultas por servicio";
             // 
             // menúPrincipalToolStripMenuItem1
             // 
             menúPrincipalToolStripMenuItem1.Name = "menúPrincipalToolStripMenuItem1";
-            resources.ApplyResources(menúPrincipalToolStripMenuItem1, "menúPrincipalToolStripMenuItem1");
+            menúPrincipalToolStripMenuItem1.Size = new Size(154, 22);
+            menúPrincipalToolStripMenuItem1.Text = "Menú principal";
             menúPrincipalToolStripMenuItem1.Click += menúPrincipalToolStripMenuItem1_Click;
             // 
             // botTelegramToolStripMenuItem
             // 
             botTelegramToolStripMenuItem.Name = "botTelegramToolStripMenuItem";
-            resources.ApplyResources(botTelegramToolStripMenuItem, "botTelegramToolStripMenuItem");
+            botTelegramToolStripMenuItem.Size = new Size(89, 20);
+            botTelegramToolStripMenuItem.Text = "Bot Telegram";
             botTelegramToolStripMenuItem.Click += botTelegramToolStripMenuItem_Click;
             // 
             // instagramToolStripMenuItem
             // 
             instagramToolStripMenuItem.Name = "instagramToolStripMenuItem";
-            resources.ApplyResources(instagramToolStripMenuItem, "instagramToolStripMenuItem");
+            instagramToolStripMenuItem.Size = new Size(72, 20);
+            instagramToolStripMenuItem.Text = "Instagram";
             instagramToolStripMenuItem.Click += instagramToolStripMenuItem_Click;
             // 
             // contextMenuStrip1
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { sdfaToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            resources.ApplyResources(contextMenuStrip1, "contextMenuStrip1");
+            contextMenuStrip1.Size = new Size(97, 26);
             // 
             // sdfaToolStripMenuItem
             // 
             sdfaToolStripMenuItem.Name = "sdfaToolStripMenuItem";
-            resources.ApplyResources(sdfaToolStripMenuItem, "sdfaToolStripMenuItem");
+            sdfaToolStripMenuItem.Size = new Size(96, 22);
+            sdfaToolStripMenuItem.Text = "sdfa";
             // 
             // groupBox2
             // 
             groupBox2.Controls.Add(label3);
             groupBox2.Controls.Add(linkLabel2);
             groupBox2.Controls.Add(linkLabel1);
-            resources.ApplyResources(groupBox2, "groupBox2");
+            groupBox2.Location = new Point(472, 52);
             groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(487, 415);
+            groupBox2.TabIndex = 10;
             groupBox2.TabStop = false;
+            groupBox2.Text = "Información general";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(15, 22);
+            label3.Name = "label3";
+            label3.Size = new Size(417, 15);
+            label3.TabIndex = 2;
+            label3.Text = "A continuación, queda información general sobre mi persona y este proyecto:\r\n";
             // 
             // linkLabel2
             // 
-            resources.ApplyResources(linkLabel2, "linkLabel2");
+            linkLabel2.AutoSize = true;
+            linkLabel2.Location = new Point(97, 57);
             linkLabel2.Name = "linkLabel2";
+            linkLabel2.Size = new Size(67, 15);
+            linkLabel2.TabIndex = 1;
             linkLabel2.TabStop = true;
+            linkLabel2.Text = "URL Github";
             linkLabel2.LinkClicked += linkLabel2_LinkClicked_1;
             // 
             // linkLabel1
             // 
-            resources.ApplyResources(linkLabel1, "linkLabel1");
+            linkLabel1.AutoSize = true;
+            linkLabel1.Location = new Point(15, 57);
             linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(76, 15);
+            linkLabel1.TabIndex = 0;
             linkLabel1.TabStop = true;
+            linkLabel1.Text = "URL LinkedIn";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked_1;
-            // 
-            // label3
-            // 
-            resources.ApplyResources(label3, "label3");
-            label3.Name = "label3";
             // 
             // Form1
             // 
-            resources.ApplyResources(this, "$this");
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            ClientSize = new Size(971, 492);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(testing1);
             Controls.Add(menuStrip1);
-            Cursor = Cursors.Cross;
+            Cursor = Cursors.Arrow;
             FormBorderStyle = FormBorderStyle.Fixed3D;
             HelpButton = true;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             Name = "Form1";
-            TopMost = true;
+            Text = "Menú principal";
             TransparencyKey = Color.Red;
             Load += Form1_Load;
             testing1.ResumeLayout(false);
