@@ -18,7 +18,7 @@ namespace TesterApi.Controllers
             ITelegramDatabaseInformation telegramDatabaseInformation = new TelegramDatabaseInformation();
             IEnumerable<TelegramResult> info = await telegramDatabaseInformation.GetInformation(ChatId);
 
-            List<TelegramApiResult> result = new();
+            List<TelegramApiResult> result = [];
             foreach (TelegramResult i in info)
             {
                 result.Add(MapTelegramInformation(i));

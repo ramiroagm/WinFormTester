@@ -1,8 +1,10 @@
-﻿@using TesterProject
+﻿@using TesterBlazor.Models
+@using TesterBlazor.Services
+@using TesterProject
 @using TesterProject.BusinessEntities
 
 @inject TesterProject.BusinessLogic.TelegramBot.TelegramConnector TelegramConnector
-
+@inject TelegramService TelegramService
 
 @page "/telegram"
 
@@ -13,7 +15,7 @@
 <div class="input-group mb-3">
     <strong>A continuación se mostrará un ejemplo básico de conexión y obtención de información con un bot de Telegram.</strong>
 </div>
-<div class ="input-group mb-3">
+<div class="input-group mb-3">
     <label>El bot al que nos estaremos conectando se llama</label>&nbsp;<a href="https://t.me/del_monte_bot" target="_blank">@@DelMonteTester</a>&nbsp;<label>y se podrá encontrar escaneando el siguiente código QR:</label>
     <div class="input-group mb-3" style="margin-top: 30px;">
         <img class="img-thumbnail rounded mx-auto d-block" width="30%" src="../src/del_monte_bot.png" />
@@ -21,15 +23,15 @@
 </div>
 
 <div class="input-group mb-3">
-    <h3> 🧪 Zona de prueba</h3>
+    <h4> 🧪 Zona de prueba</h4>
     <div class="input-group mb-3" style="display: flex; gap: 20px;">
         <div style="flex: 1;">
-            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
                 <legend>Ventana de Resultado</legend>
                 <textarea class="form-control" rows="5" style="width: 100%;margin-bottom: 10px" @bind=ResultMessage readonly></textarea>
                 <button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" @onclick="ClearResultMessage">Limpiar</button>
             </fieldset>
-            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
                 <legend>Logs y Excepciones</legend>
                 <textarea class="form-control" rows="5" style="width: 100%; margin-bottom: 10px" @bind=ErrorMessage readonly></textarea>
                 <button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" @onclick="ClearLogWindow">Limpiar</button>
@@ -37,17 +39,69 @@
         </div>
 
         <div class="form-floating" style="flex: 1;">
-            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
                 <legend>Servicio de Telegram</legend>
-                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" @onclick="ConnectToTelegram" >Conectar</button>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" @onclick="ConnectToTelegram">Conectar</button>
                 <div style="display: flex; gap: 10px;margin-top: 10px">
                     <button class="btn btn-secondary style="flex: 1;">Enviar mensaje</button>
                     <input class="form-control" type="text" style="flex: 2;" placeholder="Mensaje...">
+                    <button type="button" class="btn btn-lg btn-danger"
+                            data-bs-toggle="popover"
+                            data-bs-title="Ayuda"
+                            data-bs-content="Se enviará mensaje al chat si el bot está activo">❔
+                    </button>
+
                 </div>
             </fieldset>
         </div>
     </div>
+</div>
 
+<div class="input-group-mb-2">
+    <h4> 📒 Consulta de datos</h4>
+    <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
+        <legend>Filtrado de datos</legend>
+        <div style="display: flex; gap: 10px;margin-top: 10px">
+            <input class="form-control" style="flex: 2;margin-right:10px" @bind="ChatId" type="number" placeholder="Escriba el ID de chat..." />
+            <button type="button" class="btn btn-success" @onclick="LoadMessages">Cargar mensajes</button>
+        </div>
+    </fieldset>
+    @if (Messages == null)
+    {
+        <div class="card text-center" style="margin-top:15px">
+            <div class="card-header">
+                ⚠️ Advertencia ⚠️
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">No hay datos</h5>
+                <p class="card-text">No se encontró información o no hay datos para la búsqueda</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10p">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Mensaje</th>
+                        <th scope="col">Fecha y hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var message in Messages)
+                    {
+                        <tr>
+                            <th>@message.UserName</th>
+                            <th>@message.Message</th>
+                            <th>@message.MsgSentTime</th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </fieldset>
+    }
 </div>
 
 @code {
@@ -56,6 +110,9 @@
 
     private int MessageCounter { get; set; } = 1;
     private int ErrorLineCounter { get; set; } = 1;
+
+    private long ChatId;
+    private List<TelegramApiResult>? Messages;
 
     protected override void OnInitialized()
     {
@@ -107,5 +164,10 @@
     {
         ErrorMessage = string.Empty;
         ErrorLineCounter = 1;
+    }
+
+    private async Task LoadMessages()
+    {
+        Messages = await TelegramService.GetTelegramMessagesAsync(ChatId);
     }
 }
