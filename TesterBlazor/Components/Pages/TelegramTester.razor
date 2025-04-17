@@ -6,6 +6,8 @@
 @inject TesterProject.BusinessLogic.TelegramBot.TelegramConnector TelegramConnector
 @inject TelegramService TelegramService
 
+@inject IJSRuntime JSRuntime
+
 @page "/telegram"
 
 <PageTitle>Tester de Telegram</PageTitle>
@@ -25,6 +27,21 @@
 <div class="input-group mb-3">
     <h4> 🧪 Zona de prueba</h4>
     <div class="input-group mb-3" style="display: flex; gap: 20px;">
+        <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
+            <legend>Servicio de Telegram</legend>
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" @onclick="ConnectToTelegram">Conectar</button>
+            <div style="display: flex; gap: 10px;margin-top: 10px">
+                <button class="btn btn-secondary">Enviar mensaje</button>
+                <input class="form-control" type="text" style="flex: 2;" placeholder="Mensaje...">
+                <button type="button" class="btn btn-lg btn-outline-danger"
+                        data-bs-toggle="popover"
+                        data-bs-title="Ayuda"
+                        data-bs-content="Se enviará mensaje al chat si el bot está activo">❓
+                </button>
+            </div>
+        </fieldset>
+    </div>
+    <div class="input-group mb-3" style="display: flex; gap: 20px;">
         <div style="flex: 1;">
             <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
                 <legend>Ventana de Resultado</legend>
@@ -37,34 +54,51 @@
                 <button class="btn btn-secondary" style="margin-top: 10px; width: 100%;" @onclick="ClearLogWindow">Limpiar</button>
             </fieldset>
         </div>
-
-        <div class="form-floating" style="flex: 1;">
-            <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
-                <legend>Servicio de Telegram</legend>
-                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" @onclick="ConnectToTelegram">Conectar</button>
-                <div style="display: flex; gap: 10px;margin-top: 10px">
-                    <button class="btn btn-secondary style="flex: 1;">Enviar mensaje</button>
-                    <input class="form-control" type="text" style="flex: 2;" placeholder="Mensaje...">
-                    <button type="button" class="btn btn-lg btn-danger"
-                            data-bs-toggle="popover"
-                            data-bs-title="Ayuda"
-                            data-bs-content="Se enviará mensaje al chat si el bot está activo">❔
-                    </button>
-
-                </div>
-            </fieldset>
-        </div>
     </div>
 </div>
 
 <div class="input-group-mb-2">
     <h4> 📒 Consulta de datos</h4>
+
+    <div class="card text-center" style="margin-bottom:20px">
+        <div class="card-header">
+            ℹ️ Información
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Funcionamiento de la siguiente tabla</h5>
+            <p class="card-text">
+                Esta tabla hace llamado a una API que se encuentra creada dentro de la misma solución.
+                No se hace referencia directa al servicio para diferenciarse del ejemplo anterior.
+            </p>
+        </div>
+        <div class="card-footer text-muted">
+            ⚠️ Advertencia ⚠️
+            <br />
+            Esta API no es pública y no se recomienda su uso fuera de este contexto.
+        </div>
+    </div>
+
     <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
         <legend>Filtrado de datos</legend>
-        <div style="display: flex; gap: 10px;margin-top: 10px">
-            <input class="form-control" style="flex: 2;margin-right:10px" @bind="ChatId" type="number" placeholder="Escriba el ID de chat..." />
-            <button type="button" class="btn btn-success" @onclick="LoadMessages">Cargar mensajes</button>
+
+        <div class="form-floating mb-3">
+            <input type="number" @bind="ChatId" class="form-control" id="floatingInput" placeholder="Escriba número de identificador...">
+            <label for="floatingInput">Identificador del chat</label>
         </div>
+
+        <div class="input-group">
+            <span class="input-group-text">@@</span>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInputGroup2" @bind="UserName" placeholder="Escriba nombre de usuario">
+                <label for="floatingInputGroup2">Nombre de usuario</label>
+            </div>
+        </div>
+
+        <div class="form-floating" style="margin-top:10px">
+            <InputDate @bind-Value="MsgSentTime" class="form-control" id="floatingDate" />
+            <label for="floatingDate">Seleccione una fecha</label>
+        </div>
+        <button type="button" class="btn btn-success" style="margin-top:10px" @onclick="LoadMessages">Cargar mensajes</button>
     </fieldset>
     @if (Messages == null)
     {
@@ -81,7 +115,7 @@
     else
     {
         <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10p">
-            <table class="table table-dark table-hover">
+            <table class="table table-active table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Usuario</th>
@@ -111,7 +145,9 @@
     private int MessageCounter { get; set; } = 1;
     private int ErrorLineCounter { get; set; } = 1;
 
-    private long ChatId;
+    private long? ChatId;
+    private string? UserName;
+    private DateTime? MsgSentTime;
     private List<TelegramApiResult>? Messages;
 
     protected override void OnInitialized()
@@ -149,7 +185,7 @@
 
     private void OnErrorOccurred(object? sender, TelegramResult e)
     {
-        ErrorMessage += $"[{ErrorLineCounter}] - {e.MsgTypeId} {e.Message}";
+        ErrorMessage += $"[{ErrorLineCounter}] - {e.MsgTypeId} {e.Message}{Environment.NewLine}";
         ErrorLineCounter++;
         InvokeAsync(StateHasChanged);
     }
@@ -168,6 +204,18 @@
 
     private async Task LoadMessages()
     {
-        Messages = await TelegramService.GetTelegramMessagesAsync(ChatId);
+        if (!string.IsNullOrEmpty(UserName))
+        {
+            UserName.PadLeft(1, '@');
+        }
+        Messages = await TelegramService.GetTelegramMessagesAsync(ChatId, UserName, MsgSentTime);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializePopovers");
+        }
     }
 }

@@ -8,14 +8,14 @@ namespace TesterProject.BusinessLogic.TelegramBot
     {
         public void InsertInformation(TelegramResult result) => Database.TelegramMessageLog.TelegramLogInformation(result);
 
-        public async Task<IEnumerable<TelegramResult>> GetInformation(long ChatId)
+        public async Task<IEnumerable<TelegramResult>> GetInformation(long? ChatId, string? UserName, DateTime?  MsgSentTime)
         {
-            return await Database.TelegramMessageLog.GetLogInformation(ChatId);
+            return await Database.TelegramMessageLog.GetLogInformation(ChatId, UserName, MsgSentTime);
         }
 
         public async Task<TelegramResult> GetSingleInformation(CallbackQuery query)
         {
-            var messagesTask = GetInformation(query.From.Id);
+            var messagesTask = GetInformation(query.From.Id, null, null);
             var result = await MapToSingleChatMessage(messagesTask, query.From.Username);
             return result ?? throw new InvalidOperationException("No message found for the given ChatId.");
         }
@@ -23,10 +23,10 @@ namespace TesterProject.BusinessLogic.TelegramBot
         private async Task<TelegramResult?> MapToSingleChatMessage(Task<IEnumerable<TelegramResult>> messagesTask, string? UserName)
         {
             var messages = await messagesTask;
-            string newReturn = $"Messages from {UserName ?? "[Unnamed user]"}: {Environment.NewLine}:";
+            string newReturn = $"Messages from {UserName ?? "[Unnamed user]"}: {Environment.NewLine}";
             foreach (var message in messages)
             {
-                newReturn += $"{message} {Environment.NewLine}";
+                newReturn += $"Mensaje {message.Message} [{message.MsgSentTime}]{Environment.NewLine}";
             }
 
             return new TelegramResult

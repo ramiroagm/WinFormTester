@@ -12,9 +12,9 @@ namespace TesterBlazor.Services
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
-        public async Task<List<TelegramApiResult>> GetTelegramMessagesAsync(long chatId)
+        public async Task<List<TelegramApiResult>> GetTelegramMessagesAsync(long? chatId, string? userName, DateTime? msgSentTime)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<TelegramApiResult>>($"TelegramGetInfo?ChatId={chatId}");
+            var result = await _httpClient.GetFromJsonAsync<List<TelegramApiResult>>($"TelegramGetInfo?ChatId={chatId}&UserName={userName}&msgSentTime={msgSentTime}");
             return result ?? [];
         }
     }

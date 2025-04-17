@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using InstagramApiSharp.Classes;
+using Microsoft.Data.SqlClient;
 using TesterProject.BusinessEntities;
 
 namespace TesterProject.Database
@@ -24,17 +25,22 @@ namespace TesterProject.Database
             command.ExecuteNonQuery();
         }
 
-        public static async Task<List<TelegramResult>> GetLogInformation(long ChatId)
+        public static async Task<List<TelegramResult>> GetLogInformation(long? ChatId, string? UserName, DateTime? MsgSentTime)
         {
             List<TelegramResult> results = [];
             using SqlConnection connection = new(_connectionString);
-            SqlCommand command = new("TelegramGetMessagesById", connection)
+            SqlCommand command = new("TelegramGetMessages", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure
             };
-            command.Parameters.AddWithValue("@ChatId", ChatId);
+
+            AddParameter(command, "@chatId", ChatId);
+            AddParameter(command, "@userName", UserName);
+            AddParameter(command, "@msgSentTime", MsgSentTime);
+
             connection.Open();
             SqlDataReader reader = await command.ExecuteReaderAsync();
+            
             while (await reader.ReadAsync())
             {
                 results.Add(new TelegramResult
@@ -49,5 +55,11 @@ namespace TesterProject.Database
             }
             return results;
         }
+
+        private static void AddParameter(SqlCommand command, string parameterName, object? value)
+        {
+            command.Parameters.AddWithValue(parameterName, value ?? DBNull.Value);
+        }
+
     }
 }

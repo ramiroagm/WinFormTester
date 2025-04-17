@@ -13,10 +13,10 @@ namespace TesterApi.Controllers
         private readonly ILogger<TelegramGetInfo> _logger = logger;
 
         [HttpGet(Name = "GetTelegramMessages")]
-        public async Task<List<TelegramApiResult>> Get(long ChatId)
+        public async Task<List<TelegramApiResult>> Get(long? ChatId, string? UserName, DateTime? MsgSentTime)
         {
             ITelegramDatabaseInformation telegramDatabaseInformation = new TelegramDatabaseInformation();
-            IEnumerable<TelegramResult> info = await telegramDatabaseInformation.GetInformation(ChatId);
+            IEnumerable<TelegramResult> info = await telegramDatabaseInformation.GetInformation(ChatId, UserName, MsgSentTime);
 
             List<TelegramApiResult> result = [];
             foreach (TelegramResult i in info)
