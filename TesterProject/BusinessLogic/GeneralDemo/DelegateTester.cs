@@ -1,4 +1,4 @@
-﻿using TesterProject.BusinessLogic.Interfaces;
+﻿using TesterProject.BusinessLogic.Interfaces.DelegateTester;
 
 namespace TesterProject.BusinessLogic.GeneralDemo
 {

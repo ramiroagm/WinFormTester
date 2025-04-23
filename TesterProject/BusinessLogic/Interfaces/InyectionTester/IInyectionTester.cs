@@ -1,4 +1,4 @@
-﻿namespace TesterProject.BusinessLogic.Interfaces
+﻿namespace TesterProject.BusinessLogic.Interfaces.InyectionTester
 {
     public interface IInyectionTester
     {

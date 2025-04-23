@@ -1,7 +1,7 @@
 ﻿using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using TesterProject.BusinessEntities;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.Telegram;
 
 namespace TesterProject.BusinessLogic.TelegramBot
 {
@@ -40,7 +40,7 @@ namespace TesterProject.BusinessLogic.TelegramBot
                 _ => new TelegramResult
                 {
                     ChatId = query.From.Id,
-                    Message = "Mensaje inline incorrecto",
+                    Message = "Mensaje inline incorrecto o no configurado",
                     MsgTypeId = (int)TypeEnum.INCORRECT_RESPONSE,
                     MsgSentTime = DateTime.Now,
                     RequestMediaType = (int)RequestMediaType.TEXT

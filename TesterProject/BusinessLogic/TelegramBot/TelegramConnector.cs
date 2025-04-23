@@ -1,10 +1,11 @@
-﻿using Telegram.Bot;
+﻿using System.Diagnostics;
+using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using TesterProject.BusinessEntities;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.Telegram;
 using TesterProject.BusinessLogic.PasswordManager;
 
 namespace TesterProject.BusinessLogic.TelegramBot
@@ -23,12 +24,11 @@ namespace TesterProject.BusinessLogic.TelegramBot
 
         public async Task<TelegramResult?> InitializeBot()
         {
-            // string token = await KeyVaultHelper.GetTokenFromKeyVaultAsync(ConstantValues.TelegramKeyValue);
             string token = await SecretManagerHelper.AccessSecret(ConstantValues.G_ProjectId, ConstantValues.G_TelegramKey);
-
             using CancellationTokenSource cts = new();
             TelegramBotClient bot = new(token, cancellationToken: cts.Token);
-            //_ = await bot.GetMe();
+            
+            var test = await bot.GetMe();
 
             bot.OnMessage += async (message, type) => await OnMessage(bot, message, type);
             bot.OnError += OnError;
@@ -62,7 +62,7 @@ namespace TesterProject.BusinessLogic.TelegramBot
                         cts.Cancel();
                         break;
                     default:
-                        _ = await bot.SendMessage(msg.Chat, "Por favor, comience el chat con \"/start\"");
+                        _ = await bot.SendMessage(msg.Chat, "Por favor, seleccione un elemento del menú o escriba: \"/start\"");
                         responseId = (int)TypeEnum.CORRECT_RESPONSE;
                         break;
                 }

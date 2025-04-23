@@ -3,7 +3,7 @@ using InstagramApiSharp.API;
 using InstagramApiSharp.Classes;
 using TesterProject.BusinessEntities;
 
-namespace TesterProject.BusinessLogic.Interfaces
+namespace TesterProject.BusinessLogic.Interfaces.Instagram
 {
     public interface IInstagramConnector
     {

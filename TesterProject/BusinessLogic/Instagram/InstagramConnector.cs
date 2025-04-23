@@ -4,7 +4,7 @@ using InstagramApiSharp.API.Builder;
 using InstagramApiSharp.Classes;
 using InstagramApiSharp.Logger;
 using TesterProject.BusinessEntities;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.Instagram;
 
 namespace TesterProject.BusinessLogic.Instagram
 {

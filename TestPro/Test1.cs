@@ -1,5 +1,5 @@
 ﻿using TesterProject.BusinessLogic.GeneralDemo;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.InyectionTester;
 
 namespace TestPro
 {

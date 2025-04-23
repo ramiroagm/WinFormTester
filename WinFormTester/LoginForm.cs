@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.DelegateTester;
+using TesterProject.BusinessLogic.Interfaces.Instagram;
+using TesterProject.BusinessLogic.Interfaces.InyectionTester;
 using static TesterProject.BusinessLogic.PasswordManager.PasswordHasher;
 
 namespace WinFormTester

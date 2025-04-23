@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using TesterProject.BusinessEntities;
 
-namespace TesterProject.Database
+namespace TesterProject.DataAccess
 {
     public class TelegramMessageLog : DatabaseConnector
     {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TesterApi.Models;
 using TesterProject.BusinessEntities;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.Telegram;
 using TesterProject.BusinessLogic.TelegramBot;
 
 namespace TesterApi.Controllers

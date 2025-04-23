@@ -1,5 +1,5 @@
 ﻿using InstagramApiSharp.API;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.Instagram;
 
 namespace WinFormTester
 {

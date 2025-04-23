@@ -1,7 +1,7 @@
 ﻿using Telegram.Bot.Types;
 using TesterProject.BusinessEntities;
 
-namespace TesterProject.BusinessLogic.Interfaces
+namespace TesterProject.BusinessLogic.Interfaces.Telegram
 {
     public interface ITelegramDatabaseInformation
     {

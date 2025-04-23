@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.SignalR.Client;
 using TesterProject.BusinessLogic.Instagram;
-using TesterProject.BusinessLogic.Interfaces;
+using TesterProject.BusinessLogic.Interfaces.DelegateTester;
+using TesterProject.BusinessLogic.Interfaces.Instagram;
+using TesterProject.BusinessLogic.Interfaces.InyectionTester;
 
 namespace WinFormTester
 {

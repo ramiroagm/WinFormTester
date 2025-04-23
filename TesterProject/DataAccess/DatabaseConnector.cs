@@ -1,7 +1,7 @@
 ﻿using TesterProject.BusinessEntities;
 using TesterProject.BusinessLogic.PasswordManager;
 
-namespace TesterProject.Database
+namespace TesterProject.DataAccess
 {
     public class DatabaseConnector
     {
