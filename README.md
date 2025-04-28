@@ -12,8 +12,16 @@ A medida que se avance en el código y se agreguen funcionalidades finalizadas s
     - [1 - Estado actual de la acción](#1---estado-actual-de-la-acción)
     - [2 - Introducción](#2---introducción)
     - [3 - Proyectos](#3---proyectos)
+      - [3.1 - TestPro](#31---testpro)
+      - [3.2 - TesterApi](#32---testerapi)
+      - [3.3 - TesterBlazor](#33---testerblazor)
+      - [3.4 - TesterDatabase](#34---testerdatabase)
+      - [3.5 - WinFormTester](#35---winformtester)
+      - [3.6 - TesterWorkerService](#36---testerworkerservice)
+      - [3.7 - TesterProject](#37---testerproject)
     - [4 - NuGets en uso](#4---nugets-en-uso)
     - [5 - Licencia](#5---licencia)
+
 
 ---
 
@@ -25,39 +33,43 @@ A medida que se avance en el código y se agreguen funcionalidades finalizadas s
 
 ### 2 - Introducción
 
+Este proyecto está creado a modo de prueba para demostrar algunas funcionalidades y generar un repositorio genérico con herramientas en funcionamiento. </br>
+El mismo estará publicado en un servidor de Google Clouds bajo una URL que próximanete se proveerá. </br>
+Para más información: visitar la página en cuestión que contará con información al respecto para cada herramienta.
+
 ### 3 - Proyectos
 
 A continuación veremos un listado de proyectos agregados a la solución e información básica de los mismos: </br>
 
-* #### 1) TestPro
+* #### 3.1 - TestPro
 
   Proyecto de testeo unitario.
 
-* #### 2) TesterApi
+* #### 3.2 - TesterApi
   
   Proyecto API que genera un llamado a la librería general de esta solución para consultas genéricas parametrizadas.
 
-* #### 3) TesterBlazor
+* #### 3.3 - TesterBlazor
 
   Pantalla web en Blazor Server que conecta y testea varios de los servicios generados en la librería principal. </br>
   Contiene un menú básico para navegar entre las páginas relacionadas al proyecto, con algunos elementos de Bootstrap utilizados a modo de ejemplo (popovers, modales, etc...). </br>
   Por más información: en cada página se encontrarán ejemplos escritos, como instrucciones y otro tipo de información al respecto de cada herramienta.
   
-* #### 4) TesterDatabase
+* #### 3.4 - TesterDatabase
 
   Proyecto de SQL Server Database. </br>
   En este proyecto se podrá ver el tipo de estructura que se suele manejar (de forma simplificada) a la hora de generar scripts .sql. Para ejecutar local simplemente darle build al proyecto y luego publicar. Cabe destacar que se necesita SQL Server instalado. Recordar también que se generarán datos de prueba, y que no necesariamente la estructura de la base de datos estará 100% completa. </br>
   De preferir hacer pruebas con una base de datos local, recordar hacer modificaciones en el "connection string" de la aplicación, ya que es muy probable que la misma esté consumiendo uno desde una instancia de Google Clouds o Azure.
 
-* #### 5) WinFormTester
+* #### 3.5 - WinFormTester
   
   Formulario de Windows básico, funcionalmente completo que demostrará acciones básicas de las librerías de forma rápida y re-programable. La intención de esta aplicación no es más que a modo de prueba.
 
-* #### 6) TesterWorkerService
+* #### 3.6 - TesterWorkerService
   
   Servicio de Windows de prueba que se encargará de ejecutar código automatizado y aplicar distintas formas de Log (texto, visor de eventos, consola, etc...). Principalmente, este servicio se utilizará para ejecuciones del bot de Telegram, aunque, no se descata que se utilice para otros tipos de servicios (más para actualizar a futuro).
 
-* #### 7) TesterProject
+* #### 3.7 - TesterProject
   
   Core y librería principal. Esta librería .NET es la que contiene todo el código principal para cada herramienta y proyecto que se utilizará en este repositorio a modo de prueba. Chequear la librería entera para ver ejemplos y código comentado.
 
