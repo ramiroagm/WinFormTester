@@ -20,7 +20,7 @@ builder.Logging.AddProvider(new SerilogLoggerProvider(Log.Logger));
 
 builder.Services.AddSingleton<ITelegramDatabaseInformation, TelegramDatabaseInformation>();
 builder.Services.AddSingleton<TelegramConnector>();
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<TesterWorkerService.Worker>();
 
 var app = builder.Build();
 

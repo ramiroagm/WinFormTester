@@ -5,14 +5,9 @@ using TesterProject.BusinessLogic.Interfaces.Telegram;
 
 namespace TesterProject.BusinessLogic.TelegramBot
 {
-    public class TelegramInlineKeyboardAction
+    public class TelegramInlineKeyboardAction(ITelegramDatabaseInformation databaseInfo)
     {
-        private readonly ITelegramDatabaseInformation _databaseInfo;
-
-        public TelegramInlineKeyboardAction(ITelegramDatabaseInformation databaseInfo)
-        {
-            _databaseInfo = databaseInfo;
-        }
+        private readonly ITelegramDatabaseInformation _databaseInfo = databaseInfo;
 
         public static List<InlineKeyboardButton> InlineRequest()
         {

@@ -1,35 +1,32 @@
 using TesterProject.BusinessLogic.TelegramBot;
 
-public class Worker : BackgroundService
+namespace TesterWorkerService
 {
-    private readonly ILogger<Worker> _logger;
-    private readonly TelegramConnector _telegramConnector;
-
-    public Worker(ILogger<Worker> logger, TelegramConnector telegramConnector)
+    public class Worker(ILogger<Worker> logger, TelegramConnector telegramConnector) : BackgroundService
     {
-        _logger = logger;
-        _telegramConnector = telegramConnector;
-    }
+        private readonly ILogger<Worker> _logger = logger;
+        private readonly TelegramConnector _telegramConnector = telegramConnector;
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        _logger.LogInformation("[Inicializando BOT]");
-
-        try
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var result = await _telegramConnector.InitializeBot();
-            _logger.LogInformation(message: $"[Mensaje de BOT]: {result?.Message}");
+            _logger.LogInformation("[Inicializando BOT]");
 
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                await Task.Delay(1000, stoppingToken);
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"[Error en el servicio: {ex.InnerException}]");
-        }
+                TesterProject.BusinessEntities.TelegramResult? result = await _telegramConnector.InitializeBot();
+                _logger.LogInformation("[Mensaje de BOT]: {Message}", result?.Message);
 
-        _logger.LogInformation("[BOT finalizado]");
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    await Task.Delay(1000, stoppingToken);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "[Error en el servicio: {InnerException}]", ex.InnerException);
+            }
+
+            _logger.LogInformation("[BOT finalizado]");
+        }
     }
 }

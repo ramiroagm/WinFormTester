@@ -20,7 +20,7 @@ namespace TesterProject.BusinessLogic.TelegramBot
             return result ?? throw new InvalidOperationException("No message found for the given ChatId.");
         }
 
-        private async Task<TelegramResult?> MapToSingleChatMessage(Task<IEnumerable<TelegramResult>> messagesTask, string? UserName)
+        private static async Task<TelegramResult?> MapToSingleChatMessage(Task<IEnumerable<TelegramResult>> messagesTask, string? UserName)
         {
             var messages = await messagesTask;
             string newReturn = $"Messages from {UserName ?? "[Unnamed user]"}: {Environment.NewLine}";

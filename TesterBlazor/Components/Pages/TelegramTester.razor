@@ -29,7 +29,15 @@
     <div class="input-group mb-3" style="display: flex; gap: 20px;">
         <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
             <legend>Servicio de Telegram</legend>
-            <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" @onclick="ConnectToTelegram">Conectar</button>
+            <div style="display: flex; gap: 10px;margin-top: 10px">
+                <button class="btn btn-primary" style="width:100%" @onclick="ConnectToTelegram">Conectar</button>
+                <button type="button" class="btn btn-lg btn-outline-warning"
+                        data-bs-toggle="popover"
+                        data-bs-title="Información"
+                        data-bs-content="Se lanzará una excepción si el BOT ya estuviera conectando y ejecutándose">
+                    ❗
+                </button>
+            </div>
             <div style="display: flex; gap: 10px;margin-top: 10px">
                 <button class="btn btn-secondary">Enviar mensaje</button>
                 <input class="form-control" type="text" style="flex: 2;" placeholder="Mensaje...">
