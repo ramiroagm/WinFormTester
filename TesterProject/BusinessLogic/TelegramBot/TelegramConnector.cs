@@ -169,6 +169,7 @@ namespace TesterProject.BusinessLogic.TelegramBot
         {
             if (bot != null)
             {
+                // TODO: Por ahora solo enviar a usuario id
                 if (chatId == null && userName[..1] == "@")
                 {
                     _ = await bot.SendMessage(userName, text);
