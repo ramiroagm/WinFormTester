@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -14,7 +13,7 @@ namespace TesterProject.BusinessLogic.TelegramBot
     {
         private readonly ITelegramDatabaseInformation _databaseInfo = databaseInfo;
         private readonly TelegramMsgPrep _telegramMsgPrep = new();
-        
+
         private TelegramResult? result;
         private TelegramBotClient? bot;
 
@@ -26,13 +25,13 @@ namespace TesterProject.BusinessLogic.TelegramBot
 
         public async Task<TelegramResult?> InitializeBot()
         {
-            if (bot != null)
+            if (bot == null)
             {
                 string token = await SecretManagerHelper.AccessSecret(ConstantValues.G_ProjectId, ConstantValues.G_TelegramKey);
                 using CancellationTokenSource cts = new();
                 bot = new(token, cancellationToken: cts.Token);
 
-                var test = await bot.GetMe();
+                User test = await bot.GetMe();
 
                 bot.OnMessage += async (message, type) => await OnMessage(bot, message, type);
                 bot.OnError += OnError;
@@ -44,7 +43,7 @@ namespace TesterProject.BusinessLogic.TelegramBot
                     Message = "[Bot inicializado]",
                     MsgTypeId = (int)TypeEnum.CORRECT_RESPONSE,
                     MsgSentTime = DateTime.Now
-                }; 
+                };
             }
             else
             {
@@ -58,42 +57,42 @@ namespace TesterProject.BusinessLogic.TelegramBot
             }
 
             async Task OnMessage(TelegramBotClient bot, Message msg, UpdateType type)
+            {
+                using CancellationTokenSource cts = new();
+                int responseId;
+                switch (msg.Text)
                 {
-                    using CancellationTokenSource cts = new();
-                    int responseId;
-                    switch (msg.Text)
-                    {
-                        case "/start":
-                            _ = await bot.SendMessage(msg.Chat, "Bienvenido al chat de testeo: elija una de las siguientes opciones disponibles.",
-                                replyMarkup: new InlineKeyboardMarkup(
-                                [
-                                    TelegramInlineKeyboardAction.InlineRequest()
-                                ]));
-                            responseId = (int)TypeEnum.CORRECT_RESPONSE;
-                            break;
-                        case "/quit":
-                            _ = await bot.SendMessage(msg.Chat, "Saliendo del bot...");
-                            responseId = (int)TypeEnum.CORRECT_RESPONSE;
-                            cts.Cancel();
-                            break;
-                        default:
-                            _ = await bot.SendMessage(msg.Chat, "Por favor, seleccione un elemento del menú o escriba: \"/start\"");
-                            responseId = (int)TypeEnum.CORRECT_RESPONSE;
-                            break;
-                    }
-
-                    result = new TelegramResult
-                    {
-                        ChatId = msg.Chat.Id,
-                        Message = msg.Text ?? "",
-                        MsgTypeId = responseId,
-                        UserName = msg.Chat.Username ?? "[Status Update]",
-                        MsgSentTime = DateTime.Now
-                    };
-
-                    MessageReceived?.Invoke(this, result);
-                    _databaseInfo.InsertInformation(result);
+                    case "/start":
+                        _ = await bot.SendMessage(msg.Chat, "Bienvenido al chat de testeo: elija una de las siguientes opciones disponibles.",
+                            replyMarkup: new InlineKeyboardMarkup(
+                            [
+                                TelegramInlineKeyboardAction.InlineRequest()
+                            ]));
+                        responseId = (int)TypeEnum.CORRECT_RESPONSE;
+                        break;
+                    case "/quit":
+                        _ = await bot.SendMessage(msg.Chat, "Saliendo del bot...");
+                        responseId = (int)TypeEnum.CORRECT_RESPONSE;
+                        cts.Cancel();
+                        break;
+                    default:
+                        _ = await bot.SendMessage(msg.Chat, "Por favor, seleccione un elemento del menú o escriba: \"/start\"");
+                        responseId = (int)TypeEnum.CORRECT_RESPONSE;
+                        break;
                 }
+
+                result = new TelegramResult
+                {
+                    ChatId = msg.Chat.Id,
+                    Message = msg.Text ?? "",
+                    MsgTypeId = responseId,
+                    UserName = msg.Chat.Username ?? "[Status Update]",
+                    MsgSentTime = DateTime.Now
+                };
+
+                MessageReceived?.Invoke(this, result);
+                _databaseInfo.InsertInformation(result);
+            }
 
             async Task OnError(Exception exception, HandleErrorSource source)
             {
@@ -166,9 +165,34 @@ namespace TesterProject.BusinessLogic.TelegramBot
             }
         }
 
-        public async void SendMessage(TelegramBotClient bot, int chatId, string text)
+        public async void SendMessage(int? chatId, string userName, string text)
         {
-            _ = await bot.SendMessage(chatId, text);
+            if (bot != null)
+            {
+                if (chatId == null && userName[..1] == "@")
+                {
+                    _ = await bot.SendMessage(userName, text);
+                }
+                else if (chatId != null)
+                {
+                    _ = await bot.SendMessage(chatId, text); 
+                }
+                else
+                {
+                    throw new Exception(userName + " no es un nombre de usuario válido");
+                }
+            }
+            else
+            {
+                result ??= new TelegramResult
+                {
+                    ChatId = 0,
+                    Message = "[Cann't send message]",
+                    MsgTypeId = (int)TypeEnum.INCORRECT_RESPONSE,
+                    MsgSentTime = DateTime.Now,
+                    UserName = "[Status Update]"
+                };
+            }
         }
     }
 }

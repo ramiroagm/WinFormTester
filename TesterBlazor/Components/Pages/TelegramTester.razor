@@ -32,19 +32,27 @@
             <div style="display: flex; gap: 10px;margin-top: 10px">
                 <button class="btn btn-primary" style="width:100%" @onclick="ConnectToTelegram">Conectar</button>
                 <button type="button" class="btn btn-lg btn-outline-warning"
-                        data-bs-toggle="popover"
-                        data-bs-title="Información"
-                        data-bs-content="Se lanzará una excepción si el BOT ya estuviera conectando y ejecutándose">
+                data-bs-toggle="popover"
+                data-bs-title="Información"
+                data-bs-content="Se lanzará una excepción si el BOT ya estuviera conectando y ejecutándose">
                     ❗
                 </button>
             </div>
             <div style="display: flex; gap: 10px;margin-top: 10px">
-                <button class="btn btn-secondary">Enviar mensaje</button>
-                <input class="form-control" type="text" style="flex: 2;" placeholder="Mensaje...">
+                <input class="form-control" type="text" style="flex: 2;" placeholder="Chat Id o nombre de usuario" @bind="UserNameToSend" />
+                <button type="button" class="btn btn-lg btn-outline-danger" 
+                data-bs-toggle="popover"
+                data-bs-title="Ayuda"
+                data-bs-content="Identificador del chat o nombre de usuario"> ❓
+                </button>
+            </div>
+            <div style="display: flex; gap: 10px;margin-top: 10px">
+                <button class="btn btn-secondary" @onclick="SendMessage" >Enviar mensaje</button>
+                <input class="form-control" type="text" style="flex: 2;" @bind="TextMessage" placeholder="Mensaje...">
                 <button type="button" class="btn btn-lg btn-outline-danger"
-                        data-bs-toggle="popover"
-                        data-bs-title="Ayuda"
-                        data-bs-content="Se enviará mensaje al chat si el bot está activo">❓
+                data-bs-toggle="popover"
+                data-bs-title="Ayuda"
+                data-bs-content="Se enviará mensaje al chat si el bot está activo">❓
                 </button>
             </div>
         </fieldset>
@@ -158,6 +166,9 @@
     private DateTime? MsgSentTime;
     private List<TelegramApiResult>? Messages;
 
+    private string UserNameToSend { get; set; } = string.Empty;
+    private string TextMessage { get; set; } = string.Empty;
+
     protected override void OnInitialized()
     {
         TelegramConnector.MessageReceived += OnMessageReceived;
@@ -208,6 +219,22 @@
     {
         ErrorMessage = string.Empty;
         ErrorLineCounter = 1;
+    }
+
+    private async void SendMessage()
+    {
+        int? userId = null;
+        string? userName = null;
+        if (int.TryParse(UserNameToSend, out int user))
+        {
+            userId = user;
+        }
+        else
+        {
+            userName = UserNameToSend;
+        }
+
+        TelegramConnector.SendMessage(userId, userName, TextMessage);
     }
 
     private async Task LoadMessages()
