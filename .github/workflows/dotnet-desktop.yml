@@ -56,7 +56,13 @@ jobs:
       run: dotnet restore ${{ env.Library_Project_Path }}
 
     - name: Create Deploy Directory
-      run: mkdir -p c:/deploy/TesterBlazor
+      run: mkdir -p ${{ env.Publish_Output }}
+
+    - name: Publish Blazor project
+      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterBlazor
+
+    - name: Debug Parent Directory
+      run: dir ${{ env.Publish_Output }}
 
     - name: Debug Publish Output
       run: dir ${{ env.Publish_Output }}/TesterBlazor
