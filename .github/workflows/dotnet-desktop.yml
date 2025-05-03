@@ -61,13 +61,16 @@ jobs:
     - name: Build TesterProject libraries
       run: dotnet build ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }}
 
+    - name: Publish TesterProject libraries
+      run: dotnet publish ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterProject
+
+    - name: Debug Published Library Output
+      run: dir ${{ env.Publish_Output }}/TesterProject
+
     - name: Test SSH Connection
       run: |
         ssh -o StrictHostKeyChecking=no ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }} "echo 'SSH connection successful'"
 
-    - name: Publish TesterProject libraries
-      run: dotnet publish ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterProject
-
     - name: Transfer TesterProject library to server
       run: |
-        sshpass -p "${{ secrets.WINDOWS_SERVER_PASSWORD }}" scp -P 22 -o StrictHostKeyChecking=no -o PreferredAuthentications=password -r ${{ env.Publish_Output }}/TesterProject/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/lib/
+        sshpass -p "${{ secrets.WINDOWS_SERVER_PASSWORD }}" scp -P 22 -o StrictHostKeyChecking=no -r ${{ env.Publish_Output }}/TesterProject/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/lib/
