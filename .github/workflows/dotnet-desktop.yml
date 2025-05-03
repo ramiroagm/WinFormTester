@@ -66,4 +66,4 @@ jobs:
 
     - name: Transfer TesterProject library to server
       run: |
-        scp -P 22 -o StrictHostKeyChecking=no -o PreferredAuthentications=password -r ${{ env.Publish_Output }}/TesterProject/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/lib/TesterProject
+        scp -P 22 -o StrictHostKeyChecking=no -o PreferredAuthentications=password -r ${{ env.Publish_Output }}/TesterProject/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/lib/
