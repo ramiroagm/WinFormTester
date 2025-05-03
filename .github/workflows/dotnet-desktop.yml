@@ -18,7 +18,7 @@ jobs:
       Solution_Name: WinFormTester.sln
       Blazor_Project_Path: TesterBlazor/TesterBlazor.csproj
       Library_Project_Path: TesterProject/TesterProject.csproj
-      Publish_Output: ${{ github.workspace }}/publish
+      Publish_Output: c:/deploy
       Test_Project_Path: TestPro\TestPro.csproj 
       Wap_Project_Directory: TesterProject
       DatabaseProj: TesterDatabase\TesterDatabase.sqlproj
