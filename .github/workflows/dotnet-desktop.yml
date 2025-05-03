@@ -58,37 +58,11 @@ jobs:
     - name: Create Deploy Directory
       run: mkdir -p ${{ env.Publish_Output }}
 
-    - name: Publish Blazor project
-      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterBlazor
-
-    - name: Debug Parent Directory
-      run: dir ${{ env.Publish_Output }}
-
-    - name: Debug Publish Output
-      run: dir ${{ env.Publish_Output }}/TesterBlazor
-
-    - name: Debug SCP Command
-      run: |
-        echo "Deploying files to server..."
-        scp -v -P 22 -o StrictHostKeyChecking=no -r ${{ env.Publish_Output }}/TesterBlazor/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/inetpub/wwwroot/TesterBlazor
-
-
     - name: Build TesterProject libraries
       run: dotnet build ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }}
 
     - name: Publish TesterProject libraries
       run: dotnet publish ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterProject
 
-    - name: Install dependencies for Blazor project
-      run: dotnet restore ${{ env.Blazor_Project_Path }}
-
-    - name: Build Blazor project
-      run: dotnet build ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }}
-
-    - name: Publish Blazor project
-      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterBlazor
-
-    - name: Deploy Blazor app to IIS server
-      run: |
-        scp -P 22 -o StrictHostKeyChecking=no -r ${{ env.Publish_Output }}/TesterBlazor/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/inetpub/wwwroot/TesterBlazor
-
+    - name: Debug Published Library Output
+      run: dir ${{ env.Publish_Output }}/TesterProject
