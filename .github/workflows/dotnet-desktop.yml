@@ -64,5 +64,6 @@ jobs:
     - name: Publish TesterProject libraries
       run: dotnet publish ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterProject
 
-    - name: Debug Published Library Output
-      run: dir ${{ env.Publish_Output }}/TesterProject
+    - name: Transfer TesterProject library to server
+      run: |
+        scp -P 22 -o StrictHostKeyChecking=no -o PreferredAuthentications=password -r ${{ env.Publish_Output }}/TesterProject/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/lib/TesterProject
