@@ -55,6 +55,9 @@ jobs:
     - name: Install dependencies for TesterProject
       run: dotnet restore ${{ env.Library_Project_Path }}
 
+    - name: Create Deploy Directory
+      run: mkdir -p c:/deploy/TesterBlazor
+
     - name: Debug Publish Output
       run: dir c:/deploy/TesterBlazor
 
