@@ -18,7 +18,7 @@ jobs:
       Solution_Name: WinFormTester.sln
       Blazor_Project_Path: TesterBlazor/TesterBlazor.csproj
       Library_Project_Path: TesterProject/TesterProject.csproj
-      Publish_Output: c:/deploy
+      Publish_Output: ./deploy
       Test_Project_Path: TestPro\TestPro.csproj 
       Wap_Project_Directory: TesterProject
       DatabaseProj: TesterDatabase\TesterDatabase.sqlproj
@@ -57,14 +57,6 @@ jobs:
 
     - name: Create Deploy Directory
       run: mkdir -p c:/deploy/TesterBlazor
-
-    - name: Debug Publish Output
-      run: dir c:/deploy/TesterBlazor
-
-    - name: Debug SCP Command
-      run: |
-        echo "Deploying files to server..."
-        scp -v -P 22 -o StrictHostKeyChecking=no -r c:/deploy/TesterBlazor/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/inetpub/wwwroot/TesterBlazor
 
     - name: Build TesterProject libraries
       run: dotnet build ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }}
