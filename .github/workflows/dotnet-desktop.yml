@@ -58,6 +58,15 @@ jobs:
     - name: Create Deploy Directory
       run: mkdir -p c:/deploy/TesterBlazor
 
+    - name: Debug Publish Output
+      run: dir ${{ env.Publish_Output }}/TesterBlazor
+
+    - name: Debug SCP Command
+      run: |
+        echo "Deploying files to server..."
+        scp -v -P 22 -o StrictHostKeyChecking=no -r ${{ env.Publish_Output }}/TesterBlazor/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/inetpub/wwwroot/TesterBlazor
+
+
     - name: Build TesterProject libraries
       run: dotnet build ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }}
 
