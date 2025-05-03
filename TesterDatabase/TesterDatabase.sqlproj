@@ -147,5 +147,6 @@
   <ItemGroup>
     <None Include="Snapshots\TesterDatabase_20250316_20-23-00.dacpac" />
     <None Include="TesterDatabase.publish.xml" />
+    <None Include="TesterDatabase_1.publish.xml" />
   </ItemGroup>
 </Project>
