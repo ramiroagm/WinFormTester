@@ -107,20 +107,22 @@ jobs:
         # Establecer sesión remota con autenticación básica
         $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
-        # Transferir los archivos publicados al servidor
+        # Ruta local y remota
+        $localPath = "${{ env.Publish_Output }}/TesterProject/*"
+        $remotePath = "C:\lib\TesterProject"
+
+        # Crear el directorio remoto si no existe
         Invoke-Command -Session $session -ScriptBlock {
-          $remotePath = "C:\lib\TesterProject"
-          $localPath = "${{ env.Publish_Output }}/TesterProject/*"
-
-          # Verificar si el directorio existe, si no, crearlo
+          param($remotePath)
           if (-not (Test-Path $remotePath)) {
-            New-Item -ItemType Directory -Path $remotePath
+            New-Item -ItemType Directory -Path $remotePath | Out-Null
           }
+        } -ArgumentList $remotePath
 
-          # Copiar archivos
-          Copy-Item -Path $localPath -Destination $remotePath -Recurse -Force
-          Write-Host "Archivos copiados con éxito a $remotePath"
-        }
+        # Transferir archivos desde local al servidor remoto
+        Copy-Item -Path $localPath -Destination $remotePath -Recurse -ToSession $session -Force
+
+        Write-Host "Archivos copiados con éxito a $remotePath"
 
         # Cerrar sesión remota
         Remove-PSSession -Session $session
