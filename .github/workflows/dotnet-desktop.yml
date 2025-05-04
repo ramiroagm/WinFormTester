@@ -67,10 +67,18 @@ jobs:
     - name: Debug Published Library Output
       run: dir ${{ env.Publish_Output }}/TesterProject
 
-    - name: Test SSH Connection
+    # Ejecutar un comando en el servidor remoto utilizando PowerShell Remoting
+    - name: Execute Command on Windows Server via PowerShell Remoting
+      shell: pwsh
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }} "echo 'SSH connection successful'"
-
-    - name: Transfer TesterProject library to server
-      run: |
-        sshpass -p "${{ secrets.WINDOWS_SERVER_PASSWORD }}" scp -P 22 -o StrictHostKeyChecking=no -r ${{ env.Publish_Output }}/TesterProject/* ${{ env.WINDOWS_SERVER_USERNAME }}@${{ env.WINDOWS_SERVER_IP }}:C:/lib/
+        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+        
+        # Establecer la conexión remota utilizando PowerShell Remoting
+        $session = New-PSSession -ComputerName ${{ secrets.WINDOWS_SERVER_IP }} -Credential $cred -Authentication Default
+        Invoke-Command -Session $session -ScriptBlock {
+          # Aquí puedes agregar comandos que deseas ejecutar en el servidor Windows
+          Write-Host "Comando ejecutado en el servidor remoto"
+        }
+        Remove-PSSession -Session $session
