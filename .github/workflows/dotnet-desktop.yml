@@ -69,8 +69,12 @@ jobs:
 
     - name: Setup PowerShell Remoting
       run: |
+        # Habilitar tráfico no cifrado para la conexión de WinRM
+        Set-Item wsman:\localhost\client\allowunencrypted -Value $true -Force
+
         # Configurar TrustedHosts
         Set-Item wsman:\localhost\client\trustedhosts -Value "*" -Force
+        
         # Establecer las credenciales y la IP del servidor
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
