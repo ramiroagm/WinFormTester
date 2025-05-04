@@ -67,6 +67,40 @@ jobs:
     - name: Debug Published Library Output
       run: dir ${{ env.Publish_Output }}/TesterProject
 
+    - name: Setup PowerShell Remoting
+      run: |
+        # Configurar TrustedHosts
+        Set-Item wsman:\localhost\client\trustedhosts -Value "*" -Force
+        # Establecer las credenciales y la IP del servidor
+        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+
+        # Dirección IP del servidor
+        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+
+        # Establecer sesión remota
+        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+        
+        # Transferir los archivos publicados al servidor
+        Invoke-Command -Session $session -ScriptBlock {
+            $remotePath = "C:\lib\TesterProject"
+            $localPath = "./deploy/TesterProject/*"
+            
+            # Verificar si el directorio existe, si no, crearlo
+            if (-not (Test-Path $remotePath)) {
+                New-Item -ItemType Directory -Path $remotePath
+            }
+
+            # Copiar archivos
+            Copy-Item -Path $localPath -Destination $remotePath -Recurse -Force
+            Write-Host "Archivos copiados con éxito a $remotePath"
+        }
+
+        # Cerrar sesión remota
+        Remove-PSSession -Session $session
+      shell: pwsh
+
     - name: PowerShell Remoting - Transfer files to server
       shell: pwsh
       run: |
