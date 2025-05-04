@@ -36,7 +36,7 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
-        
+
     - name: Remove SSDT project from solution
       run: dotnet sln ${{ env.Solution_Name }} remove ${{ env.DatabaseProj }}
 
@@ -67,69 +67,51 @@ jobs:
     - name: Debug Published Library Output
       run: dir ${{ env.Publish_Output }}/TesterProject
 
-    - name: Setup PowerShell Remoting
+    - name: Setup PowerShell Remoting - Allow Unencrypted Traffic
       run: |
         # Habilitar tráfico no cifrado para la conexión de WinRM
         Set-Item wsman:\localhost\client\allowunencrypted -Value $true -Force
-
-        # Configurar TrustedHosts
+        
+        # Configurar TrustedHosts (acepta cualquier host para pruebas)
         Set-Item wsman:\localhost\client\trustedhosts -Value "*" -Force
-        
-        # Establecer las credenciales y la IP del servidor
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
 
-        # Dirección IP del servidor
-        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+        # Configurar WinRM para aceptar conexiones remotas (solo para fines de prueba)
+        Enable-PSRemoting -Force -SkipNetworkProfileCheck -Confirm:$false
 
-        # Establecer sesión remota
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-        
-        # Transferir los archivos publicados al servidor
-        Invoke-Command -Session $session -ScriptBlock {
-            $remotePath = "C:\lib\TesterProject"
-            $localPath = "./deploy/TesterProject/*"
-            
-            # Verificar si el directorio existe, si no, crearlo
-            if (-not (Test-Path $remotePath)) {
-                New-Item -ItemType Directory -Path $remotePath
-            }
-
-            # Copiar archivos
-            Copy-Item -Path $localPath -Destination $remotePath -Recurse -Force
-            Write-Host "Archivos copiados con éxito a $remotePath"
-        }
-
-        # Cerrar sesión remota
-        Remove-PSSession -Session $session
       shell: pwsh
 
-    - name: PowerShell Remoting - Transfer files to server
-      shell: pwsh
+    - name: Test Connection to Remote Server
       run: |
-        # Asegúrate de que las variables no sean nulas
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-
-        # Dirección IP del servidor
+        # Verificar si la IP está correcta y el servidor responde
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
         
-        # Verifica si la IP está correcta
-        if (-not $server_ip) {
-          Write-Host "La IP del servidor no está configurada correctamente"
+        Test-Connection -ComputerName $server_ip -Count 4 -Quiet
+        if ($?) {
+          Write-Host "Conexión con el servidor exitosa"
+        } else {
+          Write-Host "No se pudo conectar al servidor"
           exit 1
         }
+      shell: pwsh
 
-        # Establecer sesión remota
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Default
+    - name: Transfer files to Windows Server
+      run: |
+        # Establecer las credenciales
+        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+
+        # Dirección IP del servidor
+        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+
+        # Establecer sesión remota con autenticación básica
+        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
         # Transferir los archivos publicados al servidor
         Invoke-Command -Session $session -ScriptBlock {
           $remotePath = "C:\lib\TesterProject"
           $localPath = "${{ env.Publish_Output }}/TesterProject/*"
-          
+
           # Verificar si el directorio existe, si no, crearlo
           if (-not (Test-Path $remotePath)) {
             New-Item -ItemType Directory -Path $remotePath
@@ -142,3 +124,4 @@ jobs:
 
         # Cerrar sesión remota
         Remove-PSSession -Session $session
+      shell: pwsh
