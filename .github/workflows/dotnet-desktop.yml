@@ -67,15 +67,40 @@ jobs:
     - name: Debug Published Library Output
       run: dir ${{ env.Publish_Output }}/TesterProject
 
-    - name: Execute Command on Windows Server via PowerShell Remoting
+    - name: PowerShell Remoting - Transfer files to server
       shell: pwsh
       run: |
+        # Asegúrate de que las variables no sean nulas
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-        Set-Item wsman:\localhost\client\trustedhosts -Value "${{ secrets.WINDOWS_SERVER_IP }}"
-        $session = New-PSSession -ComputerName ${{ secrets.WINDOWS_SERVER_IP }} -Credential $cred -Authentication Default
-        Invoke-Command -Session $session -ScriptBlock {
-          Write-Host "Comando ejecutado en el servidor remoto"
+
+        # Dirección IP del servidor
+        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+        
+        # Verifica si la IP está correcta
+        if (-not $server_ip) {
+          Write-Host "La IP del servidor no está configurada correctamente"
+          exit 1
         }
+
+        # Establecer sesión remota
+        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Default
+
+        # Transferir los archivos publicados al servidor
+        Invoke-Command -Session $session -ScriptBlock {
+          $remotePath = "C:\lib\TesterProject"
+          $localPath = "${{ env.Publish_Output }}/TesterProject/*"
+          
+          # Verificar si el directorio existe, si no, crearlo
+          if (-not (Test-Path $remotePath)) {
+            New-Item -ItemType Directory -Path $remotePath
+          }
+
+          # Copiar archivos
+          Copy-Item -Path $localPath -Destination $remotePath -Recurse -Force
+          Write-Host "Archivos copiados con éxito a $remotePath"
+        }
+
+        # Cerrar sesión remota
         Remove-PSSession -Session $session
