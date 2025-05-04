@@ -67,18 +67,15 @@ jobs:
     - name: Debug Published Library Output
       run: dir ${{ env.Publish_Output }}/TesterProject
 
-    # Ejecutar un comando en el servidor remoto utilizando PowerShell Remoting
     - name: Execute Command on Windows Server via PowerShell Remoting
       shell: pwsh
       run: |
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-        
-        # Establecer la conexión remota utilizando PowerShell Remoting
+        Set-Item wsman:\localhost\client\trustedhosts -Value "${{ secrets.WINDOWS_SERVER_IP }}"
         $session = New-PSSession -ComputerName ${{ secrets.WINDOWS_SERVER_IP }} -Credential $cred -Authentication Default
         Invoke-Command -Session $session -ScriptBlock {
-          # Aquí puedes agregar comandos que deseas ejecutar en el servidor Windows
           Write-Host "Comando ejecutado en el servidor remoto"
         }
         Remove-PSSession -Session $session
