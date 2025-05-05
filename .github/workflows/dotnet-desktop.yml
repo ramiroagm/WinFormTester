@@ -144,38 +144,52 @@ jobs:
     - name: Publish API Project
       run: dotnet publish TesterApi/TesterApi.csproj -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterApi
 
-    - name: Transfer files to Windows Server
+    - name: Transfer Blazor files to Windows Server
       run: |
-       $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-       $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-       $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-       $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+           $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+           $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+           $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+           $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
 
-       $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+           $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
-       # Blazor Project
-       $localBlazorPath = "${{ env.Publish_Output }}/TesterBlazor/*"
-       $remoteBlazorPath = "C:\lib\TesterBlazor"
-       Invoke-Command -Session $session -ScriptBlock {
-         param($remoteBlazorPath)
-         if (-not (Test-Path $remoteBlazorPath)) {
-           New-Item -ItemType Directory -Path $remoteBlazorPath | Out-Null
-         }
-       } -ArgumentList $remoteBlazorPath
-       Copy-Item -Path $localBlazorPath -Destination $remoteBlazorPath -Recurse -ToSession $session -Force
+           # Blazor Project
+           $localBlazorPath = "${{ env.Publish_Output }}/TesterBlazor/*"
+           $remoteBlazorPath = "C:\lib\TesterBlazor"
+           Invoke-Command -Session $session -ScriptBlock {
+             param($remoteBlazorPath)
+             if (-not (Test-Path $remoteBlazorPath)) {
+               New-Item -ItemType Directory -Path $remoteBlazorPath | Out-Null
+             }
+           } -ArgumentList $remoteBlazorPath
+           Copy-Item -Path $localBlazorPath -Destination $remoteBlazorPath -Recurse -ToSession $session -Force
 
-       # API Project
-       $localApiPath = "${{ env.Publish_Output }}/TesterApi/*"
-       $remoteApiPath = "C:\lib\TesterApi"
-       Invoke-Command -Session $session -ScriptBlock {
-         param($remoteApiPath)
-         if (-not (Test-Path $remoteApiPath)) {
-           New-Item -ItemType Directory -Path $remoteApiPath | Out-Null
-         }
-       } -ArgumentList $remoteApiPath
-       Copy-Item -Path $localApiPath -Destination $remoteApiPath -Recurse -ToSession $session -Force
+           Write-Host "Archivos copiados con éxito"
 
-       Write-Host "Archivos copiados con éxito"
+           Remove-PSSession -Session $session
+      shell: pwsh
 
-       Remove-PSSession -Session $session
-       shell: pwsh
+    - name: Transfer API files to Windows Server
+      run: |
+        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+
+        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+        
+        # API Project
+        $localApiPath = "${{ env.Publish_Output }}/TesterApi/*"
+        $remoteApiPath = "C:\lib\TesterApi"
+        Invoke-Command -Session $session -ScriptBlock {
+            param($remoteApiPath)
+            if (-not (Test-Path $remoteApiPath)) {
+            New-Item -ItemType Directory -Path $remoteApiPath | Out-Null
+            }
+        } -ArgumentList $remoteApiPath
+        Copy-Item -Path $localApiPath -Destination $remoteApiPath -Recurse -ToSession $session -Force
+
+        Write-Host "Archivos copiados con éxito"
+
+        Remove-PSSession -Session $session
+      shell: pwsh
