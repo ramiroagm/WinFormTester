@@ -119,6 +119,16 @@ jobs:
           }
         } -ArgumentList $remotePath
 
+        # Limpiar el directorio remoto si existe
+        Invoke-Command -Session $session -ScriptBlock {
+        param($remotePath)
+            if (Test-Path $remotePath) {
+                Remove-Item -Path "$remotePath\*" -Recurse -Force -ErrorAction SilentlyContinue
+            } else {
+                New-Item -ItemType Directory -Path $remotePath | Out-Null
+            }
+        } -ArgumentList $remotePath
+
         # Transferir archivos desde local al servidor remoto
         Copy-Item -Path $localPath -Destination $remotePath -Recurse -ToSession $session -Force
 
