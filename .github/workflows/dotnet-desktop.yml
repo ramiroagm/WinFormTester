@@ -61,12 +61,24 @@ jobs:
     - name: Build TesterProject libraries
       run: dotnet build ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }}
 
+      # Publicación de librerías
     - name: Publish TesterProject libraries
       run: dotnet publish ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterProject
 
+    - name: Publish Blazor Project
+      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterBlazor
+
+    - name: Publish API Project
+      run: dotnet publish TesterApi/TesterApi.csproj -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterApi
+
+    - name: Publish WorkerService Project
+      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
+
+      # Debug de lo publicado hasta ahora
     - name: Debug Published Library Output
       run: dir ${{ env.Publish_Output }}/TesterProject
 
+      # Setup de Powershell
     - name: Setup PowerShell Remoting - Allow Unencrypted Traffic
       run: |
         # Habilitar tráfico no cifrado para la conexión de WinRM
@@ -80,6 +92,7 @@ jobs:
 
       shell: pwsh
 
+      # Testeamo conexión con servidor
     - name: Test Connection to Remote Server
       run: |
         # Verificar si la IP está correcta y el servidor responde
@@ -111,14 +124,6 @@ jobs:
         $localPath = "${{ env.Publish_Output }}/TesterProject/*"
         $remotePath = "C:\lib\TesterProject"
 
-        # Crear el directorio remoto si no existe
-        Invoke-Command -Session $session -ScriptBlock {
-          param($remotePath)
-          if (-not (Test-Path $remotePath)) {
-            New-Item -ItemType Directory -Path $remotePath | Out-Null
-          }
-        } -ArgumentList $remotePath
-
         # Limpiar el directorio remoto si existe
         Invoke-Command -Session $session -ScriptBlock {
         param($remotePath)
@@ -138,15 +143,6 @@ jobs:
         Remove-PSSession -Session $session
       shell: pwsh
 
-    - name: Publish Blazor Project
-      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterBlazor
-
-    - name: Publish API Project
-      run: dotnet publish TesterApi/TesterApi.csproj -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterApi
-
-    - name: Publish WorkerService Project
-      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
-
     - name: Transfer Blazor files to Windows Server
       run: |
            $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
@@ -156,19 +152,23 @@ jobs:
 
            $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
-           # Blazor Project
+           # Ruta local y remota
            $localBlazorPath = "${{ env.Publish_Output }}/TesterBlazor/*"
            $remoteBlazorPath = "C:\lib\TesterBlazor"
+
            Invoke-Command -Session $session -ScriptBlock {
              param($remoteBlazorPath)
              if (-not (Test-Path $remoteBlazorPath)) {
                New-Item -ItemType Directory -Path $remoteBlazorPath | Out-Null
              }
            } -ArgumentList $remoteBlazorPath
+
+           # Transferir archivos desde local al servidor remoto
            Copy-Item -Path $localBlazorPath -Destination $remoteBlazorPath -Recurse -ToSession $session -Force
 
            Write-Host "Archivos copiados con éxito"
 
+           # Cerrar sesión remota
            Remove-PSSession -Session $session
       shell: pwsh
 
@@ -181,15 +181,18 @@ jobs:
 
         $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
         
-        # API Project
+        # Ruta local y remota
         $localApiPath = "${{ env.Publish_Output }}/TesterApi/*"
         $remoteApiPath = "C:\lib\TesterApi"
+
         Invoke-Command -Session $session -ScriptBlock {
             param($remoteApiPath)
             if (-not (Test-Path $remoteApiPath)) {
             New-Item -ItemType Directory -Path $remoteApiPath | Out-Null
             }
         } -ArgumentList $remoteApiPath
+
+        # Transferir archivos desde local al servidor remoto
         Copy-Item -Path $localApiPath -Destination $remoteApiPath -Recurse -ToSession $session -Force
 
         Write-Host "Archivos copiados con éxito"
@@ -206,18 +209,22 @@ jobs:
 
         $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
-        # Worker Service
+        # Ruta local y remota
         $localWorkerServicePath = "${{ env.Publish_Output }}/TesterWorkerService/*"
         $remoteWorkerServicePath = "C:\lib\TesterWorkerService"
+
         Invoke-Command -Session $session -ScriptBlock {
           param($remoteWorkerServicePath)
           if (-not (Test-Path $remoteWorkerServicePath)) {
             New-Item -ItemType Directory -Path $remoteWorkerServicePath | Out-Null
           }
         } -ArgumentList $remoteWorkerServicePath
+
+        # Transferir archivos desde local al servidor remoto
         Copy-Item -Path $localWorkerServicePath -Destination $remoteWorkerServicePath -Recurse -ToSession $session -Force
 
         Write-Host "Archivos del Worker Service copiados con éxito a $remoteWorkerServicePath"
 
+        # Cerrar sesión remota
         Remove-PSSession -Session $session
       shell: pwsh
