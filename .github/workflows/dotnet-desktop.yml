@@ -144,6 +144,9 @@ jobs:
     - name: Publish API Project
       run: dotnet publish TesterApi/TesterApi.csproj -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterApi
 
+    - name: Publish WorkerService Project
+      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
+
     - name: Transfer Blazor files to Windows Server
       run: |
            $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
