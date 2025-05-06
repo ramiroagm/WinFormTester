@@ -20,7 +20,8 @@ A medida que se avance en el código y se agreguen funcionalidades finalizadas s
       - [3.6 - TesterWorkerService](#36---testerworkerservice)
       - [3.7 - TesterProject](#37---testerproject)
     - [4 - NuGets en uso](#4---nugets-en-uso)
-    - [5 - Licencia](#5---licencia)
+    - [5 - Acciones](#5---acciones)
+    - [6 - Licencia](#6---licencia)
 
 
 ---
@@ -104,6 +105,10 @@ A continuación estaré explicando las librerías se utilizan en esta solución 
 * Serilog - Generación de Logs (todos los posibles)
 * [Telegram.Bot](https://www.nuget.org/packages/Telegram.Bot/22.4.4?_src=template) - NuGet que facilita la conexión con los Bots de telegram. Ver la documentación pertinente. Utilizar el bot creado en esta aplicación a modo de prueba.
 
-### 5 - Licencia
+### 5 - Acciones
+
+La acción en _master_ está preparada para publicar todo el código en una VM de Windows, creada en Google Cloud. Esta acción compilará todos los proyectos de interés a publicación (librería, api, web, servicio). Utilizando una conexión por usuario y contraseña de Windows y Powershell se transfieren los archivos al servidor a carpetas específicas, mientras que en el servidor se configuró IIS y el servicio, para automáticamente estar recibiendo archivos a demanda desde cada push a _master_ y actualizando servicio. Ver el documento de la acción para tener más información.
+
+### 6 - Licencia
 
 No hay una licencia pertinente actualmente, y se podrá utilizar el código y apropiarse del mismo.
