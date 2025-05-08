@@ -1,6 +1,6 @@
 # Aplicación .NET con demostración de herramientas genéricas
 
-Bienvenidos a este repositorio personal. 👋🏻 </br>
+[_En progreso_] Bienvenidos a este repositorio personal. 👋🏻 </br>
 A medida que se avance en el código y se agreguen funcionalidades finalizadas se irá agregando contenido en este README.
 
 ---
