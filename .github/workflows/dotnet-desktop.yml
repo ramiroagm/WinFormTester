@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest
 
@@ -54,7 +54,7 @@ jobs:
       run: dotnet build ${{ env.Solution_Name }} -c ${{ matrix.configuration }}
   
     - name: Execute unit tests
-      run: dotnet test
+      run: dotnet test -c Release
 
     - name: Install dependencies for TesterProject
       run: dotnet restore ${{ env.Library_Project_Path }}
@@ -77,10 +77,6 @@ jobs:
 
     - name: Publish WorkerService Project
       run: dotnet publish ${{ env.Worker_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
-
-      # Debug de lo publicado hasta ahora
-    - name: Debug Published Library Output
-      run: dir ${{ env.Publish_Output }}/TesterProject
 
       # Setup de Powershell
     - name: Setup PowerShell Remoting - Allow Unencrypted Traffic
