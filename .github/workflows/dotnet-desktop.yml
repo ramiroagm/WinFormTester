@@ -16,12 +16,16 @@ jobs:
 
     env:
       Solution_Name: WinFormTester.sln
+
       Blazor_Project_Path: TesterBlazor/TesterBlazor.csproj
       Library_Project_Path: TesterProject/TesterProject.csproj
+      Api_Project_Path: TesterApi/TesterApi.csproj
+      Worker_Project_Path: TesterWorkerService/TesterWorkerService.csproj
+      Test_Project_Path: TestPro/TestPro.csproj 
+      DatabaseProj: TesterDatabase/TesterDatabase.sqlproj
+
       Publish_Output: ./deploy
-      Test_Project_Path: TestPro\TestPro.csproj 
       Wap_Project_Directory: TesterProject
-      DatabaseProj: TesterDatabase\TesterDatabase.sqlproj
       WINDOWS_SERVER_IP: ${{ secrets.WINDOWS_SERVER_IP }}
       WINDOWS_SERVER_USERNAME: ${{ secrets.WINDOWS_SERVER_USERNAME }}
       WINDOWS_SERVER_PASSWORD: ${{ secrets.WINDOWS_SERVER_PASSWORD }}
@@ -69,10 +73,10 @@ jobs:
       run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterBlazor
 
     - name: Publish API Project
-      run: dotnet publish TesterApi/TesterApi.csproj -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterApi
+      run: dotnet publish ${{ env.Api_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterApi
 
     - name: Publish WorkerService Project
-      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
+      run: dotnet publish ${{ env.Worker_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
 
       # Debug de lo publicado hasta ahora
     - name: Debug Published Library Output
@@ -107,7 +111,7 @@ jobs:
         }
       shell: pwsh
 
-    - name: Transfer files to Windows Server
+    - name: Transfer lib files to Windows Server
       run: |
         # Establecer las credenciales
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
