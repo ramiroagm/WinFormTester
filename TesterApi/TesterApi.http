@@ -1,6 +1,6 @@
 @TesterApi_HostAddress = http://localhost:5214
 
-GET {{TesterApi_HostAddress}}/tester_api/
+GET {{TesterApi_HostAddress}}/telegramgetinfo
 Accept: application/json
 
 ###
