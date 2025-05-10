@@ -1,4 +1,5 @@
-﻿@using TesterBlazor.Models
+﻿@using System.ServiceProcess
+@using TesterBlazor.Models
 @using TesterBlazor.Services
 @using TesterProject
 @using TesterProject.BusinessEntities
@@ -29,8 +30,8 @@
     <div class="input-group mb-3" style="display: flex; gap: 20px;">
         <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px;">
             <legend>Servicio de Telegram</legend>
-            <div style="display: flex; gap: 10px;margin-top: 10px">
-                <button class="btn btn-primary" style="width:100%" @onclick="ConnectToTelegram">Conectar</button>
+            <div style="display: flex; gap: 10px; margin-top: 10px">
+                <button class="btn btn-outline-primary" style="width:100%" @onclick="ConnectToTelegram" disabled="@IsServiceRunning">Conectar</button>
                 <button type="button" class="btn btn-lg btn-outline-warning"
                 data-bs-toggle="popover"
                 data-bs-title="Información"
@@ -38,6 +39,14 @@
                     ❗
                 </button>
             </div>
+            @if (IsServiceRunning)
+            {
+                <span class="badge text-bg-success">@ServiceStatusMessage</span>
+            }
+            else
+            {
+                <span class="badge text-bg-danger">@ServiceStatusMessage</span>
+            }
             <div style="display: flex; gap: 10px;margin-top: 10px">
                 <input class="form-control" type="text" style="flex: 2;" placeholder="Chat Id o nombre de usuario" @bind="UserNameToSend" />
                 <button type="button" class="btn btn-lg btn-outline-danger" 
@@ -98,14 +107,14 @@
         <legend>Filtrado de datos</legend>
 
         <div class="form-floating mb-3">
-            <input type="number" @bind="ChatId" class="form-control" id="floatingInput" placeholder="Escriba número de identificador...">
+            <input type="number" @bind="ChatId" class="form-control" id="floatingInput" placeholder="">
             <label for="floatingInput">Identificador del chat</label>
         </div>
 
         <div class="input-group">
             <span class="input-group-text">@@</span>
             <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInputGroup2" @bind="UserName" placeholder="Escriba nombre de usuario">
+                <input type="text" class="form-control" id="floatingInputGroup2" @bind="UserName" placeholder="">
                 <label for="floatingInputGroup2">Nombre de usuario</label>
             </div>
         </div>
@@ -169,8 +178,12 @@
     private string UserNameToSend { get; set; } = string.Empty;
     private string TextMessage { get; set; } = string.Empty;
 
+    private string ServiceStatusMessage { get; set; } = string.Empty;
+    private bool IsServiceRunning { get; set; } = false;
+
     protected override void OnInitialized()
     {
+        CheckServiceStatus();
         TelegramConnector.MessageReceived += OnMessageReceived;
         TelegramConnector.UpdateOccurred += OnUpdateOccured;
         TelegramConnector.ErrorOccurred += OnErrorOccurred;
@@ -251,6 +264,26 @@
         if (firstRender)
         {
             await JSRuntime.InvokeVoidAsync("initializePopovers");
+        }
+    }
+
+    private void CheckServiceStatus()
+    {
+        string serviceName = "TesterWorkerService";
+        try
+        {
+            using var serviceController = new System.ServiceProcess.ServiceController(serviceName);
+            var status = serviceController.Status;
+
+            IsServiceRunning = status == System.ServiceProcess.ServiceControllerStatus.Running;
+
+            ServiceStatusMessage = IsServiceRunning
+                ? $"El servicio '{serviceName}' ya se encuentra en ejecución."
+                : $"El servicio '{serviceName}' no está levantado. Estado: {status}";
+        }
+        catch (Exception ex)
+        {
+            ServiceStatusMessage = $"Error chequeando servicio [excepción {ex.Message}]";
         }
     }
 }

@@ -30,7 +30,6 @@ builder.Services.AddHttpClient<TelegramService>(client =>
     client.BaseAddress = new Uri("https://localhost:7013/");
 });
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
