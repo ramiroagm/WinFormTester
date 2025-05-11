@@ -1,4 +1,4 @@
-﻿using TesterBlazor.Models;
+﻿using TesterBlazor.Models.Telegram;
 
 namespace TesterBlazor.Services
 {

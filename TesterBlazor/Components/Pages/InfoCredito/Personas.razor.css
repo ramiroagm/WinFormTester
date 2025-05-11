@@ -1,0 +1,39 @@
+﻿.validation-summary {
+    border: 2px solid #dc3545; /* Borde rojo */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #f8d7da; /* Fondo rojo claro */
+    color: #721c24; /* Texto rojo oscuro */
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+    .validation-summary ul {
+        list-style-type: none; /* Sin viñetas */
+        padding: 0;
+        margin: 0;
+    }
+
+    .validation-summary li {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+        .validation-summary li::before {
+            content: "⚠️"; /* Icono de advertencia */
+            margin-right: 10px;
+            color: #dc3545; /* Color del icono */
+            font-size: 16px;
+        }
+
+    .validation-summary .badge {
+        background-color: #dc3545; /* Fondo rojo */
+        color: #fff; /* Texto blanco */
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        margin-right: 10px;
+        display: inline-block;
+    }
