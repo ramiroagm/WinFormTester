@@ -78,7 +78,7 @@ jobs:
     - name: Publish WorkerService Project
       run: dotnet publish ${{ env.Worker_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
 
-      # Setup de Powershell
+      # Configuración de Powershell
     - name: Setup PowerShell Remoting - Allow Unencrypted Traffic
       run: |
         # Habilitar tráfico no cifrado para la conexión de WinRM
@@ -92,7 +92,7 @@ jobs:
 
       shell: pwsh
 
-      # Testeamo conexión con servidor
+      # Testeamos conexión con servidor
     - name: Test Connection to Remote Server
       run: |
         # Verificar si la IP está correcta y el servidor responde
@@ -200,6 +200,29 @@ jobs:
         Remove-PSSession -Session $session
       shell: pwsh
 
+    - name: Stop Worker Service on Remote Server
+      run: |
+        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+        $serviceName = "TelegramWorkerService"
+
+        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+
+        Invoke-Command -Session $session -ScriptBlock {
+          param($serviceName)
+          if ((Get-Service -Name $serviceName).Status -eq 'Running') {
+            Stop-Service -Name $serviceName -Force
+            Write-Host "Service $serviceName stopped successfully."
+          } else {
+            Write-Host "Service $serviceName is not running."
+          }
+        } -ArgumentList $serviceName
+
+        Remove-PSSession -Session $session
+      shell: pwsh
+
     - name: Transfer Worker Service files to Windows Server
       run: |
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
@@ -226,5 +249,24 @@ jobs:
         Write-Host "Archivos del Worker Service copiados con éxito a $remoteWorkerServicePath"
 
         # Cerrar sesión remota
+        Remove-PSSession -Session $session
+      shell: pwsh
+
+    - name: Start Worker Service on Remote Server
+      run: |
+        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+        $serviceName = "TelegramWorkerService"
+
+        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+
+        Invoke-Command -Session $session -ScriptBlock {
+          param($serviceName)
+          Start-Service -Name $serviceName
+          Write-Host "Service $serviceName started successfully."
+        } -ArgumentList $serviceName
+
         Remove-PSSession -Session $session
       shell: pwsh

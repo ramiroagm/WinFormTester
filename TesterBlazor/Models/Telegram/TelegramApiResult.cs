@@ -1,4 +1,4 @@
-﻿namespace TesterBlazor.Models
+﻿namespace TesterBlazor.Models.Telegram
 {
     public class TelegramApiResult
     {
