@@ -65,7 +65,7 @@ jobs:
     - name: Build TesterProject libraries
       run: dotnet build ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }}
 
-      # PublicaciÛn de librerÌas
+      # Publicaci√≥n de librer√≠as
     - name: Publish TesterProject libraries
       run: dotnet publish ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterProject
 
@@ -78,10 +78,10 @@ jobs:
     - name: Publish WorkerService Project
       run: dotnet publish ${{ env.Worker_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
 
-      # ConfiguraciÛn de Powershell
+      # Configuraci√≥n de Powershell
     - name: Setup PowerShell Remoting - Allow Unencrypted Traffic
       run: |
-        # Habilitar tr·fico no cifrado para la conexiÛn de WinRM
+        # Habilitar tr√°fico no cifrado para la conexi√≥n de WinRM
         Set-Item wsman:\localhost\client\allowunencrypted -Value $true -Force
         
         # Configurar TrustedHosts (acepta cualquier host para pruebas)
@@ -92,15 +92,15 @@ jobs:
 
       shell: pwsh
 
-      # Testeamos conexiÛn con servidor
+      # Testeamos conexi√≥n con servidor
     - name: Test Connection to Remote Server
       run: |
-        # Verificar si la IP est· correcta y el servidor responde
+        # Verificar si la IP est√° correcta y el servidor responde
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
         
         Test-Connection -ComputerName $server_ip -Count 4 -Quiet
         if ($?) {
-          Write-Host "ConexiÛn con el servidor exitosa"
+          Write-Host "Conexi√≥n con el servidor exitosa"
         } else {
           Write-Host "No se pudo conectar al servidor"
           exit 1
@@ -114,10 +114,10 @@ jobs:
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
 
-        # DirecciÛn IP del servidor
+        # Direcci√≥n IP del servidor
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
 
-        # Establecer sesiÛn remota con autenticaciÛn b·sica
+        # Establecer sesi√≥n remota con autenticaci√≥n b√°sica
         $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
         # Ruta local y remota
@@ -137,9 +137,9 @@ jobs:
         # Transferir archivos desde local al servidor remoto
         Copy-Item -Path $localPath -Destination $remotePath -Recurse -ToSession $session -Force
 
-        Write-Host "Archivos copiados con Èxito a $remotePath"
+        Write-Host "Archivos copiados con √©xito a $remotePath"
 
-        # Cerrar sesiÛn remota
+        # Cerrar sesi√≥n remota
         Remove-PSSession -Session $session
       shell: pwsh
 
@@ -166,9 +166,9 @@ jobs:
            # Transferir archivos desde local al servidor remoto
            Copy-Item -Path $localBlazorPath -Destination $remoteBlazorPath -Recurse -ToSession $session -Force
 
-           Write-Host "Archivos copiados con Èxito"
+           Write-Host "Archivos copiados con √©xito"
 
-           # Cerrar sesiÛn remota
+           # Cerrar sesi√≥n remota
            Remove-PSSession -Session $session
       shell: pwsh
 
@@ -195,7 +195,7 @@ jobs:
         # Transferir archivos desde local al servidor remoto
         Copy-Item -Path $localApiPath -Destination $remoteApiPath -Recurse -ToSession $session -Force
 
-        Write-Host "Archivos copiados con Èxito"
+        Write-Host "Archivos copiados con √©xito"
 
         Remove-PSSession -Session $session
       shell: pwsh
@@ -206,7 +206,7 @@ jobs:
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-        $serviceName = "TelegramWorkerService"
+        $serviceName = "TesterWorkerService"
 
         $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
@@ -246,9 +246,9 @@ jobs:
         # Transferir archivos desde local al servidor remoto
         Copy-Item -Path $localWorkerServicePath -Destination $remoteWorkerServicePath -Recurse -ToSession $session -Force
 
-        Write-Host "Archivos del Worker Service copiados con Èxito a $remoteWorkerServicePath"
+        Write-Host "Archivos del Worker Service copiados con √©xito a $remoteWorkerServicePath"
 
-        # Cerrar sesiÛn remota
+        # Cerrar sesi√≥n remota
         Remove-PSSession -Session $session
       shell: pwsh
 
@@ -258,7 +258,7 @@ jobs:
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-        $serviceName = "TelegramWorkerService"
+        $serviceName = "TesterWorkerService"
 
         $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
