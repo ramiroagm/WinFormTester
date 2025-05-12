@@ -1,0 +1,67 @@
+﻿@using TesterBlazor.Models.InfoCredito
+
+@inject IJSRuntime JSRuntime
+@page "/InfoCredito/Nucleos"
+
+<PageTitle>Manejo de nucleos</PageTitle>
+
+<div class="d-flex align-items-start">
+
+    <!-- Cuadro de búsqueda de persona -->
+    <TesterBlazor.Components.Pages.InfoCredito.Personas.Componentes.BuscarPersona />
+
+    <div class="card text-center ms-3" style="width: 500px;">
+        <div class="card-header">
+            ℹ️ Información
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Funcionamiento</h5>
+            <p class="card-text">
+                En esta página se buscará por persona el nucleo que existiera para la misma, se podrá editar y/o configurar el mismo.
+            </p>
+        </div>
+        <div class="card-footer text-muted">
+            ⚠️ Advertencia ⚠️
+            <br />
+            Si no se encuentra una persona, ir a la página de personas para crear una nueva.
+        </div>
+    </div>
+
+    <div class="input-group-mb-2">
+        <h4> 📒 Consulta de datos nucleo </h4>
+        <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10p">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Nombres</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Relación</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>53517424</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Relación</th>
+                        <th scope="col"><button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editNucleo">Editar</button></th>
+                    </tr>
+                    <tr>
+                        <th>12345678</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Relación</th>
+                        <th scope="col"><button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editNucleo">Editar</button></th>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+
+</div>
+
+@code {
+
+}

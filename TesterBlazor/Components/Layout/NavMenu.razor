@@ -12,6 +12,7 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()" style="margin-top:10px">
     <nav class="nav flex-column">
+
         <div class="nav-item px-2">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
@@ -29,6 +30,7 @@
                 <span class="bi bi-instagram-ico-figma" aria-hidden="true"></span> Instagram
             </NavLink>
         </div>
+
         <div class="nav-item px-2">
             <div class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#submenuCredito" aria-expanded="false">
                 <span class="bi bi-folder-ico-figma" aria-hidden="true"></span>Información de crédito
@@ -45,9 +47,17 @@
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="infoCredito/configNucleo">
-                        <span class="bi bi-config-pers-ico-figma" aria-hidden="true"></span>Configuración
-                    </NavLink>
+                    <div class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#submenuConfig" aria-expanded="false">
+                        <span class="bi bi-config" aria-hidden="true"></span>Configuración
+                    </div>
+                    <div id="submenuConfig" class="collapse">
+                        <NavLink class="nav-link" href="infoCredito/configNucleo">
+                            <span class="bi bi-new-config-nuc" aria-hidden="true"></span>Nucleo
+                        </NavLink>
+                        <NavLink class="nav-link" href="infoCredito/configPersona">
+                            <span class="bi bi-config-pers-ico-figma" aria-hidden="true"></span>Persona
+                        </NavLink>
+                    </div>
                 </div>
             </div>
         </div>

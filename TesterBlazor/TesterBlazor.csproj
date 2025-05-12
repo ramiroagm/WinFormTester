@@ -19,4 +19,8 @@
     <ProjectReference Include="..\TesterProject\TesterProject.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Pages\InfoCredito\Nucleos\Modales\" />
+  </ItemGroup>
+
 </Project>

@@ -1,45 +1,5 @@
 ﻿@using TesterBlazor.Models.InfoCredito
-
 @inject IJSRuntime JSRuntime
-@page "/InfoCredito/Personas"
-
-<PageTitle>Manejo de personas</PageTitle>
-
-<div class="d-flex align-items-start justify-content-between">
-    <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px; flex-grow: 1;">
-        <legend>Búsqueda de persona</legend>
-        <div class="d-flex align-items-center">
-            <div class="form-floating flex-grow-1 me-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder=""
-                       oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-                <label for="floatingInput">Documento</label>
-            </div>
-            <button type="button" class="btn btn-lg btn-outline-success">Buscar</button>
-        </div>
-    </fieldset>
-    <div class="card text-center ms-3" style="width: 500px;">
-        <div class="card-header">
-            ℹ️ Información
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Funcionamiento</h5>
-            <p class="card-text">
-                En esta página se agregarán personas y buscará información particular de la misma y sus nucleos. <br />
-                Para configurar nucleos nuevos, se debe de ir a la página de configuración.
-            </p>
-        </div>
-        <div class="card-footer text-muted">
-            ⚠️ Advertencia ⚠️
-            <br />
-            Si no se encuentra una persona, se deberá abrir un nuevo modal para agregarla.
-        </div>
-    </div>
-</div>
-
-<!-- Botón para abrir el modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPersonModal">
-    Agregar Persona
-</button>
 
 <EditForm EditContext="EditContext" OnValidSubmit="GuardarPersona">
     <DataAnnotationsValidator />
@@ -113,7 +73,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>
@@ -219,10 +179,10 @@
     }
 
     private Persona NuevaPersona { get; set; } = new Persona()
-    {
-        Direccion = new DireccionPersona(),
-        FechaNacimiento = DateTime.Today
-    };
+        {
+            Direccion = new DireccionPersona(),
+            FechaNacimiento = DateTime.Today
+        };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -235,7 +195,7 @@
 
     private void GuardarPersona()
     {
-        Console.WriteLine($"Guardando persona: {NuevaPersona.Nombre1} {NuevaPersona.Apellido1}");
+        // TODO: AGREGAR PERSONA A BASE
         JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
     }
 
