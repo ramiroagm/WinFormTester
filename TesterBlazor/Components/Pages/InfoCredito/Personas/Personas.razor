@@ -1,0 +1,42 @@
+﻿@using TesterBlazor.Models.InfoCredito
+
+@inject IJSRuntime JSRuntime
+@page "/InfoCredito/Personas"
+
+<PageTitle>Manejo de personas</PageTitle>
+
+<div class="d-flex align-items-start">
+
+    <!-- Cuadro de búsqueda de persona -->
+    <TesterBlazor.Components.Pages.InfoCredito.Personas.Componentes.BuscarPersona />
+
+    <div class="card text-center ms-3" style="width: 500px;">
+        <div class="card-header">
+            ℹ️ Información
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Funcionamiento</h5>
+            <p class="card-text">
+                En esta página se agregarán personas y buscará información de la misma. <br />
+                Para configurar nucleos nuevos, se debe de ir a la página de configuración.
+            </p>
+        </div>
+        <div class="card-footer text-muted">
+            ⚠️ Advertencia ⚠️
+            <br />
+            Si no se encuentra una persona, se deberá abrir un nuevo modal para agregarla.
+        </div>
+    </div>
+</div>
+
+<!-- Botón para abrir el modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPersonModal">
+    Agregar Persona
+</button>
+
+<!-- Modales para agregar persona -->
+<TesterBlazor.Components.Pages.InfoCredito.Personas.Modales.ModalNuevaPersona />
+
+@code {
+
+}

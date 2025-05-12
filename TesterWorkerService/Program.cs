@@ -10,7 +10,7 @@ Log.Logger = new LoggerConfiguration()
    .WriteTo.File("logs/worker-service.log", rollingInterval: RollingInterval.Day)
    .WriteTo.Debug()
 #if WINDOWS
-      .WriteTo.EventLog("TelegramBotService", manageEventSource: true)
+   .WriteTo.EventLog("TelegramBotService", manageEventSource: true)
 #endif
    .Enrich.FromLogContext()
    .CreateLogger();
@@ -21,6 +21,9 @@ builder.Logging.AddProvider(new SerilogLoggerProvider(Log.Logger));
 builder.Services.AddSingleton<ITelegramDatabaseInformation, TelegramDatabaseInformation>();
 builder.Services.AddSingleton<TelegramConnector>();
 builder.Services.AddHostedService<TesterWorkerService.Worker>();
+
+builder.Services.Configure<HostOptions>(options => options.ServicesStartConcurrently = false);
+builder.Services.AddWindowsService();
 
 var app = builder.Build();
 
