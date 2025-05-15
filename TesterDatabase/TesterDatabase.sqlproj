@@ -125,28 +125,45 @@
     <Folder Include="dbo\StoredProcedure" />
     <Folder Include="Scripts" />
     <Folder Include="Snapshots" />
+    <Folder Include="dbo\Tables\Telegram" />
+    <Folder Include="dbo\StoredProcedure\Telegram" />
+    <Folder Include="dbo\StoredProcedure\WinForm" />
+    <Folder Include="dbo\Tables\WinForm" />
+    <Folder Include="Scripts\Telegram" />
+    <Folder Include="dbo\Tables\InfoCredito" />
+    <Folder Include="dbo\Tables\Utils" />
+    <Folder Include="Scripts\Utils" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Test_Users.sql">
+    <Build Include="Security\Permissions.sql" />
+    <Build Include="dbo\Tables\Telegram\Telegram_MessageLog.sql" />
+    <Build Include="dbo\Tables\Telegram\Telegram_MessageType.sql" />
+    <Build Include="dbo\StoredProcedure\Telegram\TelegramGetMessages.sql" />
+    <Build Include="dbo\StoredProcedure\Telegram\TelegramMessageLog.sql" />
+    <Build Include="dbo\StoredProcedure\WinForm\UserCreation.sql" />
+    <Build Include="dbo\Tables\WinForm\Test_Users.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="Security\Permissions.sql" />
-    <Build Include="dbo\StoredProcedure\UserCreation.sql" />
-    <Build Include="dbo\Tables\Telegram_MessageLog.sql" />
-    <Build Include="dbo\Tables\Telegram_MessageType.sql" />
-    <Build Include="dbo\StoredProcedure\TelegramMessageLog.sql" />
-    <Build Include="dbo\StoredProcedure\TelegramGetMessages.sql" />
+    <PostDeploy Include="Scripts\Telegram\Telegram_InsertMessageType.sql" />
+    <Build Include="dbo\Tables\InfoCredito\Personas.sql" />
+    <Build Include="dbo\Tables\InfoCredito\Direcciones.sql" />
+    <Build Include="dbo\Tables\InfoCredito\Nucleos.sql" />
+    <Build Include="dbo\Tables\Utils\Paises.sql" />
+    <Build Include="dbo\Tables\Utils\Departamentos.sql" />
+    <Build Include="dbo\Tables\Utils\Localidades.sql" />
+    <Build Include="dbo\Tables\InfoCredito\Creditos.sql" />
+    <Build Include="dbo\Tables\InfoCredito\Deudas.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="TesterDatabase.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="Scripts\Telegram_InsertMessageType.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Snapshots\TesterDatabase_20250316_20-23-00.dacpac" />
     <None Include="TesterDatabase.publish.xml" />
     <None Include="TesterDatabase_1.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Utils\GenUtils_PostDeploy.sql" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿@using TesterBlazor.Models.InfoCredito
 
 @inject IJSRuntime JSRuntime
-@page "/InfoCredito/Nucleos"
+@page "/infoCredito/configNucleo"
 
 <PageTitle>Manejo de nucleos</PageTitle>
 
@@ -10,6 +10,7 @@
     <!-- Cuadro de búsqueda de persona -->
     <TesterBlazor.Components.Pages.InfoCredito.Personas.Componentes.BuscarPersona />
 
+    <!-- Información -->
     <div class="card text-center ms-3" style="width: 500px;">
         <div class="card-header">
             ℹ️ Información
@@ -26,10 +27,19 @@
             Si no se encuentra una persona, ir a la página de personas para crear una nueva.
         </div>
     </div>
+</div>
 
-    <div class="input-group-mb-2">
-        <h4> 📒 Consulta de datos nucleo </h4>
-        <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10p">
+<!-- Tabla con información -->
+<div class="input-group-mb-8">
+    <div class="d-flex align-items-center mb-2">
+        <h4 class="mb-0">📒 Consulta de datos nucleo</h4>
+        <button class="btn btn-success btn-sm ms-2" title="Agregar nuevo núcleo" @onclick="AgregarPersonaANucleo">
+            Agregar a nucleo
+        </button>
+    </div>
+
+    <div>
+        <fieldset class="card text-center">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -37,31 +47,51 @@
                         <th scope="col">Nombres</th>
                         <th scope="col">Apellidos</th>
                         <th scope="col">Relación</th>
-
+                        <th scope="col">Edición</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>53517424</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Relación</th>
-                        <th scope="col"><button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editNucleo">Editar</button></th>
-                    </tr>
-                    <tr>
-                        <th>12345678</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Relación</th>
-                        <th scope="col"><button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editNucleo">Editar</button></th>
-                    </tr>
+                    @foreach (var nucleo in Nucleos)
+                    {
+                        <tr>
+                            <td>@nucleo.Documento</td>
+                            <td>@nucleo.Nombres</td>
+                            <td>@nucleo.Apellidos</td>
+                            <td>@nucleo.Relacion</td>
+                            <td>
+                                <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="@($"#modal-{nucleo.Documento}")">Editar</button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal para este núcleo -->
+                        <TesterBlazor.Components.Pages.InfoCredito.Nucleos.Modales.ModalEditarNucleo Documento="@nucleo.Documento" Nombres="@nucleo.Nombres" Apellidos="@nucleo.Apellidos" Relacion="@nucleo.Relacion" />
+                    }
                 </tbody>
             </table>
         </fieldset>
     </div>
-
+    
+    
 </div>
 
-@code {
 
+@code {
+    private List<Nucleo> Nucleos = new List<Nucleo>
+    {
+        new Nucleo { Documento = "53517424", Nombres = "Juan", Apellidos = "Pérez", Relacion = "Hermano" },
+        new Nucleo { Documento = "12345678", Nombres = "María", Apellidos = "Gómez", Relacion = "Esposa" }
+    };
+
+    public class Nucleo
+    {
+        public string Documento { get; set; }
+        public string Nombres { get; set; }
+        public string Apellidos { get; set; }
+        public string Relacion { get; set; }
+    }
+
+    private void AgregarPersonaANucleo()
+    {
+
+    }
 }
