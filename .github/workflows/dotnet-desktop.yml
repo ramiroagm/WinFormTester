@@ -25,7 +25,6 @@ jobs:
       DatabaseProj: TesterDatabase/TesterDatabase.sqlproj
 
       Publish_Output: ./deploy
-      Wap_Project_Directory: TesterProject
       WINDOWS_SERVER_IP: ${{ secrets.WINDOWS_SERVER_IP }}
       WINDOWS_SERVER_USERNAME: ${{ secrets.WINDOWS_SERVER_USERNAME }}
       WINDOWS_SERVER_PASSWORD: ${{ secrets.WINDOWS_SERVER_PASSWORD }}
@@ -33,8 +32,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
@@ -46,156 +43,44 @@ jobs:
 
     - name: Install dependencies
       run: dotnet restore ${{ env.Solution_Name }}
-      
+
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
-    - name: Build solution excluding SSDT project
+    - name: Build solution
       run: dotnet build ${{ env.Solution_Name }} -c ${{ matrix.configuration }}
-  
+
     - name: Execute unit tests
       run: dotnet test -c Release
-
-    - name: Install dependencies for TesterProject
-      run: dotnet restore ${{ env.Library_Project_Path }}
 
     - name: Create Deploy Directory
       run: mkdir -p ${{ env.Publish_Output }}
 
-    - name: Build TesterProject libraries
-      run: dotnet build ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }}
-
-      # Publicación de librerías
-    - name: Publish TesterProject libraries
-      run: dotnet publish ${{ env.Library_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterProject
-
-    - name: Publish Blazor Project
-      run: dotnet publish ${{ env.Blazor_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterBlazor
-
-    - name: Publish API Project
-      run: dotnet publish ${{ env.Api_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterApi
-
-    - name: Publish WorkerService Project
-      run: dotnet publish ${{ env.Worker_Project_Path }} -c ${{ matrix.configuration }} -o ${{ env.Publish_Output }}/TesterWorkerService
-
-      # Configuración de Powershell
-    - name: Setup PowerShell Remoting - Allow Unencrypted Traffic
+    - name: Publish All Projects
       run: |
-        # Habilitar tráfico no cifrado para la conexión de WinRM
-        Set-Item wsman:\localhost\client\allowunencrypted -Value $true -Force
-        
-        # Configurar TrustedHosts (acepta cualquier host para pruebas)
-        Set-Item wsman:\localhost\client\trustedhosts -Value "*" -Force
+        dotnet publish ${{ env.Library_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterProject
+        dotnet publish ${{ env.Blazor_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterBlazor
+        dotnet publish ${{ env.Api_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterApi
+        dotnet publish ${{ env.Worker_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterWorkerService
 
-        # Configurar WinRM para aceptar conexiones remotas (solo para fines de prueba)
-        Enable-PSRemoting -Force -SkipNetworkProfileCheck -Confirm:$false
-
-      shell: pwsh
-
-      # Testeamos conexión con servidor
-    - name: Test Connection to Remote Server
+    - name: Stop Blazor Process on Server
       run: |
-        # Verificar si la IP está correcta y el servidor responde
+        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-        
-        Test-Connection -ComputerName $server_ip -Count 4 -Quiet
-        if ($?) {
-          Write-Host "Conexión con el servidor exitosa"
-        } else {
-          Write-Host "No se pudo conectar al servidor"
-          exit 1
+
+        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+
+        Invoke-Command -Session $session -ScriptBlock {
+          $proc = Get-Process -Name "dotnet" -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "*TesterBlazor*" }
+          if ($proc) {
+            $proc | Stop-Process -Force
+            Write-Host "Blazor process stopped."
+          } else {
+            Write-Host "No Blazor process running."
+          }
         }
-      shell: pwsh
-
-    - name: Transfer lib files to Windows Server
-      run: |
-        # Establecer las credenciales
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-
-        # Dirección IP del servidor
-        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-
-        # Establecer sesión remota con autenticación básica
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-
-        # Ruta local y remota
-        $localPath = "${{ env.Publish_Output }}/TesterProject/*"
-        $remotePath = "C:\lib\TesterProject"
-
-        # Limpiar el directorio remoto si existe
-        Invoke-Command -Session $session -ScriptBlock {
-        param($remotePath)
-            if (Test-Path $remotePath) {
-                Remove-Item -Path "$remotePath\*" -Recurse -Force -ErrorAction SilentlyContinue
-            } else {
-                New-Item -ItemType Directory -Path $remotePath | Out-Null
-            }
-        } -ArgumentList $remotePath
-
-        # Transferir archivos desde local al servidor remoto
-        Copy-Item -Path $localPath -Destination $remotePath -Recurse -ToSession $session -Force
-
-        Write-Host "Archivos copiados con éxito a $remotePath"
-
-        # Cerrar sesión remota
-        Remove-PSSession -Session $session
-      shell: pwsh
-
-    - name: Transfer Blazor files to Windows Server
-      run: |
-           $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-           $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-           $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-           $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-
-           $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-
-           # Ruta local y remota
-           $localBlazorPath = "${{ env.Publish_Output }}/TesterBlazor/*"
-           $remoteBlazorPath = "C:\lib\TesterBlazor"
-
-           Invoke-Command -Session $session -ScriptBlock {
-             param($remoteBlazorPath)
-             if (-not (Test-Path $remoteBlazorPath)) {
-               New-Item -ItemType Directory -Path $remoteBlazorPath | Out-Null
-             }
-           } -ArgumentList $remoteBlazorPath
-
-           # Transferir archivos desde local al servidor remoto
-           Copy-Item -Path $localBlazorPath -Destination $remoteBlazorPath -Recurse -ToSession $session -Force
-
-           Write-Host "Archivos copiados con éxito"
-
-           # Cerrar sesión remota
-           Remove-PSSession -Session $session
-      shell: pwsh
-
-    - name: Transfer API files to Windows Server
-      run: |
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-        
-        # Ruta local y remota
-        $localApiPath = "${{ env.Publish_Output }}/TesterApi/*"
-        $remoteApiPath = "C:\lib\TesterApi"
-
-        Invoke-Command -Session $session -ScriptBlock {
-            param($remoteApiPath)
-            if (-not (Test-Path $remoteApiPath)) {
-            New-Item -ItemType Directory -Path $remoteApiPath | Out-Null
-            }
-        } -ArgumentList $remoteApiPath
-
-        # Transferir archivos desde local al servidor remoto
-        Copy-Item -Path $localApiPath -Destination $remoteApiPath -Recurse -ToSession $session -Force
-
-        Write-Host "Archivos copiados con éxito"
 
         Remove-PSSession -Session $session
       shell: pwsh
@@ -212,47 +97,60 @@ jobs:
 
         Invoke-Command -Session $session -ScriptBlock {
           param($serviceName)
-          if ((Get-Service -Name $serviceName).Status -eq 'Running') {
+          $service = Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+          if ($service -and $service.Status -eq 'Running') {
             Stop-Service -Name $serviceName -Force
-            Write-Host "Service $serviceName stopped successfully."
+            Write-Host "Worker service $serviceName stopped."
           } else {
-            Write-Host "Service $serviceName is not running."
+            Write-Host "Worker service $serviceName is not running or not found."
           }
         } -ArgumentList $serviceName
 
         Remove-PSSession -Session $session
       shell: pwsh
 
-    - name: Transfer Worker Service files to Windows Server
+    - name: Transfer Files Using Robocopy
       run: |
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
 
+        $deployRoot = "${{ github.workspace }}\${{ env.Publish_Output }}"
         $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
 
-        # Ruta local y remota
-        $localWorkerServicePath = "${{ env.Publish_Output }}/TesterWorkerService/*"
-        $remoteWorkerServicePath = "C:\lib\TesterWorkerService"
-
         Invoke-Command -Session $session -ScriptBlock {
-          param($remoteWorkerServicePath)
-          if (-not (Test-Path $remoteWorkerServicePath)) {
-            New-Item -ItemType Directory -Path $remoteWorkerServicePath | Out-Null
+          param($paths)
+          foreach ($path in $paths.Keys) {
+            $dest = $paths[$path]
+            if (!(Test-Path $dest)) {
+              New-Item -ItemType Directory -Path $dest | Out-Null
+            }
           }
-        } -ArgumentList $remoteWorkerServicePath
+        } -ArgumentList @{
+          "TesterProject" = "C:\lib\TesterProject";
+          "TesterBlazor" = "C:\lib\TesterBlazor";
+          "TesterApi" = "C:\lib\TesterApi";
+          "TesterWorkerService" = "C:\lib\TesterWorkerService"
+        }
 
-        # Transferir archivos desde local al servidor remoto
-        Copy-Item -Path $localWorkerServicePath -Destination $remoteWorkerServicePath -Recurse -ToSession $session -Force
+        $projects = @("TesterProject", "TesterBlazor", "TesterApi", "TesterWorkerService")
+        foreach ($project in $projects) {
+          $source = Join-Path $deployRoot $project
+          $destination = "\\$server_ip\c$\lib\$project"
 
-        Write-Host "Archivos del Worker Service copiados con éxito a $remoteWorkerServicePath"
+          robocopy $source $destination /E /R:5 /W:3 /NFL /NDL /NP
+          if ($LASTEXITCODE -ge 8) {
+            throw "Robocopy failed for $project with exit code $LASTEXITCODE"
+          } else {
+            Write-Host "$project copied successfully."
+          }
+        }
 
-        # Cerrar sesión remota
         Remove-PSSession -Session $session
       shell: pwsh
 
-    - name: Start Worker Service on Remote Server
+    - name: Restart Worker Service
       run: |
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
@@ -264,8 +162,8 @@ jobs:
 
         Invoke-Command -Session $session -ScriptBlock {
           param($serviceName)
-          Start-Service -Name $serviceName
-          Write-Host "Service $serviceName started successfully."
+          Restart-Service -Name $serviceName -Force
+          Write-Host "Worker service restarted."
         } -ArgumentList $serviceName
 
         Remove-PSSession -Session $session
