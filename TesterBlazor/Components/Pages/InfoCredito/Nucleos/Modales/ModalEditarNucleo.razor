@@ -1,0 +1,39 @@
+﻿<div class="modal fade" id="@($"modal-{Documento}")" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Núcleo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Documento:</strong> @Documento</p>
+                <p><strong>Nombres:</strong> @Nombres</p>
+                <p><strong>Apellidos:</strong> @Apellidos</p>
+                <div class="mb-3">
+                    <label for="relacionSelect" class="form-label"><strong>Relación:</strong></label>
+                    <select id="relacionSelect" class="form-select" @bind="Relacion">
+                        <option value="Padre">Padre</option>
+                        <option value="Madre">Madre</option>
+                        <option value="Hermano">Hermano</option>
+                        <option value="Hermana">Hermana</option>
+                        <option value="Esposo">Esposo</option>
+                        <option value="Esposa">Esposa</option>
+                        <option value="Hijo">Hijo</option>
+                        <option value="Hija">Hija</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Documento { get; set; }
+    [Parameter] public string Nombres { get; set; }
+    [Parameter] public string Apellidos { get; set; }
+    [Parameter] public string Relacion { get; set; }
+}
