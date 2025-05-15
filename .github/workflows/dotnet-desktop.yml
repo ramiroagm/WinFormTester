@@ -63,6 +63,12 @@ jobs:
         dotnet publish ${{ env.Api_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterApi
         dotnet publish ${{ env.Worker_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterWorkerService
 
+    - name: Enable WinRM Unencrypted Traffic
+      run: |
+        Set-Item WSMan:\localhost\Client\AllowUnencrypted -Value true
+        Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
+      shell: pwsh
+
     - name: Stop Blazor Process on Server
       run: |
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
