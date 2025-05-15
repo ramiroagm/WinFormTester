@@ -83,6 +83,7 @@ jobs:
           if ($proc) {
             $proc | Stop-Process -Force
             Write-Host "Blazor process stopped."
+            Start-Sleep -Seconds 5
           } else {
             Write-Host "No Blazor process running."
           }
@@ -107,6 +108,7 @@ jobs:
           if ($service -and $service.Status -eq 'Running') {
             Stop-Service -Name $serviceName -Force
             Write-Host "Worker service $serviceName stopped."
+            Start-Sleep -Seconds 5
           } else {
             Write-Host "Worker service $serviceName is not running or not found."
           }
@@ -115,34 +117,57 @@ jobs:
         Remove-PSSession -Session $session
       shell: pwsh
 
-    - name: Transfer Files Using Robocopy with Authenticated PSDrive
+    - name: Transfer Files Using Robocopy with Cleanup and Authenticated PSDrive
       run: |
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
         $deployRoot = "${{ github.workspace }}\${{ env.Publish_Output }}"
-    
         $projects = @("TesterProject", "TesterBlazor", "TesterApi", "TesterWorkerService")
         $netDrive = "Z:"
-    
+
         if (Test-Path $netDrive) {
             Remove-PSDrive -Name "Z" -Force
         }
-    
+
         New-PSDrive -Name "Z" -PSProvider FileSystem -Root "\\$server_ip\c$" -Credential $cred -Persist
-    
+
         foreach ($project in $projects) {
             $source = Join-Path $deployRoot $project
             $destination = "Z:\lib\$project"
-            robocopy $source $destination /E /R:5 /W:3 /NFL /NDL /NP
-            if ($LASTEXITCODE -ge 8) {
-                throw "Robocopy failed for $project with exit code $LASTEXITCODE"
+
+            # Delete remote files first
+            if (Test-Path $destination) {
+                Get-ChildItem $destination -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+                Write-Host "Cleaned remote directory $destination"
             } else {
-                Write-Host "$project copied successfully."
+                New-Item -ItemType Directory -Path $destination | Out-Null
+            }
+
+            # Copy files using robocopy with retry logic
+            $maxAttempts = 5
+            $attempt = 1
+            $success = $false
+
+            while (-not $success -and $attempt -le $maxAttempts) {
+                Write-Host "Robocopy attempt $attempt for $project"
+                robocopy $source $destination /E /R:2 /W:3 /NFL /NDL /NP
+                if ($LASTEXITCODE -lt 8) {
+                    Write-Host "$project copied successfully."
+                    $success = $true
+                } else {
+                    Write-Host "Robocopy failed for $project (exit code $LASTEXITCODE). Retrying in 5 seconds..."
+                    Start-Sleep -Seconds 5
+                    $attempt++
+                }
+            }
+
+            if (-not $success) {
+                throw "Robocopy failed for $project after $maxAttempts attempts."
             }
         }
-    
+
         Remove-PSDrive -Name "Z" -Force
       shell: pwsh
 
