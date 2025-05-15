@@ -115,45 +115,35 @@ jobs:
         Remove-PSSession -Session $session
       shell: pwsh
 
-    - name: Transfer Files Using Robocopy
+    - name: Transfer Files Using Robocopy with Authenticated PSDrive
       run: |
         $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
         $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($username, $password)
         $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-
         $deployRoot = "${{ github.workspace }}\${{ env.Publish_Output }}"
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-
-        Invoke-Command -Session $session -ScriptBlock {
-          param($paths)
-          foreach ($path in $paths.Keys) {
-            $dest = $paths[$path]
-            if (!(Test-Path $dest)) {
-              New-Item -ItemType Directory -Path $dest | Out-Null
-            }
-          }
-        } -ArgumentList @{
-          "TesterProject" = "C:\lib\TesterProject";
-          "TesterBlazor" = "C:\lib\TesterBlazor";
-          "TesterApi" = "C:\lib\TesterApi";
-          "TesterWorkerService" = "C:\lib\TesterWorkerService"
-        }
-
+    
         $projects = @("TesterProject", "TesterBlazor", "TesterApi", "TesterWorkerService")
-        foreach ($project in $projects) {
-          $source = Join-Path $deployRoot $project
-          $destination = "\\$server_ip\c$\lib\$project"
-
-          robocopy $source $destination /E /R:5 /W:3 /NFL /NDL /NP
-          if ($LASTEXITCODE -ge 8) {
-            throw "Robocopy failed for $project with exit code $LASTEXITCODE"
-          } else {
-            Write-Host "$project copied successfully."
-          }
+        $netDrive = "Z:"
+    
+        if (Test-Path $netDrive) {
+            Remove-PSDrive -Name "Z" -Force
         }
-
-        Remove-PSSession -Session $session
+    
+        New-PSDrive -Name "Z" -PSProvider FileSystem -Root "\\$server_ip\c$" -Credential $cred -Persist
+    
+        foreach ($project in $projects) {
+            $source = Join-Path $deployRoot $project
+            $destination = "Z:\lib\$project"
+            robocopy $source $destination /E /R:5 /W:3 /NFL /NDL /NP
+            if ($LASTEXITCODE -ge 8) {
+                throw "Robocopy failed for $project with exit code $LASTEXITCODE"
+            } else {
+                Write-Host "$project copied successfully."
+            }
+        }
+    
+        Remove-PSDrive -Name "Z" -Force
       shell: pwsh
 
     - name: Restart Worker Service
