@@ -1,6 +1,6 @@
 ﻿CREATE TABLE Localidades (
-    ID INT IDENTITY(1,1) PRIMARY KEY,
+    [IdLocalidad] INT PRIMARY KEY IDENTITY(1,1),
     Nombre VARCHAR(100) NOT NULL,
-    DepartamentoID INT NOT NULL,
-    FOREIGN KEY (DepartamentoID) REFERENCES Departamentos(ID)
+    [IdDepartamento] INT NOT NULL,
+    FOREIGN KEY ([IdDepartamento]) REFERENCES Departamentos([IdDepartamento])
 );

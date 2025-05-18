@@ -1,5 +1,5 @@
 ﻿using Telegram.Bot.Types;
-using TesterProject.BusinessEntities;
+using TesterProject.BusinessEntities.Telegram;
 
 namespace TesterProject.BusinessLogic.Interfaces.Telegram
 {

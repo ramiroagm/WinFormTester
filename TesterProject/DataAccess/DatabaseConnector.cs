@@ -1,4 +1,4 @@
-﻿using TesterProject.BusinessEntities;
+﻿using TesterProject.BusinessEntities.Utils;
 using TesterProject.BusinessLogic.PasswordManager;
 
 namespace TesterProject.DataAccess

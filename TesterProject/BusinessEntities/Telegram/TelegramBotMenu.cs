@@ -1,4 +1,4 @@
-﻿namespace TesterProject.BusinessEntities
+﻿namespace TesterProject.BusinessEntities.Telegram
 {
     public class TelegramBotMenu
     {

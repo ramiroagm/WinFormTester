@@ -16,7 +16,7 @@
                     <!-- Documento -->
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="personaDocumento" placeholder=""
-                               @bind="NuevaPersona.NroDocumento" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                            @bind="NuevaPersona.NroDocumento" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                         <label for="personaDocumento">Documento</label>
                         <ValidationMessage For="@(() => NuevaPersona.NroDocumento)" />
                     </div>
@@ -26,7 +26,7 @@
                         <div class="col">
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="personaNombre" placeholder=""
-                                       @bind="NuevaPersona.Nombre1">
+                                @bind="NuevaPersona.Nombre1">
                                 <label for="personaNombre">Primer nombre</label>
                                 <ValidationMessage For="@(() => NuevaPersona.Nombre1)" />
                             </div>
@@ -34,7 +34,7 @@
                         <div class="col">
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="personaNombre2" placeholder=""
-                                       @bind="NuevaPersona.Nombre2">
+                                @bind="NuevaPersona.Nombre2">
                                 <label for="personaNombre2">Segundo nombre</label>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                         <div class="col">
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="personaApellido" placeholder=""
-                                       @bind="NuevaPersona.Apellido1">
+                                @bind="NuevaPersona.Apellido1">
                                 <label for="personaApellido">Primer apellido</label>
                                 <ValidationMessage For="@(() => NuevaPersona.Apellido1)" />
                             </div>
@@ -53,7 +53,7 @@
                         <div class="col">
                             <div class="form-floating">
                                 <input type="text" class="form-control" id="personaApellido2" placeholder=""
-                                       @bind="NuevaPersona.Apellido2">
+                                @bind="NuevaPersona.Apellido2">
                                 <label for="personaApellido2">Segundo apellido</label>
                                 <ValidationMessage For="@(() => NuevaPersona.Apellido2)" />
                             </div>
@@ -150,28 +150,30 @@
     </div>
 
     <!-- Errores del formulario -->
-    <div class="card text-center ms-3" style="width: 500px;">
-        <div class="card-header">
-            ⚠️ Errores del formulario ⚠️
-        </div>
-        <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text">
+    @if (HasValidationErrors)
+    {
+        <div class="card ms-3" style="width: 350px;">
+            <div class="card-header text-center">
+                ⚠️ Errores del formulario ⚠️
+            </div>
+            <div class="card-body text-start">
                 <div class="validation-summary">
-                    <ul>
+                    <ul class="mb-0 ps-3">
                         <ValidationSummary />
                     </ul>
                 </div>
-            </p>
+            </div>
+            <div class="card-footer text-muted text-center">
+                De no encontrarse errores se podrá continuar
+            </div>
         </div>
-        <div class="card-footer text-muted">
-            De no encontrarse errores se podrá continuar
-        </div>
-    </div>
+    }
 </EditForm>
 
 @code {
     private EditContext EditContext { get; set; }
+
+    private bool HasValidationErrors => EditContext?.GetValidationMessages().Any() == true;
 
     protected override void OnInitialized()
     {
@@ -179,10 +181,10 @@
     }
 
     private Persona NuevaPersona { get; set; } = new Persona()
-        {
-            Direccion = new DireccionPersona(),
-            FechaNacimiento = DateTime.Today
-        };
+    {
+        Direccion = new DireccionPersona(),
+        FechaNacimiento = DateTime.Today
+    };
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

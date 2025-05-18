@@ -3,7 +3,7 @@ using InstagramApiSharp.API;
 using InstagramApiSharp.API.Builder;
 using InstagramApiSharp.Classes;
 using InstagramApiSharp.Logger;
-using TesterProject.BusinessEntities;
+using TesterProject.BusinessEntities.Instagram;
 using TesterProject.BusinessLogic.Interfaces.Instagram;
 
 namespace TesterProject.BusinessLogic.Instagram

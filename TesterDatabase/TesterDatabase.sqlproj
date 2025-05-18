@@ -133,6 +133,9 @@
     <Folder Include="dbo\Tables\InfoCredito" />
     <Folder Include="dbo\Tables\Utils" />
     <Folder Include="Scripts\Utils" />
+    <Folder Include="dbo\StoredProcedure\InfoCredito" />
+    <Folder Include="dbo\StoredProcedure\InfoCredito\Personas" />
+    <Folder Include="dbo\StoredProcedure\InfoCredito\Nucleos" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\Permissions.sql" />
@@ -146,14 +149,21 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <PostDeploy Include="Scripts\Telegram\Telegram_InsertMessageType.sql" />
-    <Build Include="dbo\Tables\InfoCredito\Personas.sql" />
-    <Build Include="dbo\Tables\InfoCredito\Direcciones.sql" />
-    <Build Include="dbo\Tables\InfoCredito\Nucleos.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Personas.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Direcciones.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Nucleos.sql" />
     <Build Include="dbo\Tables\Utils\Paises.sql" />
     <Build Include="dbo\Tables\Utils\Departamentos.sql" />
     <Build Include="dbo\Tables\Utils\Localidades.sql" />
-    <Build Include="dbo\Tables\InfoCredito\Creditos.sql" />
-    <Build Include="dbo\Tables\InfoCredito\Deudas.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Creditos.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Deudas.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Ofertas.sql" />
+    <Build Include="dbo\Tables\Utils\Relacion.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCredito_InsertPersona.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCreditos_GetPersona.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_InsertNucleo.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleo.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleoPorPers.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="TesterDatabase.refactorlog" />
@@ -162,6 +172,8 @@
     <None Include="Snapshots\TesterDatabase_20250316_20-23-00.dacpac" />
     <None Include="TesterDatabase.publish.xml" />
     <None Include="TesterDatabase_1.publish.xml" />
+    <None Include="TesterDatabase_2.publish.xml" />
+    <None Include="MemitoDB_GCloud.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Utils\GenUtils_PostDeploy.sql" />

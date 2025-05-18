@@ -1,15 +1,48 @@
-﻿<fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px; flex-grow: 1;">
+﻿@using TesterBlazor.Models.InfoCredito
+@using TesterProject.BusinessLogic.Interfaces.InfoCredito
+@inject IPersonas PersonasService
+@inject IJSRuntime JSRuntime
+
+<fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px; flex-grow: 1;">
     <legend>Búsqueda de persona</legend>
     <div class="d-flex align-items-center">
         <div class="form-floating flex-grow-1 me-3">
             <input type="text" class="form-control" id="floatingInput" placeholder=""
-                   oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            @bind="DocumentoBusqueda"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
             <label for="floatingInput">Documento</label>
         </div>
-        <button type="button" class="btn btn-lg btn-outline-success">Buscar</button>
+        <button type="button" class="btn btn-lg btn-outline-success" @onclick="BuscarPersonaAsync">Buscar</button>
     </div>
 </fieldset>
 
+@* <ModalResultadoBusquedaPersona @ref="ModalResultadoBusquedaPersonaRef"
+                              Persona="PersonaEncontrada"
+                              Error="ErrorBusqueda" /> *@
 @code {
+    private string DocumentoBusqueda { get; set; }
+    private TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona? PersonaEncontrada { get; set; }
+    private string? ErrorBusqueda { get; set; }
+    // private ModalResultadoBusquedaPersona;
 
+    private async Task BuscarPersonaAsync()
+    {
+        try
+        {
+            // TODO: MODIFICAR CÓDIGO
+            List<TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona> personas = await PersonasService.ObtenerPersonas(Convert.ToInt32(DocumentoBusqueda));
+            foreach (var p in personas)
+            {
+                PersonaEncontrada = p;
+            }
+            ErrorBusqueda = null;
+        }
+        catch (Exception ex)
+        {
+            ErrorBusqueda = ex.Message;
+            PersonaEncontrada = null;
+        }
+        await Task.Delay(1000);
+        // await ModalResultadoBusquedaPersonaRef.ShowAsync();
+    }
 }

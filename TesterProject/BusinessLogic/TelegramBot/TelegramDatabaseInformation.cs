@@ -1,16 +1,18 @@
 ﻿using Telegram.Bot.Types;
-using TesterProject.BusinessEntities;
+using TesterProject.BusinessEntities.Telegram;
+using TesterProject.BusinessEntities.Utils;
 using TesterProject.BusinessLogic.Interfaces.Telegram;
+using TesterProject.DataAccess.Telegram;
 
 namespace TesterProject.BusinessLogic.TelegramBot
 {
     public class TelegramDatabaseInformation : ITelegramDatabaseInformation
     {
-        public void InsertInformation(TelegramResult result) => DataAccess.TelegramMessageLog.TelegramLogInformation(result);
+        public void InsertInformation(TelegramResult result) => TelegramMessageLog.TelegramLogInformation(result);
 
         public async Task<IEnumerable<TelegramResult>> GetInformation(long? ChatId, string? UserName, DateTime?  MsgSentTime)
         {
-            return await DataAccess.TelegramMessageLog.GetLogInformation(ChatId, UserName, MsgSentTime);
+            return await TelegramMessageLog.GetLogInformation(ChatId, UserName, MsgSentTime);
         }
 
         public async Task<TelegramResult> GetSingleInformation(CallbackQuery query)

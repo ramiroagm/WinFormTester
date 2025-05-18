@@ -1,7 +1,8 @@
 ﻿using Telegram.Bot.Types;
 using Telegram.Bot;
-using TesterProject.BusinessEntities;
 using TesterProject.BusinessLogic.Interfaces.Telegram;
+using TesterProject.BusinessEntities.Utils;
+using TesterProject.BusinessEntities.Telegram;
 
 namespace TesterProject.BusinessLogic.TelegramBot
 {

@@ -1,6 +1,7 @@
 ﻿using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
-using TesterProject.BusinessEntities;
+using TesterProject.BusinessEntities.Telegram;
+using TesterProject.BusinessEntities.Utils;
 using TesterProject.BusinessLogic.Interfaces.Telegram;
 
 namespace TesterProject.BusinessLogic.TelegramBot

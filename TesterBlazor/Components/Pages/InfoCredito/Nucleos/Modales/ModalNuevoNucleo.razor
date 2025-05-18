@@ -1,0 +1,65 @@
+﻿@using TesterBlazor.Models.InfoCredito
+@using TesterProject.BusinessLogic.Interfaces.InfoCredito
+@inject IJSRuntime JSRuntime
+
+@* <EditForm EditContext="EditContext" OnValidSubmit="GuardarNucleo">
+    <DataAnnotationsValidator />
+
+    <div class="modal fade" id="addNucleoModal" tabindex="-1" aria-labelledby="addNucleoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNucleoLabel">Crear nucleo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Descripción de nucleo -->
+                    <div class="row g-3 mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="personaNombre" placeholder=""
+                                       @bind="NuevaPersona.Nombre1">
+                                <label for="personaNombre">Primer nombre</label>
+                                <ValidationMessage For="@(() => NuevaPersona.Nombre1)" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="personaNombre2" placeholder=""
+                                       @bind="NuevaPersona.Nombre2">
+                                <label for="personaNombre2">Segundo nombre</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm> *@
+
+@code {
+    // private EditContext EditContext { get; set; }
+    // private bool HasValidationErrors => EditContext?.GetValidationMessages().Any() == true;
+
+    // protected override void OnInitialized()
+    // {
+    //     EditContext = new EditContext(NuevoNucleo);
+    // }
+    
+    // private Nucleo NuevoNucleo = new Nucleo();
+
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         await JSRuntime.InvokeVoidAsync("initializeModals");
+    //         await JSRuntime.InvokeVoidAsync("initializeModalEvents");
+    //     }
+    // }
+
+    // private void GuardarPersona()
+    // {
+    //     JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
+    // }
+}

@@ -1,3 +1,4 @@
+using TesterProject.BusinessEntities.Telegram;
 using TesterProject.BusinessLogic.TelegramBot;
 
 namespace TesterWorkerService
@@ -13,7 +14,7 @@ namespace TesterWorkerService
 
             try
             {
-                TesterProject.BusinessEntities.TelegramResult? result = await _telegramConnector.InitializeBot();
+                TelegramResult? result = await _telegramConnector.InitializeBot();
                 _logger.LogInformation("[Mensaje de BOT]: {Message}", result?.Message);
 
                 while (!stoppingToken.IsCancellationRequested)
