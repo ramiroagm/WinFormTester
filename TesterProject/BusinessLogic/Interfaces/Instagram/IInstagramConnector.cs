@@ -1,7 +1,7 @@
 ﻿using InstagramApiSharp;
 using InstagramApiSharp.API;
 using InstagramApiSharp.Classes;
-using TesterProject.BusinessEntities;
+using TesterProject.BusinessEntities.Instagram;
 
 namespace TesterProject.BusinessLogic.Interfaces.Instagram
 {

@@ -15,7 +15,6 @@ namespace TesterBlazor.Models.InfoCredito
 
         [Required(ErrorMessage = "La calle es obligatoria.")]
         public string Calle { get; set; } = string.Empty;
-
         public string? NumeroPuerta { get; set; }
         public string? NumeroApartamento { get; set; }
         public string? Manzana { get; set; }

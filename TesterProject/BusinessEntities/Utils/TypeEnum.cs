@@ -1,4 +1,4 @@
-﻿namespace TesterProject.BusinessEntities
+﻿namespace TesterProject.BusinessEntities.Utils
 {
     public enum TypeEnum
     {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TesterApi.Models;
-using TesterProject.BusinessEntities;
+using TesterProject.BusinessEntities.Telegram;
 using TesterProject.BusinessLogic.Interfaces.Telegram;
 using TesterProject.BusinessLogic.TelegramBot;
 

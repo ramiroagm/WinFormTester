@@ -1,4 +1,5 @@
 ﻿using InstagramApiSharp.API;
+using TesterProject.BusinessEntities.Instagram;
 using TesterProject.BusinessLogic.Interfaces.Instagram;
 
 namespace WinFormTester
@@ -72,9 +73,9 @@ namespace WinFormTester
                 int cantMessages = string.IsNullOrEmpty(txtCantMsg.Text) ? 1 : Convert.ToInt32(txtCantMsg.Text);
 
                 rtxtLog.AppendText("[Getting messages]{Environment.NewLine}");
-                List<TesterProject.BusinessEntities.InstagramMessage> result = await _instagramConnector.ReceiveMessages(_instaApi, cantMessages);
-                List<TesterProject.BusinessEntities.InstagramMessage> orderedResult = [.. result.OrderByDescending(x => x.UserId)];
-                foreach (TesterProject.BusinessEntities.InstagramMessage? a in orderedResult)
+                List<InstagramMessage> result = await _instagramConnector.ReceiveMessages(_instaApi, cantMessages);
+                List<InstagramMessage> orderedResult = [.. result.OrderByDescending(x => x.UserId)];
+                foreach (InstagramMessage? a in orderedResult)
                 {
                     rtxtLog.AppendText($"From {a.UserId}:  {a.Message}");
                 }

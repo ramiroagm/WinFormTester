@@ -1,12 +1,9 @@
 ﻿.validation-summary {
-    border: 2px solid #dc3545; /* Borde rojo */
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 10px;
-    background-color: #f8d7da; /* Fondo rojo claro */
     color: #721c24; /* Texto rojo oscuro */
     font-size: 14px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
 }
 
     .validation-summary ul {

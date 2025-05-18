@@ -1,0 +1,54 @@
+@using TesterProject.BusinessEntities.InfoCredito
+@inject IJSRuntime JSRuntime
+
+<div class="modal fade" id="resultadoBusquedaPersonaModal" tabindex="-1" aria-labelledby="resultadoBusquedaPersonaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultadoBusquedaPersonaModalLabel">Resultado de la búsqueda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @* <div class="modal-body">
+                @if (!string.IsNullOrEmpty(Error))
+                {
+                    <div class="alert alert-danger">@Error</div>
+                }
+                else if (Persona is not null)
+                {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Documento</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Fecha Nacimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Persona.NroDocumento</td>
+                                <td>@Persona.Nombre1 @Persona.Nombre2</td>
+                                <td>@Persona.Apellido1 @Persona.Apellido2</td>
+                                <td>@Persona.FechaNacimiento?.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div> *@
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public InfoCreditoPersona? Persona { get; set; }
+    [Parameter] public string? Error { get; set; }
+
+    public async Task ShowAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("showModal", "resultadoBusquedaPersonaModal");
+        StateHasChanged();
+    }
+}

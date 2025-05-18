@@ -1,8 +1,8 @@
-﻿using InstagramApiSharp.Classes;
-using Microsoft.Data.SqlClient;
-using TesterProject.BusinessEntities;
+﻿using Microsoft.Data.SqlClient;
+using TesterProject.BusinessEntities.Telegram;
+using TesterProject.BusinessEntities.Utils;
 
-namespace TesterProject.DataAccess
+namespace TesterProject.DataAccess.Telegram
 {
     public class TelegramMessageLog : DatabaseConnector
     {

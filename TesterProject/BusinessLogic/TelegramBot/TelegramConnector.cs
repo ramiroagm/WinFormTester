@@ -3,7 +3,8 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using TesterProject.BusinessEntities;
+using TesterProject.BusinessEntities.Telegram;
+using TesterProject.BusinessEntities.Utils;
 using TesterProject.BusinessLogic.Interfaces.Telegram;
 using TesterProject.BusinessLogic.PasswordManager;
 

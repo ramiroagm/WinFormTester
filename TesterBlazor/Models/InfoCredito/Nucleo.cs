@@ -3,7 +3,8 @@
     public class Nucleo
     {
         public int IdNucleo { get; set; }
-        List<Persona> Personas { get; set; }
-
+        public required TipoRelacion Relacion { get; set; }
+        public required List<Persona> Personas { get; set; }
+        public string? Comentarios { get; set; }
     }
 }
