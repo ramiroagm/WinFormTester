@@ -1,6 +1,4 @@
-﻿@using TesterBlazor.Models.InfoCredito
-@using TesterProject.BusinessLogic.Interfaces.InfoCredito
-@inject IPersonas PersonasService
+﻿@inject IPersonas PersonasService
 @inject IJSRuntime JSRuntime
 
 <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px; flex-grow: 1;">
@@ -12,37 +10,64 @@
             oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
             <label for="floatingInput">Documento</label>
         </div>
-        <button type="button" class="btn btn-lg btn-outline-success" @onclick="BuscarPersonaAsync">Buscar</button>
+        <button type="button" class="btn btn-lg btn-outline-success" @onclick="BuscarPersonaAsync" disabled="@IsLoading">
+            @if (IsLoading)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span class="visually-hidden">Buscando...</span>
+            }
+            else
+            {
+                <span>Buscar</span>
+            }
+        </button>
     </div>
 </fieldset>
 
-@* <ModalResultadoBusquedaPersona @ref="ModalResultadoBusquedaPersonaRef"
-                              Persona="PersonaEncontrada"
-                              Error="ErrorBusqueda" /> *@
+<ModalResultadoBusquedaPersona @ref="ModalResultadoBusquedaPersonaRef" Persona="PersonaEncontrada" DocumentoBuscado="DocumentoBuscado" />
+
 @code {
     private string DocumentoBusqueda { get; set; }
+    private string? DocumentoBuscado { get; set; }
+
     private TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona? PersonaEncontrada { get; set; }
-    private string? ErrorBusqueda { get; set; }
-    // private ModalResultadoBusquedaPersona;
+    private ModalResultadoBusquedaPersona? ModalResultadoBusquedaPersonaRef;
+    private bool IsLoading { get; set; } = false;
 
     private async Task BuscarPersonaAsync()
     {
+        IsLoading = true;
+        DocumentoBuscado = DocumentoBusqueda;
         try
         {
-            // TODO: MODIFICAR CÓDIGO
-            List<TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona> personas = await PersonasService.ObtenerPersonas(Convert.ToInt32(DocumentoBusqueda));
-            foreach (var p in personas)
+            if (string.IsNullOrWhiteSpace(DocumentoBusqueda) || !int.TryParse(DocumentoBusqueda, out int documento))
             {
-                PersonaEncontrada = p;
+                PersonaEncontrada = null;
+                StateHasChanged();
+                await ModalResultadoBusquedaPersonaRef?.ShowAsync();
+                return;
             }
-            ErrorBusqueda = null;
+
+            List<TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona> personas = await PersonasService.ObtenerPersonas(Convert.ToInt32(DocumentoBusqueda));
+            if (personas.Count > 0)
+            {
+                PersonaEncontrada = personas.FirstOrDefault();
+            }
+            else
+            {
+                PersonaEncontrada = null;
+            }
         }
         catch (Exception ex)
         {
-            ErrorBusqueda = ex.Message;
             PersonaEncontrada = null;
         }
-        await Task.Delay(1000);
-        // await ModalResultadoBusquedaPersonaRef.ShowAsync();
+        finally
+        {
+            IsLoading = false;    
+        }
+
+        StateHasChanged();
+        await ModalResultadoBusquedaPersonaRef.ShowAsync();
     }
 }

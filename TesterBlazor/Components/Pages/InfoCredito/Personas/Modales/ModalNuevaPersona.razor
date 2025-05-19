@@ -1,5 +1,4 @@
-﻿@using TesterBlazor.Models.InfoCredito
-@inject IJSRuntime JSRuntime
+﻿@inject IJSRuntime JSRuntime
 
 <EditForm EditContext="EditContext" OnValidSubmit="GuardarPersona">
     <DataAnnotationsValidator />
@@ -15,8 +14,9 @@
                 <div class="modal-body">
                     <!-- Documento -->
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="personaDocumento" placeholder=""
-                            @bind="NuevaPersona.NroDocumento" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                        <input type="text" class="form-control" id="floatingInput" placeholder=""
+                               @bind="NuevaPersona.NroDocumento"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                         <label for="personaDocumento">Documento</label>
                         <ValidationMessage For="@(() => NuevaPersona.NroDocumento)" />
                     </div>

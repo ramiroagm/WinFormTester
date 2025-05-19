@@ -5,7 +5,7 @@ namespace TesterBlazor.Models.InfoCredito
     public class Persona
     {
         [Required(ErrorMessage = "El número de documento es obligatorio.")]
-        public int NroDocumento { get; set; }
+        public int? NroDocumento { get; set; }
 
         [Required(ErrorMessage = "El primer nombre es obligatorio.")]
         public string Nombre1 { get; set; } = string.Empty;

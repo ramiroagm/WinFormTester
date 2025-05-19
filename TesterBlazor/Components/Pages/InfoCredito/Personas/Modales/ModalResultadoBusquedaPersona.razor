@@ -1,40 +1,63 @@
-@using TesterProject.BusinessEntities.InfoCredito
-@inject IJSRuntime JSRuntime
+﻿@inject IJSRuntime JSRuntime
 
 <div class="modal fade" id="resultadoBusquedaPersonaModal" tabindex="-1" aria-labelledby="resultadoBusquedaPersonaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="resultadoBusquedaPersonaModalLabel">Resultado de la b�squeda</h5>
+                <h5 class="modal-title" id="resultadoBusquedaPersonaModalLabel">Resultado de la búsqueda</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            @* <div class="modal-body">
-                @if (!string.IsNullOrEmpty(Error))
+            <div class="modal-body">
+                @if (Persona is not null)
                 {
-                    <div class="alert alert-danger">@Error</div>
-                }
-                else if (Persona is not null)
-                {
-                    <table class="table table-bordered">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Documento</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
                                 <th>Fecha Nacimiento</th>
+                                <th>Nucleo</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>@Persona.NroDocumento</td>
-                                <td>@Persona.Nombre1 @Persona.Nombre2</td>
-                                <td>@Persona.Apellido1 @Persona.Apellido2</td>
-                                <td>@Persona.FechaNacimiento?.ToString("dd/MM/yyyy")</td>
+                                <td>@Persona.Documento</td>
+                                <td>@Persona.PrimerNombre @Persona.SegundoNombre</td>
+                                <td>@Persona.PrimerApellido @Persona.SegundoApellido</td>
+                                <td>@Persona.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                                <td><button type="button" class="btn btn-sm btn-outline-secondary">Ver</button>
+                                    <button type="button" class="btn btn-sm btn-outline-success">Agregar</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 }
-            </div> *@
+                else 
+                {
+                    <div class="align-items-start">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                ℹ️ Información ℹ️
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    No se encontró una persona con el documento <b>@DocumentoBuscado</b>. <br />
+                                    Agregue a la persona en el bóton a continuación.
+                                </p>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPersonModal">
+                                    Agregar Persona
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modales para agregar persona -->
+                    <TesterBlazor.Components.Pages.InfoCredito.Personas.Modales.ModalNuevaPersona />
+                }
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
@@ -43,8 +66,18 @@
 </div>
 
 @code {
+
     [Parameter] public InfoCreditoPersona? Persona { get; set; }
-    [Parameter] public string? Error { get; set; }
+    [Parameter] public string? DocumentoBuscado { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeModals");
+            await JSRuntime.InvokeVoidAsync("initializeModalEvents");
+        }
+    }
 
     public async Task ShowAsync()
     {
