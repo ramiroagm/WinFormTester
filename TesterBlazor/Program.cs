@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using TesterBlazor.Components;
 using TesterBlazor.Services;
+using TesterBlazor;
 
-
-// Custom usings
-using TesterProject.BusinessLogic.TelegramBot;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +13,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddCascadingAuthenticationState();
 
 // Custom services
-builder.Services.AddScoped<TelegramConnector>();
+builder.Services.AddBusinessLogicServices();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -45,13 +42,9 @@ else
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseAntiforgery();
-
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
 // Add additional endpoints required by the Identity /Account Razor components.
 app.Run();

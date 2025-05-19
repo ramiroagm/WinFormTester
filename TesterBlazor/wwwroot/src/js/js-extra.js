@@ -4,22 +4,43 @@
     console.log("Popovers reinitialized:", popoverList);
 }
 
-window.initializeModals = () => {
-    const modalElement = document.getElementById('addPersonModal');
+window.initializeModals = (modalId) => {
+    const modalElement = document.getElementById(modalId);
     if (modalElement) {
         modalElement.addEventListener('shown.bs.modal', () => {
-            console.log('El modal de agregar persona se ha mostrado.');
         });
+    }
+};
+
+window.showModal = (modalId) => {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
     }
 };
 
 window.initializeModalEvents = () => {
     const addressModal = document.getElementById('addAddressModal');
-    const personModal = new bootstrap.Modal(document.getElementById('addPersonModal'));
+    const personModalElement = document.getElementById('addPersonModal');
+    const personModal = new bootstrap.Modal(personModalElement);
+
+    let reopenedByAddress = false;
 
     if (addressModal) {
+        addressModal.addEventListener('show.bs.modal', () => {
+            reopenedByAddress = true;
+        });
+
         addressModal.addEventListener('hidden.bs.modal', () => {
-            personModal.show();
+            setTimeout(() => {
+                document.querySelectorAll('.modal-backdrop').forEach(e => e.remove());
+                document.body.classList.remove('modal-open');
+                if (reopenedByAddress && !personModalElement.classList.contains('show')) {
+                    personModal.show();
+                }
+                reopenedByAddress = false;
+            }, 200);
         });
     }
 };

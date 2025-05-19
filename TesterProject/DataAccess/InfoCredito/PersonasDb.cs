@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using TesterProject.BusinessEntities.InfoCredito;
 using TesterProject.BusinessEntities.Utils;
+using TesterProject.BusinessLogic.PasswordManager;
 
 namespace TesterProject.DataAccess.InfoCredito
 {
@@ -37,6 +38,9 @@ namespace TesterProject.DataAccess.InfoCredito
         public static async Task<List<InfoCreditoPersona>> ObtenerPersonas(int? documento = null)
         {
             List<InfoCreditoPersona> personas = [];
+
+            // Se utiliza el llamado asyncrono de secret manager para evitar bloqueos desde Blazor
+            string? _connectionString = await GetConnectionStringAsync();
             using SqlConnection connection = new(_connectionString);
             SqlCommand command = new("InfoCredito_GetPersona", connection)
             {
