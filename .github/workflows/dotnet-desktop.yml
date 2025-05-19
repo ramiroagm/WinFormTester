@@ -153,7 +153,7 @@ jobs:
             while (-not $success -and $attempt -le $maxAttempts) {
                 Write-Host "Robocopy attempt $attempt for $project"
                 robocopy $source $destination /E /R:2 /W:3 /NFL /NDL /NP
-                if ($LASTEXITCODE -lt 8) {
+                if ($LASTEXITCODE -lt 1) {
                     Write-Host "$project copied successfully."
                     $success = $true
                 } else {
