@@ -1,5 +1,18 @@
-﻿<!DOCTYPE html>
+@inject NavigationManager NavigationManager
+
+<!DOCTYPE html>
 <html lang="en">
+
+<CascadingValue Value="IsLoading">
+    @if (IsLoading)
+    {
+        <LoadingSpinner />
+    }
+    <Router AppAssembly="@typeof(Program).Assembly"
+            OnNavigateAsync="OnNavigateAsync">
+        ...
+    </Router>
+</CascadingValue>
 
 <head>
     <meta charset="utf-8" />
@@ -30,4 +43,15 @@
 
     private IComponentRenderMode? PageRenderMode =>
         HttpContext.AcceptsInteractiveRouting() ? InteractiveServer : null;
+
+        private bool IsLoading;
+
+    private async Task OnNavigateAsync(NavigationContext args)
+    {
+        IsLoading = true;
+        StateHasChanged();
+        await Task.Delay(200);
+        IsLoading = false;
+        StateHasChanged();
+    }
 }
