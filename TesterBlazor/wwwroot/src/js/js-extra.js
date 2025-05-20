@@ -20,6 +20,14 @@ window.showModal = (modalId) => {
     }
 };
 
+window.closeModal = (modalId) => {
+    var modalEl = document.getElementById(modalId);
+    if (modalEl) {
+        var modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        modal.hide();
+    }
+};
+
 window.initializeModalEvents = () => {
     const addressModal = document.getElementById('addAddressModal');
     const personModalElement = document.getElementById('addPersonModal');

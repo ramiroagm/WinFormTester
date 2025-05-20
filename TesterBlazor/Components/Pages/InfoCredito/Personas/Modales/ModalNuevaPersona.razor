@@ -1,4 +1,6 @@
 ﻿@inject IJSRuntime JSRuntime
+@inject IPersonas PersonasService
+@inject IUtils Utils
 
 <EditForm EditContext="EditContext" OnValidSubmit="GuardarPersona">
     <DataAnnotationsValidator />
@@ -15,8 +17,8 @@
                     <!-- Documento -->
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInput" placeholder=""
-                               @bind="NuevaPersona.NroDocumento"
-                               oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                        @bind="NuevaPersona.NroDocumento"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                         <label for="personaDocumento">Documento</label>
                         <ValidationMessage For="@(() => NuevaPersona.NroDocumento)" />
                     </div>
@@ -73,7 +75,17 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-success" disabled="@IsLoading">
+                        @if (IsLoading)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span class="visually-hidden">Guardando...</span>
+                        }
+                        else
+                        {
+                            <span>Guardar</span>
+                        }
+                    </button>
                 </div>
             </div>
         </div>
@@ -88,19 +100,46 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="VolverAlModalPersona"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Dirección -->
+                    <!-- País -->
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="direccionPais" placeholder="" @bind="NuevaPersona.Direccion.Pais">
+                        <select class="form-select"
+                        @bind="SelectedPaisId">
+                            <option value="">Seleccione un país</option>
+                            @foreach (var pais in Paises)
+                            {
+                                <option value="@pais.IdPais">@pais.NombrePais</option>
+                            }
+                        </select>
                         <label for="direccionPais">País</label>
                         <ValidationMessage For="@(() => NuevaPersona.Direccion.Pais)" />
                     </div>
+
+                    <!-- Departamento -->
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="direccionCiudad" placeholder="" @bind="NuevaPersona.Direccion.Ciudad">
-                        <label for="direccionCiudad">Ciudad</label>
+                        <select class="form-select"
+                        @bind="SelectedDepartamentoId"
+                        disabled="@(!DepartamentoEnabled)">
+                            <option value="">Seleccione un departamento</option>
+                            @foreach (var dep in Departamentos)
+                            {
+                                <option value="@dep.IdDepartamento">@dep.NombreDepartamento</option>
+                            }
+                        </select>
+                        <label for="direccionCiudad">Departamento</label>
                         <ValidationMessage For="@(() => NuevaPersona.Direccion.Ciudad)" />
                     </div>
+
+                    <!-- Localidad -->
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="direccionBarrio" placeholder="" @bind="NuevaPersona.Direccion.BarrioLocalidad">
+                        <select class="form-select"
+                        @bind="SelectedLocalidadId"
+                        disabled="@(!LocalidadEnabled)">
+                            <option value="">Seleccione una localidad</option>
+                            @foreach (var loc in Localidades)
+                            {
+                                <option value="@loc.IdLocalidad">@loc.NombreLocalidad</option>
+                            }
+                        </select>
                         <label for="direccionBarrio">Barrio/Localidad</label>
                         <ValidationMessage For="@(() => NuevaPersona.Direccion.BarrioLocalidad)" />
                     </div>
@@ -138,7 +177,7 @@
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="direccionComentarios" placeholder="" @bind="NuevaPersona.Direccion.Comentarios"></textarea>
+                        <textarea class="form-control" id="direccionComentarios" placeholder="" @bind="NuevaPersona.Direccion.Observaciones"></textarea>
                         <label for="direccionComentarios">Comentarios</label>
                     </div>
                 </div>
@@ -168,23 +207,107 @@
             </div>
         </div>
     }
-</EditForm>
+    </EditForm>
 
-@code {
+    <ModalPersonaOk />
+    <ModalPersonaFail />
+
+    @code {
+    private Persona NuevaPersona { get; set; } = new Persona()
+    {
+        Direccion = new DireccionPersona(),
+        FechaNacimiento = DateTime.Today
+    };
+
+    private bool IsLoading { get; set; } = false;
     private EditContext EditContext { get; set; }
-
     private bool HasValidationErrors => EditContext?.GetValidationMessages().Any() == true;
+
+    private List<Pais> Paises = new();
+    private List<Departamento> Departamentos = new();
+    private List<Localidad> Localidades = new();
+
+    private int? selectedPaisId;
+    private int? SelectedPaisId
+    {
+        get => selectedPaisId;
+        set
+        {
+            if (selectedPaisId != value)
+            {
+                selectedPaisId = value;
+                _ = OnPaisChanged();
+            }
+        }
+    }
+
+    private int? selectedDepartamentoId;
+    private int? SelectedDepartamentoId
+    {
+        get => selectedDepartamentoId;
+        set
+        {
+            if (selectedDepartamentoId != value)
+            {
+                selectedDepartamentoId = value;
+                _ = OnDepartamentoChanged();
+            }
+        }
+    }
+
+    private int? selectedLocalidadId;
+    private int? SelectedLocalidadId
+    {
+        get => selectedLocalidadId;
+        set
+        {
+            if (selectedLocalidadId != value)
+            {
+                selectedLocalidadId = value;
+                OnLocalidadChanged();
+            }
+        }
+    }
+
+    private bool DepartamentoEnabled => SelectedPaisId.HasValue;
+    private bool LocalidadEnabled => SelectedDepartamentoId.HasValue;
 
     protected override void OnInitialized()
     {
         EditContext = new EditContext(NuevaPersona);
     }
 
-    private Persona NuevaPersona { get; set; } = new Persona()
+    protected override async Task OnInitializedAsync()
     {
-        Direccion = new DireccionPersona(),
-        FechaNacimiento = DateTime.Today
-    };
+        Paises = await Utils.ObtenerPaises();
+    }
+
+    private async Task OnPaisChanged()
+    {
+        Departamentos = SelectedPaisId.HasValue ? await Utils.ObtenerDepartamentos(SelectedPaisId.Value) : new();
+        SelectedDepartamentoId = null;
+        Localidades = new();
+        SelectedLocalidadId = null;
+        NuevaPersona.Direccion.Pais = Paises.FirstOrDefault(p => p.IdPais == SelectedPaisId)?.NombrePais;
+        NuevaPersona.Direccion.Ciudad = null;
+        NuevaPersona.Direccion.BarrioLocalidad = null;
+        StateHasChanged();
+    }
+
+    private async Task OnDepartamentoChanged()
+    {
+        Localidades = SelectedDepartamentoId.HasValue ? await Utils.ObtenerLocalidades(SelectedDepartamentoId.Value) : new();
+        SelectedLocalidadId = null;
+        NuevaPersona.Direccion.Ciudad = Departamentos.FirstOrDefault(d => d.IdDepartamento == SelectedDepartamentoId)?.NombreDepartamento;
+        NuevaPersona.Direccion.BarrioLocalidad = null;
+        StateHasChanged();
+    }
+
+    private void OnLocalidadChanged()
+    {
+        NuevaPersona.Direccion.BarrioLocalidad = Localidades.FirstOrDefault(l => l.IdLocalidad == SelectedLocalidadId)?.NombreLocalidad;
+        StateHasChanged();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -195,15 +318,73 @@
         }
     }
 
-    private void GuardarPersona()
+    private async void GuardarPersona()
     {
-        // TODO: AGREGAR PERSONA A BASE
-        JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
+        IsLoading = true;
+        try
+        {
+            InfoCreditoPersona personaGuardar = MapearPersona(NuevaPersona);
+            bool result = await PersonasService.CrearPersona(personaGuardar);
+
+            await JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
+            if (result)
+            {   
+                await JSRuntime.InvokeVoidAsync("showModal", "successModal");
+                await InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("showModal", "errorModal");
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        finally 
+        {
+            IsLoading = false;
+        }
     }
 
     private void VolverAlModalPersona()
     {
         JSRuntime.InvokeVoidAsync("closeModal", "addAddressModal");
         JSRuntime.InvokeVoidAsync("showModal", "addPersonModal");
+    }
+
+    private InfoCreditoPersona MapearPersona(Persona persona)
+    {
+        return new InfoCreditoPersona
+        {
+            Documento = persona.NroDocumento ?? 0,
+            PrimerNombre = persona.Nombre1,
+            SegundoNombre = persona.Nombre2,
+            PrimerApellido = persona.Apellido1,
+            SegundoApellido = persona.Apellido2,
+            FechaNacimiento = persona.FechaNacimiento,
+            Direccion = MapearDireccion(persona.Direccion)
+        };
+    }
+
+    private InfoCreditoDireccionPersona MapearDireccion(DireccionPersona direccion)
+    {
+        var localidad = Localidades.FirstOrDefault(l => l.NombreLocalidad == direccion.BarrioLocalidad);
+
+        if (localidad == null)
+        {
+            localidad = new Localidad
+            {
+                IdLocalidad = 0,
+                NombreLocalidad = direccion.BarrioLocalidad ?? string.Empty
+            };
+        }
+
+        return new InfoCreditoDireccionPersona
+        {
+            Localidad = localidad,
+            Calle = direccion.Calle,
+            Numero = int.TryParse(direccion.NumeroPuerta, out var n) ? n : 0,
+            Manzana = int.TryParse(direccion.Manzana, out var m) ? m : 0,
+            Solar = int.TryParse(direccion.Solar, out var s) ? s : 0,
+            Observaciones = direccion.Observaciones
+        };
     }
 }
