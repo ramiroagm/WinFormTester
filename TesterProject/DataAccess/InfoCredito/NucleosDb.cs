@@ -53,7 +53,7 @@ namespace TesterProject.DataAccess.InfoCredito
                     Direccion = new InfoCreditoDireccionPersona
                     {
                         IdDireccion = Convert.ToInt32(reader["ID_DIRECCION"]),
-                        IdLocalidad = new Localidad()
+                        Localidad = new Localidad()
                         {
                             Departamento = new Departamento()
                             {

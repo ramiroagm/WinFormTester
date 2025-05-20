@@ -136,6 +136,7 @@
     <Folder Include="dbo\StoredProcedure\InfoCredito" />
     <Folder Include="dbo\StoredProcedure\InfoCredito\Personas" />
     <Folder Include="dbo\StoredProcedure\InfoCredito\Nucleos" />
+    <Folder Include="dbo\StoredProcedure\Utils" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\Permissions.sql" />
@@ -164,6 +165,9 @@
     <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_InsertNucleo.sql" />
     <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleo.sql" />
     <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleoPorPers.sql" />
+    <Build Include="dbo\StoredProcedure\Utils\GetPaises.sql" />
+    <Build Include="dbo\StoredProcedure\Utils\GetDepartamentosPorPais.sql" />
+    <Build Include="dbo\StoredProcedure\Utils\GetLocalidadesPorDepartamento.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="TesterDatabase.refactorlog" />

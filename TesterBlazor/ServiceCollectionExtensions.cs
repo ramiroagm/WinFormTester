@@ -2,6 +2,8 @@
 using TesterProject.BusinessLogic.InfoCredito.Personas;
 using TesterProject.BusinessLogic.Interfaces.InfoCredito;
 using TesterProject.BusinessLogic.TelegramBot;
+using TesterProject.BusinessLogic.Interfaces.Utils;
+using TesterProject.BusinessLogic.Utils;
 
 namespace TesterBlazor
 {
@@ -12,6 +14,8 @@ namespace TesterBlazor
             services.AddScoped<TelegramConnector>();
             services.AddScoped<IPersonas, PersonasDatabaseInformation>();
             services.AddScoped<INucleos, NucleosDatabaseInformation>();
+            services.AddScoped<IUtils, Utils>();
+
             return services;
         }
     }

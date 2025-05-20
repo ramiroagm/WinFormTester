@@ -4,6 +4,6 @@
     {
         public int IdDepartamento { get; set; }
         public required string NombreDepartamento { get; set; }
-        public required Pais Pais { get; set; }
+        public Pais? Pais { get; set; }
     }
 }

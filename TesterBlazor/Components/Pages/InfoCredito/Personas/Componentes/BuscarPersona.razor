@@ -24,7 +24,9 @@
     </div>
 </fieldset>
 
-<ModalResultadoBusquedaPersona @ref="ModalResultadoBusquedaPersonaRef" Persona="PersonaEncontrada" DocumentoBuscado="DocumentoBuscado" />
+<ModalResultadoBusquedaPersona @ref="ModalResultadoBusquedaPersonaRef" 
+                               Persona="@PersonaEncontrada" 
+                               DocumentoBusqueda="@DocumentoBusqueda" />
 
 @code {
     private string DocumentoBusqueda { get; set; }
@@ -43,7 +45,7 @@
             if (string.IsNullOrWhiteSpace(DocumentoBusqueda) || !int.TryParse(DocumentoBusqueda, out int documento))
             {
                 PersonaEncontrada = null;
-                StateHasChanged();
+                await InvokeAsync(StateHasChanged);
                 await ModalResultadoBusquedaPersonaRef?.ShowAsync();
                 return;
             }
@@ -52,22 +54,25 @@
             if (personas.Count > 0)
             {
                 PersonaEncontrada = personas.FirstOrDefault();
+                await InvokeAsync(StateHasChanged);
+                await ModalResultadoBusquedaPersonaRef?.ShowAsync();
             }
             else
             {
                 PersonaEncontrada = null;
+                await InvokeAsync(StateHasChanged);
+                await ModalResultadoBusquedaPersonaRef?.ShowAsync();
             }
         }
         catch (Exception ex)
         {
             PersonaEncontrada = null;
+            await InvokeAsync(StateHasChanged);
+            await ModalResultadoBusquedaPersonaRef?.ShowAsync();
         }
         finally
         {
-            IsLoading = false;    
+            IsLoading = false;
         }
-
-        StateHasChanged();
-        await ModalResultadoBusquedaPersonaRef.ShowAsync();
     }
 }

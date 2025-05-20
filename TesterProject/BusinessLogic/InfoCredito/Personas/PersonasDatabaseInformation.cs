@@ -6,9 +6,10 @@ namespace TesterProject.BusinessLogic.InfoCredito.Personas
 {
     public class PersonasDatabaseInformation : IPersonas
     {
-        public void CrearPersona(InfoCreditoPersona persona)
+        public async Task<bool> CrearPersona(InfoCreditoPersona persona)
         {
-            PersonasDb.CrearPersona(persona);
+            int retorno = await PersonasDb.CrearPersonaAsync(persona);
+            return retorno == -1;
         }
 
         public async Task<List<InfoCreditoPersona>> ObtenerPersonas(int? documento = null)

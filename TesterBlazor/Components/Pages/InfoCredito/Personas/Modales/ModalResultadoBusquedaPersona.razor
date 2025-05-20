@@ -33,6 +33,21 @@
                         </tbody>
                     </table>
                 }
+                else if (string.IsNullOrEmpty(DocumentoBusqueda))
+                {
+                    <div class="align-items-start">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                ⚠️ Error ⚠️
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Debe de ingresar un valor para el documento.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
                 else 
                 {
                     <div class="align-items-start">
@@ -42,7 +57,7 @@
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    No se encontró una persona con el documento <b>@DocumentoBuscado</b>. <br />
+                                    No se encontró una persona con el documento <b>@DocumentoBusqueda</b>. <br />
                                     Agregue a la persona en el bóton a continuación.
                                 </p>
                             </div>
@@ -53,9 +68,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Modales para agregar persona -->
-                    <TesterBlazor.Components.Pages.InfoCredito.Personas.Modales.ModalNuevaPersona />
                 }
             </div>
             <div class="modal-footer">
@@ -65,10 +77,13 @@
     </div>
 </div>
 
+<!-- Modales para agregar persona -->
+<TesterBlazor.Components.Pages.InfoCredito.Personas.Modales.ModalNuevaPersona />
+
 @code {
 
     [Parameter] public InfoCreditoPersona? Persona { get; set; }
-    [Parameter] public string? DocumentoBuscado { get; set; }
+    [Parameter] public string? DocumentoBusqueda { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
