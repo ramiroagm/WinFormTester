@@ -122,7 +122,7 @@ GO
 -- =============================================
 -- Author:		Ramiro Gallo
 -- Create date: 21/05/2025
--- Description:	Genera un insert cuando para una actualización
+-- Description:	Genera un insert para una actualización
 -- =============================================
 CREATE TRIGGER trg_UpdateInsertInfoCredito
 ON [MemitoDB].[dbo].[InfoCredito_Personas]

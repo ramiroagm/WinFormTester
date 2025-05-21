@@ -1,9 +1,9 @@
-﻿namespace TesterBlazor.Models.InfoCredito
+﻿namespace TesterProject.BusinessEntities.InfoCredito
 {
-    public class ContactoPersona
+    public class InfoCreditoContactoPersona
     {
         public int IdContacto { get; set; }
-        public string? Celular { get; set; }
+        public string? TelMovil { get; set; }
         public string? TelFijo { get; set; }
         public string? CorreoElectronico { get; set; }
         public string? CorreoElectronicoAlt { get; set; }

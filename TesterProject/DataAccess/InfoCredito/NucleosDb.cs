@@ -66,6 +66,15 @@ namespace TesterProject.DataAccess.InfoCredito
                             NombreLocalidad = reader["NombreLocalidad"]?.ToString() ?? string.Empty
                         },
                     },
+                    Contacto = new InfoCreditoContactoPersona
+                    {
+                        TelMovil = reader["TEL_MOVIL"]?.ToString() ?? string.Empty,
+                        TelFijo = reader["TEL_FIJO"]?.ToString() ?? string.Empty,
+                        CorreoElectronico = reader["CORREO_ELECTRONICO"]?.ToString() ?? string.Empty,
+                        CorreoElectronicoAlt = reader["CORREO_ELECTRONICO_ALT"]?.ToString() ?? string.Empty,
+                        WhatsAppURL = reader["WHATSAPP_URL"]?.ToString() ?? string.Empty,
+                        Observaciones = reader["OBSERVACIONES_CONTACTO"]?.ToString() ?? string.Empty
+                    },
                     FechaNacimiento = Convert.ToDateTime(reader["FECHA_NACIMIENTO"])
                 });
             }

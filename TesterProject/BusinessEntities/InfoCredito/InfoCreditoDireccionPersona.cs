@@ -10,6 +10,6 @@ namespace TesterProject.BusinessEntities.InfoCredito
         public int Numero { get; set; }
         public int Manzana { get; set; }
         public int Solar { get; set; }
-        public string Observaciones { get; set; }
+        public string? Observaciones { get; set; }
     }
 }

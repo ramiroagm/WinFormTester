@@ -23,6 +23,7 @@ namespace TesterBlazor.Models.InfoCredito
 
         [Required(ErrorMessage = "La dirección es obligatoria.")]
         public DireccionPersona Direccion { get; set; } = new DireccionPersona();
+        public ContactoPersona Contacto { get; set; } = new ContactoPersona();
         public int? IdRelacionEnNucleo { get; set; }
     }
 }

@@ -31,6 +31,13 @@ namespace TesterProject.DataAccess.InfoCredito
             _ = command.Parameters.AddWithValue("@SOLAR", persona.Direccion.Solar);
             _ = command.Parameters.AddWithValue("@OBSERVACIONES", persona.Direccion.Observaciones);
 
+            _ = command.Parameters.AddWithValue("@TEL_MOVIL", (object?)persona.Contacto?.TelMovil ?? DBNull.Value);
+            _ = command.Parameters.AddWithValue("@TEL_FIJO", (object?)persona.Contacto?.TelFijo ?? DBNull.Value);
+            _ = command.Parameters.AddWithValue("@CORREO_ELECTRONICO", (object?)persona.Contacto?.CorreoElectronico ?? DBNull.Value);
+            _ = command.Parameters.AddWithValue("@CORREO_ELECTRONICO_ALT", (object?)persona.Contacto?.CorreoElectronicoAlt ?? DBNull.Value);
+            _ = command.Parameters.AddWithValue("@WHATSAPP_URL", (object?)persona.Contacto?.WhatsAppURL ?? DBNull.Value);
+            _ = command.Parameters.AddWithValue("@OBSERVACIONES_CONTACTO", (object?)persona.Contacto?.Observaciones ?? DBNull.Value);
+
             _ = command.Parameters.AddWithValue("@FECHA_NACIMIENTO", persona.FechaNacimiento);
 
             connection.Open();
@@ -82,6 +89,16 @@ namespace TesterProject.DataAccess.InfoCredito
                     Localidad = localidad
                 };
 
+                InfoCreditoContactoPersona? contacto = new()
+                {
+                    TelMovil = reader["TEL_MOVIL"]?.ToString() ?? string.Empty,
+                    TelFijo = reader["TEL_FIJO"]?.ToString() ?? string.Empty,
+                    CorreoElectronico = reader["CORREO_ELECTRONICO"]?.ToString() ?? string.Empty,
+                    CorreoElectronicoAlt = reader["CORREO_ELECTRONICO_ALT"]?.ToString() ?? string.Empty,
+                    WhatsAppURL = reader["WHATSAPP_URL"]?.ToString() ?? string.Empty,
+                    Observaciones = reader["OBSERVACIONES_CONTACTO"]?.ToString() ?? string.Empty
+                };
+
                 personas.Add(new InfoCreditoPersona
                 {
                     Documento = Convert.ToInt32(reader["DOCUMENTO"]),
@@ -89,8 +106,9 @@ namespace TesterProject.DataAccess.InfoCredito
                     SegundoNombre = reader["SEGUNDO_NOMBRE"] as string ?? string.Empty,
                     PrimerApellido = reader["PRIMER_APELLIDO"]?.ToString() ?? string.Empty,
                     SegundoApellido = reader["SEGUNDO_APELLIDO"] as string ?? string.Empty,
+                    FechaNacimiento = Convert.ToDateTime(reader["FECHA_NACIMIENTO"]),
                     Direccion = direccion,
-                    FechaNacimiento = Convert.ToDateTime(reader["FECHA_NACIMIENTO"])
+                    Contacto = contacto
                 });
             }
             return personas;

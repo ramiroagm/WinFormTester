@@ -73,7 +73,7 @@
                         <button type="button" class="btn btn-outline-primary ms-3" @onclick="AbrirModalDireccion">
                             Agregar Dirección
                         </button>
-                        <button type="button" class="btn btn-outline-success ms-3" @onclick="AbrirModalDireccion">
+                        <button type="button" class="btn btn-outline-danger ms-3" @onclick="AbrirModalContacto">
                             Agregar Contacto
                         </button>
                     </div>
@@ -194,46 +194,68 @@
         </div>
     </div>
 
-    <!-- Modal agregar contacto TODO BASADO EN ESTE MODAL -->
-    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <!-- Modal agregar contacto -->
+    <div class="modal modal-fullscreen-xl-down fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addAddressModalLabel">Agregar Dirección</h5>
+                    <h5 class="modal-title" id="addContactModalLabel">Agregar contacto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="VolverAlModalPersona"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row g-3 mb-3">
+                    <div class="row mb-2">
+                        <!-- Correo electrónico -->
                         <div class="col">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="direccionNumeroPuerta" placeholder="" @bind="NuevaPersona.Direccion.NumeroPuerta">
-                                <label for="direccionNumeroPuerta">Correo electrónico</label>
+                            <div class="input-group mb-2">
+                                <input type="text" id="Correo1" class="form-control" placeholder="Correo electrónico" aria-label="Correo1" @bind="CorreoP1">
+                                <span class="input-group-text" style="text-align: center;">@@</span>
+                                <input type="text" id="Dominio" class="form-control" placeholder="Dominio" aria-label="Correo2" @bind="CorreoP2">
                             </div>
                         </div>
+
+                        <!-- Celular -->
                         <div class="col">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="direccionNumeroApartamento" placeholder="" @bind="NuevaPersona.Direccion.NumeroApartamento">
-                                <label for="direccionNumeroApartamento">Número de Apartamento</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="direccionManzana" placeholder="" @bind="NuevaPersona.Direccion.Manzana">
-                                <label for="direccionManzana">Manzana</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="direccionSolar" placeholder="" @bind="NuevaPersona.Direccion.Solar">
-                                <label for="direccionSolar">Solar</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" style="text-align: center;">+598</span>
+                                <input type="text" id="Celular" class="form-control" placeholder="Celular" aria-label="Celular" aria-describedby="basic-addon1" @bind="NuevaPersona.Contacto.Celular">
                             </div>
                         </div>
                     </div>
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="direccionComentarios" placeholder="" @bind="NuevaPersona.Direccion.Observaciones"></textarea>
-                        <label for="direccionComentarios">Comentarios</label>
+
+                    <div class="row mb-2">
+                        <!-- Correo electrónico alternativo -->
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <input type="text" id="Correo1Alt" class="form-control" placeholder="Correo alternativo" aria-label="Correo1Alt" @bind="CorreoAltP1">
+                                <span class="input-group-text" style="text-align: center;">@@</span>
+                                <input type="text" id="DominioAlt" class="form-control" placeholder="Dominio" aria-label="Correo2Alt" @bind="CorreoAltP2">
+                            </div>
+                        </div>
+
+                        <!-- Teléfono fijo -->
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text" style="text-align: center;">+598</span>
+                                <input type="text" id="Telefono" class="form-control" placeholder="Teléfono fijo" aria-label="Telefono" aria-describedby="basic-addon1" @bind="NuevaPersona.Contacto.TelFijo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <!-- WhatsApp -->
+                        <div class="col">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text" style="min-width: 60px; text-align: center;">https://wa.me/</span>
+                                <input type="text" id="Whatsapp" class="form-control" placeholder="WhatsApp" @bind="NuevaPersona.Contacto.WhatsAppURL">
+                                <button class="btn btn-outline-secondary" type="button" id="btnAgregarWP" @onclick="CopiarCelularAWP">Usar celular</button>
+                            </div>
+                        </div>
+                        <!-- Comentarios extra -->
+                        <div class="col">
+                            <div class="form-floating mb-2">
+                                <textarea class="form-control" id="contactoComentarios" placeholder="" @bind="NuevaPersona.Contacto.Observaciones"></textarea>
+                                <label for="contactoComentarios">Comentarios</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -269,10 +291,10 @@
 
 @code {
     private Persona NuevaPersona { get; set; } = new Persona()
-    {
-        Direccion = new DireccionPersona(),
-        FechaNacimiento = DateTime.Today
-    };
+        {
+            Direccion = new DireccionPersona(),
+            FechaNacimiento = DateTime.Today
+        };
 
     private bool IsLoading { get; set; } = false;
     private EditContext EditContext { get; set; }
@@ -281,6 +303,14 @@
     private List<Pais> Paises = new();
     private List<Departamento> Departamentos = new();
     private List<Localidad> Localidades = new();
+
+    private const string PrefixNum = "+598";
+    private const string WpURL = "https://wa.me/";
+
+    private string? CorreoP1;
+    private string? CorreoP2;
+    private string? CorreoAltP1;
+    private string? CorreoAltP2;
 
     private int? selectedPaisId;
     private int? SelectedPaisId
@@ -421,6 +451,12 @@
         }
     }
 
+    private async Task AbrirModalContacto()
+    {
+        await JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
+        await Task.Delay(200);
+        await JSRuntime.InvokeVoidAsync("showModal", "addContactModal");
+    }
 
     private async Task AbrirModalDireccion()
     {
@@ -432,6 +468,7 @@
     private async void VolverAlModalPersona()
     {
         await JSRuntime.InvokeVoidAsync("closeModal", "addAddressModal");
+        await JSRuntime.InvokeVoidAsync("closeModal", "addContactModal");
         await Task.Delay(200);
         await JSRuntime.InvokeVoidAsync("showModal", "addPersonModal");
     }
@@ -454,15 +491,16 @@
     private InfoCreditoPersona MapearPersona(Persona persona)
     {
         return new InfoCreditoPersona
-        {
-            Documento = persona.NroDocumento ?? 0,
-            PrimerNombre = persona.Nombre1,
-            SegundoNombre = persona.Nombre2,
-            PrimerApellido = persona.Apellido1,
-            SegundoApellido = persona.Apellido2,
-            FechaNacimiento = persona.FechaNacimiento,
-            Direccion = MapearDireccion(persona.Direccion)
-        };
+            {
+                Documento = persona.NroDocumento ?? 0,
+                PrimerNombre = persona.Nombre1,
+                SegundoNombre = persona.Nombre2,
+                PrimerApellido = persona.Apellido1,
+                SegundoApellido = persona.Apellido2,
+                FechaNacimiento = persona.FechaNacimiento,
+                Direccion = MapearDireccion(persona.Direccion),
+                Contacto = MapearContacto(persona.Contacto)
+            };
     }
 
     private InfoCreditoDireccionPersona MapearDireccion(DireccionPersona direccion)
@@ -472,20 +510,42 @@
         if (localidad == null)
         {
             localidad = new Localidad
-            {
-                IdLocalidad = 0,
-                NombreLocalidad = direccion.BarrioLocalidad ?? string.Empty
-            };
+                {
+                    IdLocalidad = 0,
+                    NombreLocalidad = direccion.BarrioLocalidad ?? string.Empty
+                };
         }
 
         return new InfoCreditoDireccionPersona
+            {
+                Localidad = localidad,
+                Calle = direccion.Calle,
+                Numero = int.TryParse(direccion.NumeroPuerta, out var n) ? n : 0,
+                Manzana = int.TryParse(direccion.Manzana, out var m) ? m : 0,
+                Solar = int.TryParse(direccion.Solar, out var s) ? s : 0,
+                Observaciones = direccion.Observaciones
+            };
+    }
+
+    private void CopiarCelularAWP()
+    {
+        NuevaPersona.Contacto.WhatsAppURL = $"{PrefixNum}{NuevaPersona.Contacto.Celular}";
+        StateHasChanged();
+    }
+
+    private InfoCreditoContactoPersona MapearContacto(ContactoPersona contacto)
+    {
+        contacto.CorreoElectronico = !string.IsNullOrEmpty(CorreoP1) ? $"{CorreoP1}@{CorreoP2}" : null;
+        contacto.CorreoElectronicoAlt = !string.IsNullOrEmpty(CorreoAltP1) ? $"{CorreoAltP1}@{CorreoAltP2}" : null;
+        contacto.WhatsAppURL = !string.IsNullOrEmpty(contacto.WhatsAppURL) ? $"{WpURL}{contacto.WhatsAppURL}" : null;
+        return new InfoCreditoContactoPersona
         {
-            Localidad = localidad,
-            Calle = direccion.Calle,
-            Numero = int.TryParse(direccion.NumeroPuerta, out var n) ? n : 0,
-            Manzana = int.TryParse(direccion.Manzana, out var m) ? m : 0,
-            Solar = int.TryParse(direccion.Solar, out var s) ? s : 0,
-            Observaciones = direccion.Observaciones
+            CorreoElectronico = contacto.CorreoElectronico,
+            CorreoElectronicoAlt = contacto.CorreoElectronicoAlt,
+            TelMovil = !string.IsNullOrEmpty(contacto.Celular) ? $"{PrefixNum}{contacto.Celular}" : null,
+            TelFijo = !string.IsNullOrEmpty(contacto.TelFijo) ? $"{PrefixNum}{contacto.TelFijo}" : null,
+            WhatsAppURL = contacto.WhatsAppURL,
+            Observaciones = contacto.Observaciones
         };
     }
 }

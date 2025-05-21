@@ -8,6 +8,7 @@
         public required string PrimerApellido { get; set; }
         public required string SegundoApellido { get; set; }
         public required InfoCreditoDireccionPersona Direccion { get; set; }
+        public required InfoCreditoContactoPersona Contacto { get; set; }
         public required DateTime FechaNacimiento { get; set; }
     }
 }
