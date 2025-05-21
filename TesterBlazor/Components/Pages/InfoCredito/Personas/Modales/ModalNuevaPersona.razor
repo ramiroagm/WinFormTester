@@ -18,7 +18,8 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInput" placeholder=""
                         @bind="NuevaPersona.NroDocumento"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                        disabled="@DocumentoDeshabilitado" />
                         <label for="personaDocumento">Documento</label>
                         <ValidationMessage For="@(() => NuevaPersona.NroDocumento)" />
                     </div>
@@ -67,8 +68,13 @@
                         <InputDate @bind-Value="NuevaPersona.FechaNacimiento" class="form-control" id="floatingDate" />
                         <label for="floatingDate">Fecha nacimiento</label>
                         <ValidationMessage For="@(() => NuevaPersona.FechaNacimiento)" />
-                        <button type="button" class="btn btn-outline-primary ms-3" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+
+                        <!-- Botón para agregar dirección -->
+                        <button type="button" class="btn btn-outline-primary ms-3" @onclick="AbrirModalDireccion">
                             Agregar Dirección
+                        </button>
+                        <button type="button" class="btn btn-outline-success ms-3" @onclick="AbrirModalDireccion">
+                            Agregar Contacto
                         </button>
                     </div>
                 </div>
@@ -182,7 +188,56 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Continuar</button>
+                    <button type="button" class="btn btn-primary" @onclick="VolverAlModalPersona">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal agregar contacto TODO BASADO EN ESTE MODAL -->
+    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAddressModalLabel">Agregar Dirección</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="VolverAlModalPersona"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="direccionNumeroPuerta" placeholder="" @bind="NuevaPersona.Direccion.NumeroPuerta">
+                                <label for="direccionNumeroPuerta">Correo electrónico</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="direccionNumeroApartamento" placeholder="" @bind="NuevaPersona.Direccion.NumeroApartamento">
+                                <label for="direccionNumeroApartamento">Número de Apartamento</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="direccionManzana" placeholder="" @bind="NuevaPersona.Direccion.Manzana">
+                                <label for="direccionManzana">Manzana</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="direccionSolar" placeholder="" @bind="NuevaPersona.Direccion.Solar">
+                                <label for="direccionSolar">Solar</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="direccionComentarios" placeholder="" @bind="NuevaPersona.Direccion.Observaciones"></textarea>
+                        <label for="direccionComentarios">Comentarios</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @onclick="VolverAlModalPersona">Continuar</button>
                 </div>
             </div>
         </div>
@@ -207,12 +262,12 @@
             </div>
         </div>
     }
-    </EditForm>
+</EditForm>
 
-    <ModalPersonaOk />
-    <ModalPersonaFail />
+<ModalPersonaOk />
+<ModalPersonaFail />
 
-    @code {
+@code {
     private Persona NuevaPersona { get; set; } = new Persona()
     {
         Direccion = new DireccionPersona(),
@@ -282,6 +337,28 @@
         Paises = await Utils.ObtenerPaises();
     }
 
+    private bool DocumentoDeshabilitado { get; set; }
+    public async Task ShowAsync(string? documento)
+    {
+        if (int.TryParse(documento, out var nro))
+        {
+            NuevaPersona.NroDocumento = nro;
+            DocumentoDeshabilitado = true;
+        }
+        else
+        {
+            NuevaPersona.NroDocumento = null;
+            DocumentoDeshabilitado = false;
+        }
+
+        EditContext = new EditContext(NuevaPersona);
+
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(50);
+        await JSRuntime.InvokeVoidAsync("showModal", "addPersonModal");
+    }
+
+
     private async Task OnPaisChanged()
     {
         Departamentos = SelectedPaisId.HasValue ? await Utils.ObtenerDepartamentos(SelectedPaisId.Value) : new();
@@ -328,27 +405,51 @@
 
             await JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
             if (result)
-            {   
+            {
                 await JSRuntime.InvokeVoidAsync("showModal", "successModal");
-                await InvokeAsync(StateHasChanged);
             }
             else
             {
                 await JSRuntime.InvokeVoidAsync("showModal", "errorModal");
-                await InvokeAsync(StateHasChanged);
             }
+            LimpiarFormulario();
+            await InvokeAsync(StateHasChanged);
         }
-        finally 
+        finally
         {
             IsLoading = false;
         }
     }
 
-    private void VolverAlModalPersona()
+
+    private async Task AbrirModalDireccion()
     {
-        JSRuntime.InvokeVoidAsync("closeModal", "addAddressModal");
-        JSRuntime.InvokeVoidAsync("showModal", "addPersonModal");
+        await JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
+        await Task.Delay(200);
+        await JSRuntime.InvokeVoidAsync("showModal", "addAddressModal");
     }
+
+    private async void VolverAlModalPersona()
+    {
+        await JSRuntime.InvokeVoidAsync("closeModal", "addAddressModal");
+        await Task.Delay(200);
+        await JSRuntime.InvokeVoidAsync("showModal", "addPersonModal");
+    }
+
+    private void LimpiarFormulario()
+    {
+        NuevaPersona = new Persona
+            {
+                Direccion = new DireccionPersona(),
+                FechaNacimiento = DateTime.Today
+            };
+        DocumentoDeshabilitado = false;
+        SelectedPaisId = null;
+        SelectedDepartamentoId = null;
+        SelectedLocalidadId = null;
+        EditContext = new EditContext(NuevaPersona);
+    }
+
 
     private InfoCreditoPersona MapearPersona(Persona persona)
     {

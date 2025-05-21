@@ -113,3 +113,37 @@ INSERT INTO Localidades (Nombre, IdDepartamento) VALUES
 -- PARA RELACIONES
 INSERT INTO Relacion (Nombre) VALUES 
 ('Amigos'), ('Compañeros'), ('Familia'), ('Novios');
+
+-- TRIGGER
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Ramiro Gallo
+-- Create date: 21/05/2025
+-- Description:	Genera un insert cuando para una actualización
+-- =============================================
+CREATE TRIGGER trg_UpdateInsertInfoCredito
+ON [MemitoDB].[dbo].[InfoCredito_Personas]
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE p
+    SET p.ACTIVO = 0, p.FECHA_ACTUALIZACION = GETDATE()
+    FROM [MemitoDB].[dbo].[InfoCredito_Personas] p
+    INNER JOIN INSERTED i ON p.DOCUMENTO = i.DOCUMENTO
+    WHERE p.ACTIVO = 1;
+
+    INSERT INTO [MemitoDB].[dbo].[InfoCredito_Personas] (
+        DOCUMENTO, PRIMER_NOMBRE, SEGUNDO_NOMBRE, PRIMER_APELLIDO, 
+        SEGUNDO_APELLIDO, ID_DIRECCION, FECHA_NACIMIENTO, ACTIVO, FECHA_ACTUALIZACION
+    )
+    SELECT 
+        i.DOCUMENTO, i.PRIMER_NOMBRE, i.SEGUNDO_NOMBRE, i.PRIMER_APELLIDO, 
+        i.SEGUNDO_APELLIDO, i.ID_DIRECCION, i.FECHA_NACIMIENTO,
+        1,
+        GETDATE()
+    FROM INSERTED i;
+END;

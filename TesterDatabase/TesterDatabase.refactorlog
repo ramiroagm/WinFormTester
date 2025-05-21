@@ -294,4 +294,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="IdPais" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="d1145e3e-f8d7-4285-90b3-9b2402bcd82a" ChangeDateTime="05/21/2025 06:17:09">
+    <Property Name="ElementName" Value="[dbo].[InfoCredito_Contactos].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InfoCredito_Contactos]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID_CONTACTO" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e376e478-4b73-4a7a-8979-887b1069d531" ChangeDateTime="05/21/2025 06:17:40">
+    <Property Name="ElementName" Value="[dbo].[InfoCredito_Contactos].[ID_]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InfoCredito_Contactos]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TEL_MOVIL" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9b15ffb0-4a38-46de-b3b9-3e0d344d5469" ChangeDateTime="05/21/2025 06:18:14">
+    <Property Name="ElementName" Value="[dbo].[InfoCredito_Contactos].[CORREO_ELECTRONICO_1]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InfoCredito_Contactos]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CORREO_ELECTRONICO" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1ac360ab-1bfc-4d12-9c91-1f0d00fa6b98" ChangeDateTime="05/21/2025 06:19:01">
+    <Property Name="ElementName" Value="[dbo].[InfoCredito_Contactos].[WHATSAPP]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InfoCredito_Contactos]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="WHATSAPP_URL" />
+  </Operation>
 </Operations>

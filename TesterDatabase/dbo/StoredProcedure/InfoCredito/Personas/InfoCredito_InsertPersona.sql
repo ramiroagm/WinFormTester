@@ -13,7 +13,15 @@
     @MANZANA INT,
     @SOLAR INT,
     @FECHA_NACIMIENTO DATE,
-    @OBSERVACIONES NVARCHAR(MAX) = NULL
+    @OBSERVACIONES NVARCHAR(MAX) = NULL,
+
+    -- Parámetros del contacto
+    @TEL_MOVIL NVARCHAR(MAX) = NULL,
+    @TEL_FIJO NVARCHAR(MAX) = NULL,
+    @CORREO_ELECTRONICO NVARCHAR(MAX) = NULL,
+    @CORREO_ELECTRONICO_ALT NVARCHAR(MAX) = NULL,
+    @WHATSAPP_URL NVARCHAR(MAX) = NULL,
+    @OBSERVACIONES_CONTACTO NVARCHAR(MAX) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -38,6 +46,26 @@ BEGIN
 
     DECLARE @NEW_ID_DIRECCION INT = SCOPE_IDENTITY();
 
+    -- Insertar dirección
+    INSERT INTO [dbo].[InfoCredito_Contactos] (
+        [TEL_MOVIL],
+        [TEL_FIJO],
+        [CORREO_ELECTRONICO],
+        [CORREO_ELECTRONICO_ALT],
+        [WHATSAPP_URL],
+        [OBSERVACIONES]
+    )
+    VALUES (
+        @TEL_MOVIL,
+        @TEL_FIJO,
+        @CORREO_ELECTRONICO,
+        @CORREO_ELECTRONICO_ALT,
+        @WHATSAPP_URL,
+        @OBSERVACIONES_CONTACTO
+    );
+
+    DECLARE @NEW_ID_CONTACTO INT = SCOPE_IDENTITY();
+
     -- Insertar persona
     INSERT INTO [dbo].[InfoCredito_Personas] (
         [DOCUMENTO],
@@ -46,7 +74,9 @@ BEGIN
         [PRIMER_APELLIDO],
         [SEGUNDO_APELLIDO],
         [ID_DIRECCION],
-        [FECHA_NACIMIENTO]
+        [FECHA_NACIMIENTO],
+        [FECHA_ACTUALIZACION],
+        [ID_CONTACTO]
     )
     VALUES (
         @DOCUMENTO,
@@ -55,6 +85,8 @@ BEGIN
         @PRIMER_APELLIDO,
         @SEGUNDO_APELLIDO,
         @NEW_ID_DIRECCION,
-        @FECHA_NACIMIENTO
+        @FECHA_NACIMIENTO,
+        GETDATE(),
+        @NEW_ID_CONTACTO
     );
 END

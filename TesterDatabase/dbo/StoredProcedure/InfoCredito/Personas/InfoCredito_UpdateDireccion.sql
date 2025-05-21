@@ -1,0 +1,20 @@
+﻿CREATE PROCEDURE [dbo].[InfoCredito_UpdateDireccion]
+    @ID_DIRECCION INT,
+    @ID_LOCALIDAD INT,
+    @CALLE NVARCHAR(MAX) = NULL,
+    @NUMERO INT,
+    @MANZANA INT,
+    @SOLAR INT,
+    @OBSERVACIONES NVARCHAR(MAX) = NULL
+AS
+BEGIN
+    UPDATE [dbo].[InfoCredito_Direcciones]
+    SET
+        [ID_LOCALIDAD] = @ID_LOCALIDAD,
+        [CALLE] = @CALLE,
+        [NUMERO] = @NUMERO,
+        [MANZANA] = @MANZANA,
+        [SOLAR] = @SOLAR,
+        [OBSERVACIONES] = @OBSERVACIONES
+    WHERE [ID_DIRECCION] = @ID_DIRECCION;
+END

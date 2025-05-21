@@ -17,6 +17,7 @@
                                 <th>Nombres</th>
                                 <th>Apellidos</th>
                                 <th>Fecha Nacimiento</th>
+                                <th>Persona</th>
                                 <th>Nucleo</th>
                             </tr>
                         </thead>
@@ -26,6 +27,7 @@
                                 <td>@Persona.PrimerNombre @Persona.SegundoNombre</td>
                                 <td>@Persona.PrimerApellido @Persona.SegundoApellido</td>
                                 <td>@Persona.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                                <td><button type="button" class="btn btn-sm btn-outline-info">Editar</button></td>
                                 <td><button type="button" class="btn btn-sm btn-outline-secondary">Ver</button>
                                     <button type="button" class="btn btn-sm btn-outline-success">Agregar</button>
                                 </td>
@@ -62,7 +64,7 @@
                                 </p>
                             </div>
                             <div class="card-footer text-muted">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPersonModal">
+                                <button type="button" class="btn btn-primary" @onclick="AbrirModalNuevaPersona">
                                     Agregar Persona
                                 </button>
                             </div>
@@ -78,12 +80,13 @@
 </div>
 
 <!-- Modales para agregar persona -->
-<TesterBlazor.Components.Pages.InfoCredito.Personas.Modales.ModalNuevaPersona />
+<TesterBlazor.Components.Pages.InfoCredito.Personas.Modales.ModalNuevaPersona @ref="ModalNuevaPersonaRef"/>
 
 @code {
 
     [Parameter] public InfoCreditoPersona? Persona { get; set; }
     [Parameter] public string? DocumentoBusqueda { get; set; }
+    private ModalNuevaPersona? ModalNuevaPersonaRef;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -92,6 +95,13 @@
             await JSRuntime.InvokeVoidAsync("initializeModals");
             await JSRuntime.InvokeVoidAsync("initializeModalEvents");
         }
+    }
+
+    private async Task AbrirModalNuevaPersona()
+    {
+        await JSRuntime.InvokeVoidAsync("closeModal", "resultadoBusquedaPersonaModal");
+        await Task.Delay(200);
+        await ModalNuevaPersonaRef?.ShowAsync(DocumentoBusqueda);
     }
 
     public async Task ShowAsync()
