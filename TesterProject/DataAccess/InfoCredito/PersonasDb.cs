@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using TesterProject.BusinessEntities.InfoCredito;
 using TesterProject.BusinessEntities.Utils;
 
@@ -46,72 +47,79 @@ namespace TesterProject.DataAccess.InfoCredito
 
         public static async Task<List<InfoCreditoPersona>> ObtenerPersonas(int? documento = null)
         {
-            List<InfoCreditoPersona> personas = [];
-
-            // Se utiliza el llamado asyncrono de secret manager para evitar bloqueos desde Blazor
-            string? _connectionString = await GetConnectionStringAsync();
-            using SqlConnection connection = new(_connectionString);
-            SqlCommand command = new("InfoCredito_GetPersona", connection)
+            try
             {
-                CommandType = System.Data.CommandType.StoredProcedure
-            };
+                List<InfoCreditoPersona> personas = [];
 
-            AddParameter(command, "@DOCUMENTO", documento);
-            connection.Open();
-            SqlDataReader reader = await command.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                Pais? pais = new()
+                // Se utiliza el llamado asyncrono de secret manager para evitar bloqueos desde Blazor
+                string? _connectionString = await GetConnectionStringAsync();
+                using SqlConnection connection = new(_connectionString);
+                SqlCommand command = new("InfoCredito_GetPersona", connection)
                 {
-                    NombrePais = reader["NombrePais"]?.ToString() ?? string.Empty
+                    CommandType = System.Data.CommandType.StoredProcedure
                 };
 
-                Departamento? departamento = new()
-                {
-                    NombreDepartamento = reader["NombreDepartamento"]?.ToString() ?? string.Empty,
-                    Pais = pais
-                };
+                AddParameter(command, "@DOCUMENTO", documento);
+                connection.Open();
+                SqlDataReader reader = await command.ExecuteReaderAsync();
 
-                Localidad? localidad = new()
+                while (await reader.ReadAsync())
                 {
-                    NombreLocalidad = reader["NombreLocalidad"]?.ToString() ?? string.Empty,
-                    Departamento = departamento
-                };
+                    Pais? pais = new()
+                    {
+                        NombrePais = reader["NombrePais"]?.ToString() ?? string.Empty
+                    };
 
-                InfoCreditoDireccionPersona? direccion = new()
-                {
-                    IdDireccion = Convert.ToInt32(reader["ID_DIRECCION"]),
-                    Calle = reader["CALLE"]?.ToString() ?? string.Empty,
-                    Numero = reader["NUMERO"] != DBNull.Value ? Convert.ToInt32(reader["NUMERO"]) : 0,
-                    Manzana = reader["MANZANA"] != DBNull.Value ? Convert.ToInt32(reader["MANZANA"]) : 0,
-                    Solar = reader["SOLAR"] != DBNull.Value ? Convert.ToInt32(reader["SOLAR"]) : 0,
-                    Localidad = localidad
-                };
+                    Departamento? departamento = new()
+                    {
+                        NombreDepartamento = reader["NombreDepartamento"]?.ToString() ?? string.Empty,
+                        Pais = pais
+                    };
 
-                InfoCreditoContactoPersona? contacto = new()
-                {
-                    TelMovil = reader["TEL_MOVIL"]?.ToString() ?? string.Empty,
-                    TelFijo = reader["TEL_FIJO"]?.ToString() ?? string.Empty,
-                    CorreoElectronico = reader["CORREO_ELECTRONICO"]?.ToString() ?? string.Empty,
-                    CorreoElectronicoAlt = reader["CORREO_ELECTRONICO_ALT"]?.ToString() ?? string.Empty,
-                    WhatsAppURL = reader["WHATSAPP_URL"]?.ToString() ?? string.Empty,
-                    Observaciones = reader["OBSERVACIONES_CONTACTO"]?.ToString() ?? string.Empty
-                };
+                    Localidad? localidad = new()
+                    {
+                        NombreLocalidad = reader["NombreLocalidad"]?.ToString() ?? string.Empty,
+                        Departamento = departamento
+                    };
 
-                personas.Add(new InfoCreditoPersona
-                {
-                    Documento = Convert.ToInt32(reader["DOCUMENTO"]),
-                    PrimerNombre = reader["PRIMER_NOMBRE"]?.ToString() ?? string.Empty,
-                    SegundoNombre = reader["SEGUNDO_NOMBRE"] as string ?? string.Empty,
-                    PrimerApellido = reader["PRIMER_APELLIDO"]?.ToString() ?? string.Empty,
-                    SegundoApellido = reader["SEGUNDO_APELLIDO"] as string ?? string.Empty,
-                    FechaNacimiento = Convert.ToDateTime(reader["FECHA_NACIMIENTO"]),
-                    Direccion = direccion,
-                    Contacto = contacto
-                });
+                    InfoCreditoDireccionPersona? direccion = new()
+                    {
+                        IdDireccion = Convert.ToInt32(reader["ID_DIRECCION"]),
+                        Calle = reader["CALLE"]?.ToString() ?? string.Empty,
+                        Numero = reader["NUMERO"] != DBNull.Value ? Convert.ToInt32(reader["NUMERO"]) : 0,
+                        Manzana = reader["MANZANA"] != DBNull.Value ? Convert.ToInt32(reader["MANZANA"]) : 0,
+                        Solar = reader["SOLAR"] != DBNull.Value ? Convert.ToInt32(reader["SOLAR"]) : 0,
+                        Localidad = localidad
+                    };
+
+                    InfoCreditoContactoPersona? contacto = new()
+                    {
+                        TelMovil = reader["TEL_MOVIL"]?.ToString() ?? string.Empty,
+                        TelFijo = reader["TEL_FIJO"]?.ToString() ?? string.Empty,
+                        CorreoElectronico = reader["CORREO_ELECTRONICO"]?.ToString() ?? string.Empty,
+                        CorreoElectronicoAlt = reader["CORREO_ELECTRONICO_ALT"]?.ToString() ?? string.Empty,
+                        WhatsAppURL = reader["WHATSAPP_URL"]?.ToString() ?? string.Empty,
+                        Observaciones = reader["OBSERVACIONES"]?.ToString() ?? string.Empty
+                    };
+
+                    personas.Add(new InfoCreditoPersona
+                    {
+                        Documento = Convert.ToInt32(reader["DOCUMENTO"]),
+                        PrimerNombre = reader["PRIMER_NOMBRE"]?.ToString() ?? string.Empty,
+                        SegundoNombre = reader["SEGUNDO_NOMBRE"] as string ?? string.Empty,
+                        PrimerApellido = reader["PRIMER_APELLIDO"]?.ToString() ?? string.Empty,
+                        SegundoApellido = reader["SEGUNDO_APELLIDO"] as string ?? string.Empty,
+                        FechaNacimiento = Convert.ToDateTime(reader["FECHA_NACIMIENTO"]),
+                        Direccion = direccion,
+                        Contacto = contacto
+                    });
+                }
+                return personas;
             }
-            return personas;
+            catch
+            {
+                throw new Exception();
+            }
         }
 
         private static void AddParameter(SqlCommand command, string parameterName, object? value)

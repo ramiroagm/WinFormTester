@@ -26,6 +26,13 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    IF EXISTS (SELECT 1 FROM dbo.InfoCredito_Personas WHERE DOCUMENTO = @DOCUMENTO)
+    BEGIN
+        UPDATE dbo.InfoCredito_Personas
+        SET ACTIVO = 0, FECHA_ACTUALIZACION = GETDATE()
+        WHERE DOCUMENTO = @DOCUMENTO AND ACTIVO = 1;
+    END
+
     -- Insertar dirección
     INSERT INTO [dbo].[InfoCredito_Direcciones] (
         [ID_LOCALIDAD],
@@ -75,6 +82,7 @@ BEGIN
         [SEGUNDO_APELLIDO],
         [ID_DIRECCION],
         [FECHA_NACIMIENTO],
+        [ACTIVO],
         [FECHA_ACTUALIZACION],
         [ID_CONTACTO]
     )
@@ -86,7 +94,9 @@ BEGIN
         @SEGUNDO_APELLIDO,
         @NEW_ID_DIRECCION,
         @FECHA_NACIMIENTO,
+        1, -- Siempre activo para la nueva versión
         GETDATE(),
         @NEW_ID_CONTACTO
     );
+
 END

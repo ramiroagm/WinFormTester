@@ -23,7 +23,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>Modern_Spanish_CI_AS</DefaultCollation>
-    <AnsiNulls>False</AnsiNulls>
+    <AnsiNulls>True</AnsiNulls>
     <QuotedIdentifier>False</QuotedIdentifier>
     <IsLedgerOn>False</IsLedgerOn>
     <QueryStoreCaptureMode>Auto</QueryStoreCaptureMode>
@@ -150,7 +150,9 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <PostDeploy Include="Scripts\Telegram\Telegram_InsertMessageType.sql" />
-    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Personas.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Personas.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
     <Build Include="dbo\Tables\InfoCredito\InfoCredito_Direcciones.sql" />
     <Build Include="dbo\Tables\InfoCredito\InfoCredito_Nucleos.sql" />
     <Build Include="dbo\Tables\Utils\Paises.sql" />
@@ -160,7 +162,9 @@
     <Build Include="dbo\Tables\InfoCredito\InfoCredito_Deudas.sql" />
     <Build Include="dbo\Tables\InfoCredito\InfoCredito_Ofertas.sql" />
     <Build Include="dbo\Tables\Utils\Relacion.sql" />
-    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCredito_InsertPersona.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCredito_InsertPersona.sql">
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
     <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCreditos_GetPersona.sql" />
     <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_InsertNucleo.sql" />
     <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleo.sql" />

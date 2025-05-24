@@ -27,8 +27,21 @@
                                 <td>@Persona.PrimerNombre @Persona.SegundoNombre</td>
                                 <td>@Persona.PrimerApellido @Persona.SegundoApellido</td>
                                 <td>@Persona.FechaNacimiento.ToString("dd/MM/yyyy")</td>
-                                <td><button type="button" class="btn btn-sm btn-outline-info">Editar</button></td>
-                                <td><button type="button" class="btn btn-sm btn-outline-secondary">Ver</button>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-info" @onclick="EditarPersona" disabled="@IsEditLoading">
+                                        @if (IsEditLoading)
+                                        {
+                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Cargando...</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Editar</span>
+                                        }
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Ver</button>
                                     <button type="button" class="btn btn-sm btn-outline-success">Agregar</button>
                                 </td>
                             </tr>
@@ -88,6 +101,8 @@
     [Parameter] public string? DocumentoBusqueda { get; set; }
     private ModalNuevaPersona? ModalNuevaPersonaRef;
 
+    private bool IsEditLoading { get; set; } = false;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -107,6 +122,20 @@
     public async Task ShowAsync()
     {
         await JSRuntime.InvokeVoidAsync("showModal", "resultadoBusquedaPersonaModal");
+        StateHasChanged();
+    }
+
+    private async Task EditarPersona()
+    {
+        IsEditLoading = true;
+        StateHasChanged();
+
+        await JSRuntime.InvokeVoidAsync("closeModal", "resultadoBusquedaPersonaModal");
+        await Task.Delay(200);
+        if (Persona is not null)
+            await ModalNuevaPersonaRef?.ShowAsync(Persona);
+
+        IsEditLoading = false;
         StateHasChanged();
     }
 }

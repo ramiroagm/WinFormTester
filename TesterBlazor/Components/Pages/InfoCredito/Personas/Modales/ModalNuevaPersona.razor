@@ -388,6 +388,117 @@
         await JSRuntime.InvokeVoidAsync("showModal", "addPersonModal");
     }
 
+    public async Task ShowAsync(InfoCreditoPersona persona)
+    {
+        if (persona is null)
+            return;
+
+        // Mapear InfoCreditoPersona a Persona (modelo de edición)
+        NuevaPersona = new Persona
+        {
+            NroDocumento = persona.Documento,
+            Nombre1 = persona.PrimerNombre,
+            Nombre2 = persona.SegundoNombre,
+            Apellido1 = persona.PrimerApellido,
+            Apellido2 = persona.SegundoApellido,
+            FechaNacimiento = persona.FechaNacimiento,
+            Direccion = new DireccionPersona
+            {
+                Pais = persona.Direccion?.Localidad?.Departamento?.Pais?.NombrePais,
+                Ciudad = persona.Direccion?.Localidad?.Departamento?.NombreDepartamento,
+                BarrioLocalidad = persona.Direccion?.Localidad?.NombreLocalidad,
+                Calle = persona.Direccion?.Calle,
+                NumeroPuerta = persona.Direccion?.Numero > 0 ? persona.Direccion.Numero.ToString() : null,
+                Manzana = persona.Direccion?.Manzana > 0 ? persona.Direccion.Manzana.ToString() : null,
+                Solar = persona.Direccion?.Solar > 0 ? persona.Direccion.Solar.ToString() : null,
+                Observaciones = persona.Direccion?.Observaciones
+            },
+            Contacto = new ContactoPersona
+            {
+                Celular = persona.Contacto?.TelMovil?.Replace(PrefixNum, ""),
+                TelFijo = persona.Contacto?.TelFijo?.Replace(PrefixNum, ""),
+                Observaciones = persona.Contacto?.Observaciones
+            }
+        };
+
+        SelectedPaisId = null;
+        SelectedDepartamentoId = null;
+        SelectedLocalidadId = null;
+
+        if (persona.Direccion?.Localidad != null)
+        {
+            // Buscar el país
+            var pais = Paises.FirstOrDefault(p => p.NombrePais == persona.Direccion.Localidad.Departamento?.Pais?.NombrePais);
+            if (pais != null)
+            {
+                SelectedPaisId = pais.IdPais;
+                Departamentos = await Utils.ObtenerDepartamentos(pais.IdPais);
+
+                // Buscar el departamento
+                var departamento = Departamentos.FirstOrDefault(d => d.NombreDepartamento == persona.Direccion.Localidad.Departamento?.NombreDepartamento);
+                if (departamento != null)
+                {
+                    SelectedDepartamentoId = departamento.IdDepartamento;
+                    Localidades = await Utils.ObtenerLocalidades(departamento.IdDepartamento);
+
+                    // Buscar la localidad
+                    var localidad = Localidades.FirstOrDefault(l => l.NombreLocalidad == persona.Direccion.Localidad.NombreLocalidad);
+                    if (localidad != null)
+                    {
+                        SelectedLocalidadId = localidad.IdLocalidad;
+                    }
+                }
+            }
+        }
+
+        // Cargar correos y WhatsApp
+        if (!string.IsNullOrEmpty(persona.Contacto?.CorreoElectronico))
+        {
+            var parts = persona.Contacto.CorreoElectronico.Split('@');
+            if (parts.Length == 2)
+            {
+                CorreoP1 = parts[0];
+                CorreoP2 = parts[1];
+            }
+        }
+        else
+        {
+            CorreoP1 = null;
+            CorreoP2 = null;
+        }
+
+        if (!string.IsNullOrEmpty(persona.Contacto?.CorreoElectronicoAlt))
+        {
+            var parts = persona.Contacto.CorreoElectronicoAlt.Split('@');
+            if (parts.Length == 2)
+            {
+                CorreoAltP1 = parts[0];
+                CorreoAltP2 = parts[1];
+            }
+        }
+        else
+        {
+            CorreoAltP1 = null;
+            CorreoAltP2 = null;
+        }
+
+        // WhatsApp: quitar prefijo si existe
+        if (!string.IsNullOrEmpty(persona.Contacto?.WhatsAppURL))
+        {
+            NuevaPersona.Contacto.WhatsAppURL = persona.Contacto.WhatsAppURL.Replace(WpURL, "").Replace(PrefixNum, "");
+        }
+        else
+        {
+            NuevaPersona.Contacto.WhatsAppURL = null;
+        }
+
+        DocumentoDeshabilitado = true;
+        EditContext = new EditContext(NuevaPersona);
+
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(50);
+        await JSRuntime.InvokeVoidAsync("showModal", "addPersonModal");
+    }
 
     private async Task OnPaisChanged()
     {
