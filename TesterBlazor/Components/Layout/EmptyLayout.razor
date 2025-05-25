@@ -1,0 +1,45 @@
+﻿@inherits LayoutComponentBase
+
+<!-- Mobirise & landing styles -->
+<link rel="stylesheet" href="assets/animatecss/animate.css" />
+<link rel="stylesheet" href="assets/theme/css/style.css" />
+<link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css" />
+<link rel="stylesheet" href="assets/web/assets/mobirise-icons-bold/mobirise-icons-bold.css" />
+<link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css" />
+<link rel="stylesheet" href="assets/dropdown/css/style.css" />
+<link rel="stylesheet" href="assets/socicon/css/styles.css" />
+<link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" />
+<link rel="stylesheet" href="assets/tether/tether.min.css" />
+<link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css" />
+
+<!-- Mobirise & landing scripts -->
+<script src="assets/web/assets/jquery/jquery.min.js"></script>
+<script src="assets/popper/popper.min.js"></script>
+<script src="assets/tether/tether.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/smoothscroll/smooth-scroll.js"></script>
+<script src="assets/viewportchecker/jquery.viewportchecker.js"></script>
+<script src="assets/dropdown/js/nav-dropdown.js"></script>
+<script src="assets/dropdown/js/navbar-dropdown.js"></script>
+<script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
+<script src="assets/mbr-switch-arrow/mbr-switch-arrow.js"></script>
+<script src="assets/mbr-tabs/mbr-tabs.js"></script>
+<script src="assets/theme/js/script.js"></script>
+
+<div class="page">
+    <div class="content">
+        @Body
+    </div>
+</div>
+
+<!-- Inicialización de tabs para Mobirise/Bootstrap -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (typeof $ !== "undefined" && typeof $.fn.tab === "function") {
+            $('.nav-tabs a').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        }
+    });
+</script>
