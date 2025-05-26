@@ -1,7 +1,7 @@
 ﻿@layout EmptyLayout
 @page "/"
 
-<script>
+@* <script>
     // Si no estamos en la primera carga (SPA), forzar recarga completa
     if (window.Blazor && window.history && window.performance && performance.navigation.type === 1) {
         // Es recarga, no hacer nada
@@ -11,7 +11,7 @@
         // Es navegación SPA, forzar recarga
         window.location.reload();
     }
-</script>
+</script> *@
 
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <section class="menu menu2 cid-uHhBVF5BD5" once="menu" id="menu2-0">
@@ -345,11 +345,13 @@
 
 <section class="contacts2 cid-uHhDycTMoK" id="contacts2-3">
     <div class="container">
+
         <div class="mbr-section-head">
             <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
                 <strong>Contacto</strong>
             </h3>
         </div>
+
         <div class="row justify-content-center mt-4">
             <div class="card col-12 col-md-6">
                 <div class="card-wrapper">
@@ -366,6 +368,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card col-12 col-md-6">
                 <div class="card-wrapper">
                     <div class="image-wrapper">
@@ -381,6 +384,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card col-12 col-md-6">
                 <div class="card-wrapper">
                     <div class="image-wrapper">
@@ -394,6 +398,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card col-12 col-md-6">
                 <div class="card-wrapper">
                     <div class="image-wrapper">
@@ -405,6 +410,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -415,7 +421,7 @@
             <div class="row row-links">
                 <ul class="foot-menu">
                     <li class="foot-menu-item mbr-fonts-style display-7"><a href="#top" class="text-primary">Volver</a></li>
-                    <li class="foot-menu-item mbr-fonts-style display-7"><a href="assets/files/2024-ES-CVRamiroG.pdf" target="_blank"  class="text-primary">Ver C.V.</a></li>
+                    <li class="foot-menu-item mbr-fonts-style display-7"><a href="assets/files/2024-ES-CVRamiroG.pdf" target="_blank" class="text-primary">Ver C.V.</a></li>
                     <li class="foot-menu-item mbr-fonts-style display-7"><a href="https://github.com/ramiroagm" target="_blank" class="text-primary">GitHub</a></li>
                 </ul>
             </div>

@@ -42,6 +42,19 @@
     cursor: default;
 }
 
+.navbar-bot {
+    position: relative;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+    .nav-item.fixed-bottom {
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+    }
+
 .dropdown-menu {
     
 }
