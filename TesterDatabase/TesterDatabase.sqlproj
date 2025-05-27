@@ -24,7 +24,7 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>Modern_Spanish_CI_AS</DefaultCollation>
     <AnsiNulls>True</AnsiNulls>
-    <QuotedIdentifier>False</QuotedIdentifier>
+    <QuotedIdentifier>True</QuotedIdentifier>
     <IsLedgerOn>False</IsLedgerOn>
     <QueryStoreCaptureMode>Auto</QueryStoreCaptureMode>
     <QueryStoreDesiredState>ReadWrite</QueryStoreDesiredState>
@@ -152,28 +152,64 @@
     <PostDeploy Include="Scripts\Telegram\Telegram_InsertMessageType.sql" />
     <Build Include="dbo\Tables\InfoCredito\InfoCredito_Personas.sql">
       <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Direcciones.sql" />
-    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Nucleos.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Direcciones.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Nucleos.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
     <Build Include="dbo\Tables\Utils\Paises.sql" />
     <Build Include="dbo\Tables\Utils\Departamentos.sql" />
     <Build Include="dbo\Tables\Utils\Localidades.sql" />
-    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Creditos.sql" />
-    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Deudas.sql" />
-    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Ofertas.sql" />
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Creditos.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Deudas.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Ofertas.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
     <Build Include="dbo\Tables\Utils\Relacion.sql" />
     <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCredito_InsertPersona.sql">
       <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCreditos_GetPersona.sql" />
-    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_InsertNucleo.sql" />
-    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleo.sql" />
-    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleoPorPers.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCreditos_GetPersona.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_InsertNucleo.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
+    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleo.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_GetNucleoPorPers.sql">
+      <QuotedIdentifier>On</QuotedIdentifier>
+      <AnsiNulls>On</AnsiNulls>
+    </Build>
     <Build Include="dbo\StoredProcedure\Utils\GetPaises.sql" />
     <Build Include="dbo\StoredProcedure\Utils\GetDepartamentosPorPais.sql" />
     <Build Include="dbo\StoredProcedure\Utils\GetLocalidadesPorDepartamento.sql" />
-    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCredito_UpdateDireccion.sql" />
-    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Contactos.sql" />
+    <Build Include="dbo\StoredProcedure\InfoCredito\Personas\InfoCredito_UpdateDireccion.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\Tables\InfoCredito\InfoCredito_Contactos.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="dbo\StoredProcedure\Utils\GetRelaciones.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="TesterDatabase.refactorlog" />

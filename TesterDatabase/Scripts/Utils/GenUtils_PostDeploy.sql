@@ -111,8 +111,8 @@ INSERT INTO Localidades (Nombre, IdDepartamento) VALUES
 ('Araminda', (SELECT IdDepartamento FROM Departamentos WHERE Nombre='Canelones'));
 
 -- PARA RELACIONES
-INSERT INTO Relacion (Nombre) VALUES 
-('Amigos'), ('Compañeros'), ('Familia'), ('Novios');
+INSERT INTO Relacion (IdRelacion, NombreRelacion, Activo) VALUES 
+(0, 'Ninguno', 1), (1, 'Amigos', 1), (2, 'Compañeros', 1), (3, 'Familia', 1), (4, 'Novios', 1);
 
 
 SET ANSI_NULLS ON

@@ -13,8 +13,13 @@ namespace TesterProject.BusinessLogic.InfoCredito.Nucleos
 
         public async Task<List<InfoCreditoPersona>> ObtenerPersonasPorNucleo(int? idNucleo = null, int? documento = null)
         {
-            List<InfoCreditoPersona> personas = await NucleosDb.ObtenerNucleos(idNucleo, documento);
+            List<InfoCreditoPersona> personas = await NucleosDb.ObtenerPersonasPorNucleo(idNucleo, documento);
             return personas;
+        }
+
+        public async Task<List<InfoCreditoNucleo>> ObtenerNucleos(int? idNucleo = null, int? documento = null)
+        {
+            return await NucleosDb.ObtenerNucleo(idNucleo, documento);
         }
     }
 }

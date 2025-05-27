@@ -1,0 +1,124 @@
+﻿@inject INucleos NucleosService
+@inject IUtils Utils
+@inject IJSRuntime JSRuntime
+
+<fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; border-radius: 10px; flex-grow: 1;">
+    <legend>Búsqueda de Nucleo</legend>
+    <div class="d-flex align-items-center">
+        <div class="form-floating flex-grow-1 me-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder=""
+            @bind="NucleoBusqueda"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            <label for="floatingInput">Nucleo por identificador</label>
+        </div>
+        <div class="form-floating flex-grow-1 me-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder=""
+            @bind="PersonaBusqueda"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            <label for="floatingInput">Nucleo por persona</label>
+        </div>
+        <button type="button" class="btn btn-lg btn-outline-success" @onclick="BuscarNucleoAsync" disabled="@IsLoading">
+            @if (IsLoading)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span class="visually-hidden">Buscando...</span>
+            }
+            else
+            {
+                <span>Buscar</span>
+            }
+        </button>
+    </div>
+</fieldset>
+<fieldset style="border: 1px solid #ccc; padding: 10px; margin-left:10px; margin-bottom: 20px; border-radius: 10px; flex-grow: 1;">
+    <legend>O agregue un nuevo <strong>nucleo</strong>...</legend>
+    <div class="form-floating flex-grow-1 me-3">
+        <div class="form-floating mb-3">
+            <select class="form-select"
+                    @bind="SelectedRelacionId">
+                <option value="">Seleccione la relación...</option>
+                @foreach (var relacion in Relaciones)
+                {
+                    <option value="@relacion.IdRelacion">@relacion.DescripcionRelacion</option>
+                }
+            </select>
+            <label for="relacionId">Tipo de relación</label>
+        </div>
+        <button type="button" class="btn btn-lg btn-outline-warning" @onclick="NuevoNucleo">➕ Nuevo nucleo</button>
+    </div>
+</fieldset>
+
+@code {
+    private string? NucleoBusqueda { get; set; }
+    private string? PersonaBusqueda { get; set; }
+    int? nucleoId = null;
+    int? documento = null;
+
+    private TesterProject.BusinessEntities.InfoCredito.InfoCreditoNucleo? NucleoEncontrado { get; set; }
+    // private ModalResultadoBusquedaPersona? ModalResultadoBusquedaPersonaRef;
+
+    private bool IsLoading { get; set; } = false;
+
+    private async Task BuscarNucleoAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            // Se busca por nucleo id o por persona
+            if (!string.IsNullOrWhiteSpace(NucleoBusqueda))
+            {
+                nucleoId = Convert.ToInt32(NucleoBusqueda);
+            }
+
+            if (!string.IsNullOrWhiteSpace(PersonaBusqueda))
+            {
+                documento = Convert.ToInt32(PersonaBusqueda);
+            }
+
+            if (documento != null && nucleoId != null)
+            {
+                // TODO: MODAL DE "DEBE BUSCAR SOLO POR UN ELEMENTO"
+            }
+            else if (documento == null && nucleoId == null)
+            {
+                // TODO: MODAL DE "FALTAN DATOS"
+            }
+
+            List<TesterProject.BusinessEntities.InfoCredito.InfoCreditoNucleo> NucleoEncontrado = await NucleosService.ObtenerNucleos(nucleoId, documento);
+        }
+        catch (Exception ex)
+        {
+            NucleoEncontrado = null;
+            await InvokeAsync(StateHasChanged);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task NuevoNucleo()
+    {
+        
+    }
+
+    private List<Relacion> Relaciones = new();
+
+    private int? selectedRelacionId;
+    private int? SelectedRelacionId
+    {
+        get => selectedRelacionId;
+        set
+        {
+            if (selectedRelacionId != value)
+            {
+                selectedRelacionId = value;
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Relaciones = await Utils.ObtenerRelaciones();
+    }
+}

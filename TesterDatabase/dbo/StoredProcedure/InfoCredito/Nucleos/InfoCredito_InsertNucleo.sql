@@ -4,6 +4,10 @@
     @ID_RELACION INT
 AS
 BEGIN
+    SET ANSI_NULLS ON;
+    SET QUOTED_IDENTIFIER ON;
+    SET NOCOUNT ON;
+
     INSERT INTO [dbo].[InfoCredito_Nucleos] (
         [ID_NUCLEO],
         [DOCUMENTO],

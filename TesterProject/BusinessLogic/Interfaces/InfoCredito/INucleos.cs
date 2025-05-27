@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TesterProject.BusinessEntities.InfoCredito;
+﻿using TesterProject.BusinessEntities.InfoCredito;
 
 namespace TesterProject.BusinessLogic.Interfaces.InfoCredito
 {
@@ -11,5 +6,6 @@ namespace TesterProject.BusinessLogic.Interfaces.InfoCredito
     {
         void CrearNucleo(InfoCreditoNucleo nucleo);
         Task<List<InfoCreditoPersona>> ObtenerPersonasPorNucleo(int? idNucleo = null, int? documento = null);
+        Task<List<InfoCreditoNucleo>> ObtenerNucleos(int? idNucleo = null, int? documento = null);
     }
 }

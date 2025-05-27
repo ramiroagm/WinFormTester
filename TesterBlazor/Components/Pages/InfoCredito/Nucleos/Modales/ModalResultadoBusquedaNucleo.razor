@@ -1,0 +1,174 @@
+﻿@inject IJSRuntime JSRuntime
+
+<div class="modal fade" id="resultadoBusquedaNucleoModal" tabindex="-1" aria-labelledby="resultadoBusquedaNucleoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultadoBusquedaNucleoModalLabel">Resultado de la búsqueda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (Nucleo is not null)
+                {
+                    <table class="table table-hover">
+                        <caption>Nucleo: @Nucleo.IdNucleo de relacion "@Nucleo.Relacion.DescripcionRelacion"</caption>
+                        <thead>
+                            <tr>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Persona</th>
+                                <th>Quitar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @foreach (var p in Nucleo.Personas)
+                                {
+                                    <td>@p.PrimerNombre @p.SegundoNombre</td>
+                                    <td>@p.PrimerApellido @p.SegundoApellido</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-outline-info" @onclick="EditarPersona" disabled="@IsEditLoading">
+                                            @if (IsEditLoading)
+                                            {
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Cargando...</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Editar</span>
+                                            }
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" @onclick="QuitarDeNucleo" disabled="@IsEditLoading">
+                                            @if (IsEditLoading)
+                                            {
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Cargando...</span>
+                                            }
+                                            else
+                                            {
+                                                <span>🗑️</span>
+                                            }
+                                        </button>
+                                    </td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                } 
+                // Solo permitiremos la apertura de modal para agregar persona si la persona ingresada no existe
+                else if (!string.IsNullOrWhiteSpace(PersonaBusqueda) && string.IsNullOrWhiteSpace(NucleoBusqueda))
+                {
+                    <div class="align-items-start">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                ℹ️ Información ℹ️
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    No se encontró un Nucleo con el documento <b>@PersonaBusqueda</b>. <br />
+                                    ¿Desea crear un nucleo?
+                                </p>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <button type="button" class="btn btn-primary" @onclick="AbrirModalAgregarANucleo">
+                                    Crear nucleo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="align-items-start">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                ⚠️ Error ⚠️
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    Debe de ingresar un valor válido para alguno de los filtros.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modales para agregar persona a nucleo -->
+<TesterBlazor.Components.Pages.InfoCredito.Nucleos.Modales.ModalNuevoNucleo @ref="ModalNuevoNucleoRef" />
+
+@code {
+    [Parameter] public string? PersonaBusqueda { get; set; }
+    [Parameter] public string? NucleoBusqueda { get; set; }
+    [Parameter] public InfoCreditoNucleo? Nucleo { get; set; }
+    private ModalNuevoNucleo? ModalNuevoNucleoRef;
+
+    private bool IsEditLoading { get; set; } = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeModals");
+            await JSRuntime.InvokeVoidAsync("initializeModalEvents");
+        }
+    }
+
+    private async Task AbrirModalAgregarANucleo()
+    {
+        await JSRuntime.InvokeVoidAsync("closeModal", "resultadoBusquedaNucleoModal");
+        await Task.Delay(200);
+        // await ModalNuevoNucleoRef?.ShowAsync(DocumentoBusqueda);
+    }
+
+    public async Task ShowAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("showModal", "resultadoBusquedaNucleoModal");
+        StateHasChanged();
+    }
+
+    private async Task EditarNucleo()
+    {
+        IsEditLoading = true;
+        StateHasChanged();
+
+        await JSRuntime.InvokeVoidAsync("closeModal", "resultadoBusquedaNucleoModal");
+        await Task.Delay(200);
+        if (Nucleo is not null)
+            // await ModalNuevoNucleoRef?.ShowAsync(Nucleo);
+
+        IsEditLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task EditarPersona()
+    {
+        // IsEditLoading = true;
+        // StateHasChanged();
+
+        // await JSRuntime.InvokeVoidAsync("closeModal", "resultadoBusquedaPersonaModal");
+        // await Task.Delay(200);
+        // if (Persona is not null)
+        //     await ModalNuevaPersonaRef?.ShowAsync(Persona);
+
+        // IsEditLoading = false;
+        // StateHasChanged();
+    }
+
+    private async Task QuitarDeNucleo()
+    {
+        IsEditLoading = true;
+        StateHasChanged();
+        // TODO:implementar la lógica para quitar a la persona del nucleo
+        IsEditLoading = false;
+        StateHasChanged();
+    }
+}

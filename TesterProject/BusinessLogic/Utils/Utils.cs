@@ -23,5 +23,11 @@ namespace TesterProject.BusinessLogic.Utils
             List<Localidad> localidades = await Ubicacion.ObtenerLocalidades(idDepartamento);
             return localidades;
         }
+
+        public async Task<List<Relacion>> ObtenerRelaciones()
+        {
+            List<Relacion> relaciones = await Personas.ObtenerRelaciones();
+            return relaciones;
+        }
     }
 }

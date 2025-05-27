@@ -1,5 +1,6 @@
 ﻿namespace TesterProject.BusinessEntities.Utils
 {
+    // Enumeración de tipos de respuesta
     public enum TypeEnum
     {
         CORRECT_RESPONSE,
@@ -8,6 +9,7 @@
         EXCEPTION
     }
 
+    // Tipo de pedido de mensaje
     public enum RequestMediaType
     {
         TEXT,
@@ -18,5 +20,15 @@
         STICKER,
         LOCATION,
         CONTACT
+    }
+
+    // Tipo de relación
+    public enum TipoRelacion
+    {
+        Ninguno = 0,
+        Amigos,
+        Compañeros,
+        Familia,
+        Novios
     }
 }
