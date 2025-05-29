@@ -9,13 +9,13 @@
             <input type="text" class="form-control" id="floatingInput" placeholder=""
             @bind="NucleoBusqueda"
             oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-            <label for="floatingInput">Nucleo por identificador</label>
+            <label for="floatingInput">Por Nucleo ID</label>
         </div>
         <div class="form-floating flex-grow-1 me-3">
             <input type="text" class="form-control" id="floatingInput" placeholder=""
             @bind="PersonaBusqueda"
             oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-            <label for="floatingInput">Nucleo por persona</label>
+            <label for="floatingInput">Por persona</label>
         </div>
         <button type="button" class="btn btn-lg btn-outline-success" @onclick="BuscarNucleoAsync" disabled="@IsLoading">
             @if (IsLoading)
@@ -44,7 +44,7 @@
             </select>
             <label for="relacionId">Tipo de relación</label>
         </div>
-        <button type="button" class="btn btn-lg btn-outline-warning" @onclick="NuevoNucleo">➕ Nuevo nucleo</button>
+        <button type="button" class="btn btn-lg btn-outline-dark" @onclick="NuevoNucleo">➕ Nuevo nucleo</button>
     </div>
 </fieldset>
 

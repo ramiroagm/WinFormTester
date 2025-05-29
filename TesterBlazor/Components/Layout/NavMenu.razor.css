@@ -8,12 +8,63 @@
     top: 0.5rem;
     right: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px; 
     background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
 }
 
     .navbar-toggler:checked {
         background-color: rgba(255, 255, 255, 0.5);
     }
+
+.nav-scrollable {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.navbar-toggler:checked ~ .nav-scrollable {
+    max-height: none;
+    height: auto;
+    opacity: 1;
+}
+
+
+.nav-item ::deep .nav-link {
+    color: #d7d7d7;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    line-height: 3rem;
+    width: 100%;
+}
+
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.37);
+    color: white;
+}
+
+.nav-item ::deep .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .nav-scrollable {
+        max-height: none;
+        opacity: 1;
+        display: block;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}
 
 .top-row {
     min-height: 3.5rem;
@@ -22,16 +73,6 @@
 
 .navbar-brand {
     font-size: 1.1rem;
-}
-
-.bi {
-    display: inline-block;
-    position: relative;
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-right: 0.75rem;
-    top: -1px;
-    background-size: cover;
 }
 
 .nav-link.dropdown-toggle {
@@ -45,15 +86,25 @@
 .navbar-bot {
     position: relative;
     min-height: 100vh;
-
     display: flex;
     flex-direction: column;
 }
-    .nav-item.fixed-bottom {
-        position: absolute;
-        bottom: 10px;
-        width: 100%;
-    }
+
+.nav-item.fixed-bottom {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.bi {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    top: -1px;
+    background-size: cover;
+}
 
 .dropdown-menu {
     
@@ -125,48 +176,4 @@
 
 .bi-new-nucleo {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M7.20711 1.00005C6.81658 0.609522 6.18342 0.609522 5.79289 1.00005L0.146447 6.64649C-0.0488155 6.84176 -0.0488155 7.15834 0.146447 7.3536C0.341709 7.54886 0.658291 7.54886 0.853553 7.3536L1 7.20715V12.5C1 13.3285 1.67157 14 2.5 14H3.05001C3.01722 13.8385 3 13.6713 3 13.5V9.41463C2.79527 9.34243 2.60309 9.22445 2.43934 9.06071C1.85355 8.47492 1.85355 7.52517 2.43934 6.93939L7.79289 1.58583L7.20711 1.00005Z'/%3E%3Cpath d='M8.79289 2.00005C9.18342 1.60952 9.81658 1.60952 10.2071 2.00005L12 3.79294V2.50005C12 2.2239 12.2239 2.00005 12.5 2.00005H13.5C13.7761 2.00005 14 2.2239 14 2.50005V5.79294L15.8536 7.64649C16.0488 7.84176 16.0488 8.15834 15.8536 8.3536C15.6583 8.54886 15.3417 8.54886 15.1464 8.3536L15 8.20715V13.5C15 14.3285 14.3284 15 13.5 15H5.5C4.67157 15 4 14.3285 4 13.5V8.20715L3.85355 8.3536C3.65829 8.54886 3.34171 8.54886 3.14645 8.3536C2.95118 8.15834 2.95118 7.84176 3.14645 7.64649L8.79289 2.00005Z'/%3E%3C/svg%3E");
-}
-
-.nav-item ::deep .nav-link {
-    color: #d7d7d7;
-    background: none;
-    border: none;
-    border-radius: 4px;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    line-height: 3rem;
-    width: 100%;
-}
-
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.37);
-    color: white;
-}
-
-.nav-item ::deep .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
-
-.nav-scrollable {
-    display: none;
-}
-
-.navbar-toggler:checked ~ .nav-scrollable {
-    display: block;
-}
-
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .nav-scrollable {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-        /* Allow sidebar to scroll for tall menus */
-        height: calc(100vh - 3.5rem);
-        overflow-y: auto;
-    }
 }

@@ -1,64 +1,96 @@
-﻿
+﻿@inject IPersonas PersonasService
+@inject INucleos NucleosService
 @inject IJSRuntime JSRuntime
 
-@* <EditForm EditContext="EditContext" OnValidSubmit="GuardarNucleo">
-    <DataAnnotationsValidator />
-
-    <div class="modal fade" id="addNucleoModal" tabindex="-1" aria-labelledby="addNucleoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addNucleoLabel">Crear nucleo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Descripción de nucleo -->
-                    <div class="row g-3 mb-3">
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="personaNombre" placeholder=""
-                                       @bind="NuevaPersona.Nombre1">
-                                <label for="personaNombre">Primer nombre</label>
-                                <ValidationMessage For="@(() => NuevaPersona.Nombre1)" />
+<!-- Modal de Agregar Nucleo -->
+<div class="modal-body">
+    <h6>Nuevo nucleo</h6>
+    <button type="button" class="btn btn-primary mb-2" @onclick="AgregarPersona">➕</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Documento</th>
+                <th>Nombre completo</th>
+                <th>Estado búsqueda</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Nucleo != null)
+            {
+                @foreach (var p in Nucleo.Personas)
+                {
+                    <tr>
+                        <td>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" placeholder=""
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                       @onchange="()=> ValidarPersona(MapearPersona(p))" />
+                                <label for="personaDocumento">Documento</label>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="personaNombre2" placeholder=""
-                                       @bind="NuevaPersona.Nombre2">
-                                <label for="personaNombre2">Segundo nombre</label>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</EditForm> *@
+                        </td>
+                        <td>
+                            @if (personas.Count > 0)
+                            {
+                                <span class="badge bg-success">Validado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning">Pendiente</span>
+                            }
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-info" @onclick="()=> VerPersona(MapearPersona(p))">👁️</button>
+                            <button type="button" class="btn btn-outline-danger" @onclick="()=> QuitarDocumento(MapearPersona(p))">🗑️</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
 
 @code {
-    // private EditContext EditContext { get; set; }
-    // private bool HasValidationErrors => EditContext?.GetValidationMessages().Any() == true;
+    [Parameter] public InfoCreditoNucleo? Nucleo { get; set; }
+    private List<Persona> personas = new();
+    private TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona? PersonaEncontrada { get; set; }
 
-    // protected override void OnInitialized()
-    // {
-    //     EditContext = new EditContext(NuevoNucleo);
-    // }
-    
-    // private Nucleo NuevoNucleo = new Nucleo();
+    private void AgregarPersona()
+    {
+        personas.Add(new Persona());
+    }
 
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     if (firstRender)
-    //     {
-    //         await JSRuntime.InvokeVoidAsync("initializeModals");
-    //         await JSRuntime.InvokeVoidAsync("initializeModalEvents");
-    //     }
-    // }
+    private void QuitarDocumento(Persona persona)
+    {
+        personas.Remove(persona);
+    }
 
-    // private void GuardarPersona()
-    // {
-    //     JSRuntime.InvokeVoidAsync("closeModal", "addPersonModal");
-    // }
+    private void ValidarPersona(Persona persona)
+    {
+        // List<TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona> personas = await PersonasService.ObtenerPersonas(Convert.ToInt32(DocumentoBusqueda));
+        // if (personas.Count > 0)
+        // {
+        //     PersonaEncontrada = personas.FirstOrDefault();
+        //     await InvokeAsync(StateHasChanged);
+        //     await ModalResultadoBusquedaPersonaRef?.ShowAsync();
+        // }
+        // else
+        // {
+        //     PersonaEncontrada = null;
+        //     await InvokeAsync(StateHasChanged);
+        //     await ModalResultadoBusquedaPersonaRef?.ShowAsync();
+        // }
+    }
+
+    Persona MapearPersona(InfoCreditoPersona persona)
+    {
+        return new Persona
+        {
+        };
+    }
+
+    private void VerPersona(Persona documento)
+    {
+
+    }
 }
