@@ -35,7 +35,7 @@
     <div class="form-floating flex-grow-1 me-3">
         <div class="form-floating mb-3">
             <select class="form-select"
-                    @bind="SelectedRelacionId">
+                @bind="SelectedRelacionId" >
                 <option value="">Seleccione la relación...</option>
                 @foreach (var relacion in Relaciones)
                 {
@@ -48,12 +48,17 @@
     </div>
 </fieldset>
 
+<TesterBlazor.Components.Pages.InfoCredito.Nucleos.Modales.ModalNuevoNucleo 
+    @ref="ModalNuevoNucleoRef"
+    TipoRelacion="@SelectedRelacionId" />
+
 @code {
     private string? NucleoBusqueda { get; set; }
     private string? PersonaBusqueda { get; set; }
-    int? nucleoId = null;
-    int? documento = null;
+    private int? nucleoId = null;
+    private int? documento = null;
 
+    private TesterBlazor.Components.Pages.InfoCredito.Nucleos.Modales.ModalNuevoNucleo? ModalNuevoNucleoRef;
     private TesterProject.BusinessEntities.InfoCredito.InfoCreditoNucleo? NucleoEncontrado { get; set; }
     // private ModalResultadoBusquedaPersona? ModalResultadoBusquedaPersonaRef;
 
@@ -99,7 +104,7 @@
 
     private async Task NuevoNucleo()
     {
-        
+        await ModalNuevoNucleoRef?.ShowAsync();
     }
 
     private List<Relacion> Relaciones = new();

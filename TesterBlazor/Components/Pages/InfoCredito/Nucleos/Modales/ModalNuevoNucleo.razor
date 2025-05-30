@@ -2,95 +2,218 @@
 @inject INucleos NucleosService
 @inject IJSRuntime JSRuntime
 
-<!-- Modal de Agregar Nucleo -->
-<div class="modal-body">
-    <h6>Nuevo nucleo</h6>
-    <button type="button" class="btn btn-primary mb-2" @onclick="AgregarPersona">➕</button>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Documento</th>
-                <th>Nombre completo</th>
-                <th>Estado búsqueda</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Nucleo != null)
-            {
-                @foreach (var p in Nucleo.Personas)
-                {
-                    <tr>
-                        <td>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="floatingInput" placeholder=""
-                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                                       @onchange="()=> ValidarPersona(MapearPersona(p))" />
-                                <label for="personaDocumento">Documento</label>
-                            </div>
-                        </td>
-                        <td>
-                            @if (personas.Count > 0)
+@using TesterBlazor.Models.InfoCredito
+@using TesterProject.BusinessEntities.InfoCredito
+
+<div class="modal fade" id="addNucleoModal" tabindex="-1" aria-labelledby="addNucleoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNucleoModalLabel">Nuevo nucleo</h5>
+                <button type="button" class="btn btn-sm btn-outline-primary mb-2" style="margin-left:10px;margin-top:10px" @onclick="AgregarPersona">Agregar persona</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Nombre completo</th>
+                            <th>Estado búsqueda</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (personas != null)
+                        {
+                            @foreach (var p in personas)
                             {
-                                <span class="badge bg-success">Validado</span>
+                                <tr>
+                                    <td>
+                                        <div class="input-group mb-3">
+                                            <input type="number" 
+                                            class="form-control" 
+                                            placeholder="Nuevo documento"
+                                            aria-label="Documento"
+                                            aria-describedby="basic-addon1"
+                                            @bind="@p.NroDocumento"
+                                            @bind:event="oninput"
+                                            @onchange="() => ValidarPersona(p)">
+                                        </div>
+                                    </td>
+                                    <td>@p.NombreCompleto</td>
+                                    <td>
+                                        @if (IsLoading)
+                                        {
+                                            <span class="spinner-grow text-primary" style="align-items:end" role="status" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Buscando...</span>
+                                        }
+                                        else
+                                        {
+                                            if (p.EstadoValidacion == BlazorEnum.VALIDADO)
+                                            {
+                                                <h3><span class="badge bg-success">Validado</span></h3>
+                                            }
+                                            else if (p.EstadoValidacion == BlazorEnum.ERROR)
+                                            {
+                                                <h3><span class="badge bg-danger">Error</span></h3>
+                                            }
+                                            else if (p.EstadoValidacion == BlazorEnum.PENDIENTE)
+                                            {
+                                                <h3><span class="badge bg-info">Pendiente</span></h3>
+                                            }
+                                            else
+                                            {
+                                                <h3><span class="badge bg-light">Sin definir</span></h3>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-info" @onclick="()=> VerPersona(p)">👁️</button>
+                                        <button type="button" class="btn btn-outline-danger" @onclick="()=> QuitarPersona(p)">🗑️</button>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <span class="badge bg-warning">Pendiente</span>
-                            }
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-outline-info" @onclick="()=> VerPersona(MapearPersona(p))">👁️</button>
-                            <button type="button" class="btn btn-outline-danger" @onclick="()=> QuitarDocumento(MapearPersona(p))">🗑️</button>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+                        }
+                        else
+                        {
+                            <tr><td colspan="4">No se han agregado personas.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-success" onclick="@GuardarNucleo">
+                    @if (IsLoading)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="visually-hidden">Guardando...</span>
+                    }
+                    else
+                    {
+                        <span>Guardar</span>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code {
-    [Parameter] public InfoCreditoNucleo? Nucleo { get; set; }
-    private List<Persona> personas = new();
-    private TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona? PersonaEncontrada { get; set; }
+        [Parameter] public int? TipoRelacion { get; set; }
+    private List<Persona> personas = new List<Persona>();
+    private bool IsLoading { get; set; } = false;
+
+    public async Task ShowAsync()
+    {
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(50);
+        await JSRuntime.InvokeVoidAsync("showModal", "addNucleoModal");
+    }
 
     private void AgregarPersona()
     {
         personas.Add(new Persona());
     }
 
-    private void QuitarDocumento(Persona persona)
+    private void QuitarPersona(Persona persona)
     {
         personas.Remove(persona);
     }
 
-    private void ValidarPersona(Persona persona)
+    private async Task ValidarPersona(Persona persona)
     {
-        // List<TesterProject.BusinessEntities.InfoCredito.InfoCreditoPersona> personas = await PersonasService.ObtenerPersonas(Convert.ToInt32(DocumentoBusqueda));
-        // if (personas.Count > 0)
-        // {
-        //     PersonaEncontrada = personas.FirstOrDefault();
-        //     await InvokeAsync(StateHasChanged);
-        //     await ModalResultadoBusquedaPersonaRef?.ShowAsync();
-        // }
-        // else
-        // {
-        //     PersonaEncontrada = null;
-        //     await InvokeAsync(StateHasChanged);
-        //     await ModalResultadoBusquedaPersonaRef?.ShowAsync();
-        // }
+        IsLoading = true;
+        try 
+        {
+            if (persona.NroDocumento == null)
+            {
+                persona.EstadoValidacion = BlazorEnum.PENDIENTE;
+                return;
+            }
+
+            persona.EstadoValidacion = BlazorEnum.PENDIENTE;
+            await InvokeAsync(StateHasChanged);
+
+            var personasEncontradas = await PersonasService.ObtenerPersonas(persona.NroDocumento.Value);
+
+            if (personasEncontradas.Count > 0)
+            {
+                var primeraPersonaEncontrada = personasEncontradas.FirstOrDefault();
+                if (primeraPersonaEncontrada != null && /* !personas.Exists(x => x.NroDocumento == primeraPersonaEncontrada.Documento) */)
+                {
+                    persona.Nombre1 = primeraPersonaEncontrada.PrimerNombre;
+                    persona.Nombre2 = primeraPersonaEncontrada.SegundoNombre;
+                    persona.Apellido1 = primeraPersonaEncontrada.PrimerApellido;
+                    persona.Apellido2 = primeraPersonaEncontrada.SegundoApellido;
+                    persona.EstadoValidacion = BlazorEnum.VALIDADO;
+                }
+                else
+                {
+                    persona.EstadoValidacion = BlazorEnum.ERROR;
+                }
+            }
+            else
+            {
+                persona.Nombre1 = string.Empty;
+                persona.Nombre2 = string.Empty;
+                persona.Apellido1 = string.Empty;
+                persona.Apellido2 = string.Empty;
+                persona.EstadoValidacion = BlazorEnum.ERROR;
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
-    Persona MapearPersona(InfoCreditoPersona persona)
+    InfoCreditoPersona MapearPersona(Persona persona)
     {
-        return new Persona
+        return new InfoCreditoPersona
         {
+            Documento = persona.NroDocumento.Value,
+            PrimerNombre = persona.Nombre1,
+            SegundoNombre = persona.Nombre2,
+            PrimerApellido = persona.Apellido1,
+            SegundoApellido = persona.Apellido2,
+            FechaNacimiento = persona.FechaNacimiento
         };
     }
 
-    private void VerPersona(Persona documento)
+    private void VerPersona(Persona persona)
     {
+        // Lógica para ver la persona
+    }
 
+    private bool PuedeGuardarNucleo()
+    {
+        return personas.Any() && personas.All(p => p.EstadoValidacion == BlazorEnum.VALIDADO);
+    }
+
+    private async Task GuardarNucleo()
+    {
+        if (!PuedeGuardarNucleo())
+        {
+            // TODO: VALIDADORES / MODAL DE ERROR
+            return;
+        }
+
+        IsLoading = true;
+        await InvokeAsync(StateHasChanged);
+
+        // TODO: GUARDAR NUCLEO
+
+        IsLoading = false;
+        await InvokeAsync(StateHasChanged);
+        await JSRuntime.InvokeVoidAsync("closeModal", "addNucleoModal");
+        // TODO MODAL DE TODO CORRECTO
     }
 }

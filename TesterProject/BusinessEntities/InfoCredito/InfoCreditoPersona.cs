@@ -10,5 +10,6 @@
         public InfoCreditoDireccionPersona? Direccion { get; set; }
         public InfoCreditoContactoPersona? Contacto { get; set; }
         public required DateTime FechaNacimiento { get; set; }
+        public string NombreCompleto => $"{PrimerNombre} {SegundoNombre} {PrimerApellido} {SegundoApellido}".Trim();
     }
 }

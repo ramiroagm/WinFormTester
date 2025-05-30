@@ -1,3 +1,7 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 .navbar-toggler {
     appearance: none;
     cursor: pointer;
@@ -21,6 +25,7 @@
     opacity: 0;
     overflow: hidden;
     transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    margin-top: 10px;
 }
 
 .navbar-toggler:checked ~ .nav-scrollable {
@@ -61,7 +66,7 @@
         max-height: none;
         opacity: 1;
         display: block;
-        height: calc(100vh - 3.5rem);
+        height: calc(100vh - 3.5rem - 10px);
         overflow-y: auto;
     }
 }
