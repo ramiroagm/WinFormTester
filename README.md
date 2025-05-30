@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="TesterBlazor/wwwroot/favicon.png" width="150" height="150">
+</p>
+
 # Aplicación .NET con demostración de herramientas genéricas
 
 [_En progreso_] Bienvenidos a este repositorio personal. 👋🏻 </br>
@@ -17,7 +21,7 @@ Ir al [sitio MemitoSoftware](https://www.memitosoftware.com) para ver lo último
     - [4 - NuGets en uso](#4---nugets-en-uso)
     - [5 - Acciones](#5---acciones)
     - [6 - Licencia](#6---licencia)
-    - [7 - Agradecimientos](#7---agradecimientos)
+  - [Agradecimientos](#agradecimientos)
 
 ---
 
@@ -47,9 +51,11 @@ A continuación veremos un listado de proyectos agregados a la solución e infor
 
 - #### 3.3 - TesterBlazor
 
-  Pantalla web en Blazor Server que conecta y testea varios de los servicios generados en la librería principal. </br>
-  Contiene un menú básico para navegar entre las páginas relacionadas al proyecto, con algunos elementos de Bootstrap utilizados a modo de ejemplo (popovers, modales, etc...). </br>
+  Pantalla web en Blazor Server que conecta y testea varios de los servicios generados en la librería principal. <br />
+  Contiene un menú básico para navegar entre las páginas relacionadas al proyecto, con algunos elementos de Bootstrap utilizados a modo de ejemplo (popovers, modales, etc...). <br />
   Por más información: en cada página se encontrarán ejemplos escritos, como instrucciones y otro tipo de información al respecto de cada herramienta.
+  Se incluye una solución sobre ingreso e información de crédito, la cuál se desarrolla dentro del mismo proyecto para ser separada más adelante. <br />
+  Contiene un amplio manejo de modales y componentes reutilizables y componentes de Bootstrap. 
   
 - #### 3.4 - TesterDatabase
 
@@ -108,8 +114,7 @@ La acción en _master_ está preparada para publicar todo el código en una VM d
 
 No hay una licencia pertinente actualmente, y se podrá utilizar el código y apropiarse del mismo.
 
-### 7 - Agradecimientos
+## Agradecimientos
 
-Listado de usuarios que me ayudaron con el desarrollo de esta prueba:
-
+Gracias a estos usuarios por la ayuda con el desarrollo:
 - [@eliana-viera](https://github.com/eliana-viera)
