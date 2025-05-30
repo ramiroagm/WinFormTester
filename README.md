@@ -17,6 +17,7 @@ Ir al [sitio MemitoSoftware](https://www.memitosoftware.com) para ver lo último
     - [4 - NuGets en uso](#4---nugets-en-uso)
     - [5 - Acciones](#5---acciones)
     - [6 - Licencia](#6---licencia)
+    - [7 - Agradecimientos](#7---agradecimientos)
 
 ---
 

@@ -141,7 +141,7 @@
             if (personasEncontradas.Count > 0)
             {
                 var primeraPersonaEncontrada = personasEncontradas.FirstOrDefault();
-                if (primeraPersonaEncontrada != null && /* !personas.Exists(x => x.NroDocumento == primeraPersonaEncontrada.Documento) */)
+                if (primeraPersonaEncontrada != null /* && !personas.Exists(x => x.NroDocumento == primeraPersonaEncontrada.Documento) */)
                 {
                     persona.Nombre1 = primeraPersonaEncontrada.PrimerNombre;
                     persona.Nombre2 = primeraPersonaEncontrada.SegundoNombre;
