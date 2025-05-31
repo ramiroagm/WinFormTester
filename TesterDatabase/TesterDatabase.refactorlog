@@ -322,4 +322,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="WHATSAPP_URL" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="3481cd22-20b0-4489-b289-a0a870a56295" ChangeDateTime="05/31/2025 06:43:51">
+    <Property Name="ElementName" Value="[dbo].[BugReport].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BugReport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IdReport" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2606644e-0024-4114-a310-c5a755b8748b" ChangeDateTime="05/31/2025 06:44:50">
+    <Property Name="ElementName" Value="[dbo].[BugReport].[URLArchivosReporte]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BugReport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IdAdjuntoReporte" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c544e97f-3ed7-4de9-9a6f-16aa408bce95" ChangeDateTime="05/31/2025 06:45:16">
+    <Property Name="ElementName" Value="[dbo].[AdjuntoReporte].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AdjuntoReporte]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IdAdjunto" />
+  </Operation>
 </Operations>

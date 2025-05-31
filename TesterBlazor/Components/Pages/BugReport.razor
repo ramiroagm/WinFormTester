@@ -1,0 +1,44 @@
+﻿@page "/bugreport"
+
+<h2> 🐛 Reporte de BUG </h2>
+
+<div class="card text-center" style="margin-bottom:20px">
+    <div class="card-header">
+        ℹ️ Información
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Por favor, reporte cualquier incidente que haya tenido en este sitio. <br /> 
+            ¡Se agradecerá su aporte!
+        </h5>
+        <p class="card-text">
+            <div class="row g-3 mb-3">
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="tituloError" placeholder="">
+                        <label for="tituloError">Título del error</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <input class="form-control form-control-lg" type="file" id="formFileMultiple" multiple>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" id="comentariosError" placeholder=""></textarea>
+                    <label for="comentariosError">Comentarios del error</label>
+                </div>
+                <button type="button" class="btn btn-lg btn-outline-primary">🚑 Informar el error 🚑</button>
+            </div>
+        </p>
+    </div>
+    <div class="card-footer text-muted">
+        ⚠️ Advertencia ⚠️
+        <br />
+        Esta información será guardada en una base de datos para su posterior análisis. 
+        <br />
+        Adjunte capturas de pantalla de ser necesario.
+    </div>
+</div>
+@code {
+
+}

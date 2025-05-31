@@ -20,7 +20,7 @@
                             <th>Documento</th>
                             <th>Nombre completo</th>
                             <th>Estado búsqueda</th>
-                            <th>Acciones</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,11 +52,17 @@
                                         {
                                             if (p.EstadoValidacion == BlazorEnum.VALIDADO)
                                             {
-                                                <h3><span class="badge bg-success">Validado</span></h3>
+                                                <h3>
+                                                    <span class="badge bg-success">Validado</span>
+                                                    <button type="button" class="btn btn-outline-success">Ver</button>
+                                                </h3>
                                             }
                                             else if (p.EstadoValidacion == BlazorEnum.ERROR)
                                             {
-                                                <h3><span class="badge bg-danger">Error</span></h3>
+                                                <h3>
+                                                    <span class="badge bg-danger">Error</span>
+                                                    <button type="button" class="btn btn-outline-danger">Ver error</button>
+                                                </h3>
                                             }
                                             else if (p.EstadoValidacion == BlazorEnum.PENDIENTE)
                                             {
@@ -69,7 +75,7 @@
                                         }
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-outline-info" @onclick="()=> VerPersona(p)">👁️</button>
+                                        @* <button type="button" class="btn btn-outline-info" @onclick="()=> VerPersona(p)">👁️</button> *@
                                         <button type="button" class="btn btn-outline-danger" @onclick="()=> QuitarPersona(p)">🗑️</button>
                                     </td>
                                 </tr>
@@ -101,7 +107,7 @@
 </div>
 
 @code {
-        [Parameter] public int? TipoRelacion { get; set; }
+    [Parameter] public int? TipoRelacion { get; set; }
     private List<Persona> personas = new List<Persona>();
     private bool IsLoading { get; set; } = false;
 

@@ -1,0 +1,7 @@
+﻿<div class="loading-overlay" style="display: @(IsVisible ? "block" : "none");">
+    <div class="spinner-grow" style="width: 10rem; height: 10rem;" role="status"></div>
+</div>
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+}
