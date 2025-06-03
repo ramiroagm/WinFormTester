@@ -1,44 +1,81 @@
-﻿@page "/bugreport"
+﻿@inject IJSRuntime JSRuntime
+@inject IUtils Utils
+
+@page "/bugreport"
 
 <h2> 🐛 Reporte de BUG </h2>
 
 <div class="card text-center" style="margin-bottom:20px">
-    <div class="card-header">
-        ℹ️ Información
-    </div>
+    <div class="card-header">ℹ️ Información</div>
     <div class="card-body">
-        <h5 class="card-title">Por favor, reporte cualquier incidente que haya tenido en este sitio. <br /> 
+        <h5 class="card-title">
+            Por favor, reporte cualquier incidente que haya tenido en este sitio. <br />
             ¡Se agradecerá su aporte!
         </h5>
         <p class="card-text">
             <div class="row g-3 mb-3">
                 <div class="col">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="tituloError" placeholder="">
+                        <input type="text" class="form-control" id="tituloError" @bind="reporte.Titulo" placeholder="">
                         <label for="tituloError">Título del error</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="mb-3">
-                        <input class="form-control form-control-lg" type="file" id="formFileMultiple" multiple>
+                        <InputFile OnChange="CargarArchivos" multiple class="form-control form-control-lg" />
                     </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <textarea class="form-control" id="comentariosError" placeholder=""></textarea>
+                    <textarea class="form-control" id="comentariosError" @bind="reporte.Mensaje" placeholder=""></textarea>
                     <label for="comentariosError">Comentarios del error</label>
                 </div>
-                <button type="button" class="btn btn-lg btn-outline-primary">🚑 Informar el error 🚑</button>
+                <button type="button" class="btn btn-lg btn-outline-primary" @onclick="GuardarReporte">🚑 Informar el error 🚑</button>
             </div>
         </p>
     </div>
     <div class="card-footer text-muted">
-        ⚠️ Advertencia ⚠️
-        <br />
-        Esta información será guardada en una base de datos para su posterior análisis. 
-        <br />
+        ⚠️ Advertencia ⚠️ <br />
+        Esta información será guardada en una base de datos para su posterior análisis. <br />
         Adjunte capturas de pantalla de ser necesario.
     </div>
 </div>
-@code {
 
+<TesterBlazor.Components.Pages.ModalesGenericos.ModalReporteOk />
+<TesterBlazor.Components.Pages.ModalesGenericos.ModalReporteFail />
+
+@code {
+    TesterProject.BusinessEntities.Utils.Bug reporte = new()
+        {
+            Titulo = string.Empty,
+            Imagenes = new List<ReporteImagenes>()
+        };    
+
+    private async Task CargarArchivos(InputFileChangeEventArgs e)
+    {
+        reporte.Imagenes.Clear();
+        foreach (var file in e.GetMultipleFiles())
+        {
+            using var memoryStream = new MemoryStream();
+            await file.OpenReadStream(maxAllowedSize: 10_000_000).CopyToAsync(memoryStream);
+
+            reporte.Imagenes.Add(new ReporteImagenes
+                {
+                    TextoImagen = file.Name,
+                    Imagen = memoryStream.ToArray()
+                });
+        }
+    }
+
+    public async Task GuardarReporte()
+    {
+        int result = await Utils.CrearBug(reporte);
+        if (result >= -1)
+        {
+            await JSRuntime.InvokeVoidAsync("showModal", "successReport");
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("showModal", "errorReporte");
+        }
+    }
 }

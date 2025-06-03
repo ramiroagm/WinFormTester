@@ -8,10 +8,11 @@ namespace TesterProject.DataAccess.Utils
     {
         private static readonly string _connectionString = ConnectionString;
 
-        public static async Task CrearBug(Bug reporte)
+        public static async Task<int> CrearBug(Bug reporte)
         {
             // Se utiliza el llamado asyncrono de secret manager para evitar bloqueos desde Blazor
             string? _connectionString = await GetConnectionStringAsync();
+            int guardado = -10;
             using SqlConnection connection = new(_connectionString);
             SqlCommand command = new("InsertBugReport", connection)
             {
@@ -27,23 +28,27 @@ namespace TesterProject.DataAccess.Utils
             command.Parameters.Add(outputIdParam);
 
             connection.Open();
-            command.ExecuteNonQuery();
+            guardado = command.ExecuteNonQuery();
+            int idReporte = Convert.ToInt32(outputIdParam.Value);
+            connection.Close();
 
             if (reporte.Imagenes != null)
             {
                 foreach (ReporteImagenes files in reporte.Imagenes)
                 {
-                    SqlCommand secCommand = new("InsertAdjuntoBugReport", connection)
+                    _ = new SqlCommand("InsertAdjuntoBugReport", connection)
                     {
                         CommandType = System.Data.CommandType.StoredProcedure
                     };
 
-                    // TODO ARREGLAR
-                    _ = command.Parameters.AddWithValue("@NombreAdjunto", files.TextoImagen);
-                    _ = command.Parameters.AddWithValue("@RutaAdjunto", files.TextoImagen);
-                    _ = command.Parameters.AddWithValue("@TituloReporte", reporte.Titulo);
-                } 
+                    _ = command.Parameters.AddWithValue("@IdReporte", idReporte);
+                    _ = command.Parameters.AddWithValue("@NombreAdjunto", reporte.Titulo);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
             }
+
+            return guardado;
         }
     }
 }

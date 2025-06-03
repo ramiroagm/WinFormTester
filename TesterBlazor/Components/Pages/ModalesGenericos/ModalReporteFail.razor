@@ -1,0 +1,26 @@
+﻿@inject NavigationManager Navigation
+
+<div class="modal fade" id="errorReporte" tabindex="-1" aria-labelledby="errorReporteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="errorReporteLabel">Error</h5>
+            </div>
+            <div class="modal-body">
+                Hay un problema general en el servidor ❌ <br />
+                No te preocupes, ya lo estamos viendo. <br />
+                Muchas gracias por tu reporte.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" @onclick="CerrarModal" data-bs-dismiss="modal">Volver al inicio</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void CerrarModal()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

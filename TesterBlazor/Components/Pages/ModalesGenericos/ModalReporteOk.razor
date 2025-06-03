@@ -1,0 +1,25 @@
+﻿@inject NavigationManager Navigation
+
+<div class="modal fade" id="successReport" tabindex="-1" aria-labelledby="successReportLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="successReportLabel">Éxito</h5>
+            </div>
+            <div class="modal-body">
+                Se guardó el reporte correctamente ✔️ <br />
+                ¡Muchas gracias por tu ayuda!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" @onclick="CerrarModal" data-bs-dismiss="modal">Volver al inicio</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+    private void CerrarModal()
+    {
+        Navigation.NavigateTo("/");
+    }
+}

@@ -29,5 +29,25 @@ namespace TesterProject.BusinessLogic.Utils
             List<Relacion> relaciones = await Personas.ObtenerRelaciones();
             return relaciones;
         }
+
+        public async Task<int> CrearBug(Bug reporte)
+        {
+            string targetDirectory = ConstantValues.IC_PathToSave;
+            Directory.CreateDirectory(targetDirectory);
+
+            if (reporte.Imagenes != null)
+            {
+                foreach (var file in reporte.Imagenes)
+                {
+                    if (file?.Imagen != null)
+                    {
+                        string fileName = file.TextoImagen ?? $"{Guid.NewGuid()}";
+                        string filePath = Path.Combine(targetDirectory, fileName);
+                        await File.WriteAllBytesAsync(filePath, file.Imagen);
+                    }
+                }
+            }
+            return await BugReport.CrearBug(reporte);
+        }
     }
 }

@@ -8,5 +8,6 @@ namespace TesterProject.BusinessLogic.Interfaces.Utils
         Task<List<Departamento>> ObtenerDepartamentos(int idPais);
         Task<List<Localidad>> ObtenerLocalidades(int idDepartamento);
         Task<List<Relacion>> ObtenerRelaciones();
+        Task<int> CrearBug(Bug reporte);
     }
 }
