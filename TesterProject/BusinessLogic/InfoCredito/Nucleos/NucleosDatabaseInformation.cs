@@ -8,7 +8,14 @@ namespace TesterProject.BusinessLogic.InfoCredito.Nucleos
     {
         public void CrearNucleo(InfoCreditoNucleo nucleo)
         {
-            NucleosDb.CrearNucleo(nucleo);
+            try
+            {
+                NucleosDb.CrearNucleo(nucleo);
+            }
+            catch
+            {
+
+            }
         }
 
         public async Task<List<InfoCreditoPersona>> ObtenerPersonasPorNucleo(int? idNucleo = null, int? documento = null)

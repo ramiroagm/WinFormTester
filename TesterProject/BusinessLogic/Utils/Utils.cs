@@ -1,6 +1,8 @@
-﻿using TesterProject.BusinessEntities.Utils;
+﻿using Serilog;
+using TesterProject.BusinessEntities.Utils;
 using TesterProject.BusinessLogic.Interfaces.Utils;
 using TesterProject.DataAccess.Utils;
+using static TesterProject.BusinessLogic.Utils.Logger;
 
 namespace TesterProject.BusinessLogic.Utils
 {
@@ -8,8 +10,16 @@ namespace TesterProject.BusinessLogic.Utils
     {
         public async Task<List<Pais>> ObtenerPaises()
         {
-            List<Pais> paises = await Ubicacion.ObtenerPaises();
-            return paises;
+            try
+            {
+                List<Pais> paises = await Ubicacion.ObtenerPaises();
+                return paises;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al obtener paises: {Mensaje}", ex.Message);
+                throw;
+            }
         }
 
         public async Task<List<Departamento>> ObtenerDepartamentos(int idPais)

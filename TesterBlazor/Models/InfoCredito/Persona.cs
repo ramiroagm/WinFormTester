@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TesterProject.BusinessEntities.Utils;
 
 namespace TesterBlazor.Models.InfoCredito
 {
@@ -24,11 +23,7 @@ namespace TesterBlazor.Models.InfoCredito
 
         [Required(ErrorMessage = "La dirección es obligatoria.")]
         public DireccionPersona Direccion { get; set; } = new DireccionPersona();
-
         public ContactoPersona Contacto { get; set; } = new ContactoPersona();
-
-        public int? IdRelacionEnNucleo { get; set; }
-
         public string NombreCompleto => $"{Nombre1} {Nombre2} {Apellido1} {Apellido2}".Trim();
         public BlazorEnum EstadoValidacion { get; set; }
     }

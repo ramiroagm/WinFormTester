@@ -12,11 +12,10 @@ namespace TesterProject.DataAccess.Utils
         {
             // Se utiliza el llamado asyncrono de secret manager para evitar bloqueos desde Blazor
             string? _connectionString = await GetConnectionStringAsync();
-            int guardado = -10;
             using SqlConnection connection = new(_connectionString);
             SqlCommand command = new("InsertBugReport", connection)
             {
-                CommandType = System.Data.CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure
             };
 
             _ = command.Parameters.AddWithValue("@TituloReporte", reporte.Titulo);
@@ -25,10 +24,10 @@ namespace TesterProject.DataAccess.Utils
             {
                 Direction = ParameterDirection.Output
             };
-            command.Parameters.Add(outputIdParam);
+            _ = command.Parameters.Add(outputIdParam);
 
             connection.Open();
-            guardado = command.ExecuteNonQuery();
+            int guardado = command.ExecuteNonQuery();
             int idReporte = Convert.ToInt32(outputIdParam.Value);
             connection.Close();
 
@@ -36,15 +35,15 @@ namespace TesterProject.DataAccess.Utils
             {
                 foreach (ReporteImagenes files in reporte.Imagenes)
                 {
-                    _ = new SqlCommand("InsertAdjuntoBugReport", connection)
+                    SqlCommand command2 = new("InsertAdjuntoReporte", connection)
                     {
-                        CommandType = System.Data.CommandType.StoredProcedure
+                        CommandType = CommandType.StoredProcedure
                     };
 
-                    _ = command.Parameters.AddWithValue("@IdReporte", idReporte);
-                    _ = command.Parameters.AddWithValue("@NombreAdjunto", reporte.Titulo);
+                    _ = command2.Parameters.AddWithValue("@IdReporte", idReporte);
+                    _ = command2.Parameters.AddWithValue("@NombreAdjunto", files.TextoImagen);
                     connection.Open();
-                    command.ExecuteNonQuery();
+                    _ = command2.ExecuteNonQuery();
                 }
             }
 

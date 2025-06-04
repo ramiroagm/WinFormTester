@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[AdjuntoReporte]
 (
-	[IdAdjunto] INT NOT NULL, 
+	[IdAdjunto] INT NOT NULL PRIMARY KEY IDENTITY (1,1), 
 	[NombreAdjunto] NVARCHAR(MAX) NULL, 
 	[FechaCreacion] DATETIME NOT NULL DEFAULT GETDATE(),
 	[IdReporte] INT NOT NULL FOREIGN KEY REFERENCES BugReport(IdReport)
