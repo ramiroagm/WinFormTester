@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
 using TesterProject.BusinessEntities.InfoCredito;
 using TesterProject.BusinessEntities.Utils;
 
@@ -25,12 +24,12 @@ namespace TesterProject.DataAccess.InfoCredito
             _ = command.Parameters.AddWithValue("@PRIMER_APELLIDO", persona.PrimerApellido);
             _ = command.Parameters.AddWithValue("@SEGUNDO_APELLIDO", (object?)persona.SegundoApellido ?? DBNull.Value);
 
-            _ = command.Parameters.AddWithValue("@ID_LOCALIDAD", persona.Direccion.Localidad.IdLocalidad);
-            _ = command.Parameters.AddWithValue("@CALLE", (object?)persona.Direccion.Calle ?? DBNull.Value);
-            _ = command.Parameters.AddWithValue("@NUMERO", persona.Direccion.Numero);
-            _ = command.Parameters.AddWithValue("@MANZANA", persona.Direccion.Manzana);
-            _ = command.Parameters.AddWithValue("@SOLAR", persona.Direccion.Solar);
-            _ = command.Parameters.AddWithValue("@OBSERVACIONES", persona.Direccion.Observaciones);
+            _ = command.Parameters.AddWithValue("@ID_LOCALIDAD", persona.Direccion?.Localidad.IdLocalidad);
+            _ = command.Parameters.AddWithValue("@CALLE", (object?)persona.Direccion?.Calle ?? DBNull.Value);
+            _ = command.Parameters.AddWithValue("@NUMERO", persona.Direccion?.Numero);
+            _ = command.Parameters.AddWithValue("@MANZANA", persona.Direccion?.Manzana);
+            _ = command.Parameters.AddWithValue("@SOLAR", persona.Direccion?.Solar);
+            _ = command.Parameters.AddWithValue("@OBSERVACIONES", persona.Direccion?.Observaciones);
 
             _ = command.Parameters.AddWithValue("@TEL_MOVIL", (object?)persona.Contacto?.TelMovil ?? DBNull.Value);
             _ = command.Parameters.AddWithValue("@TEL_FIJO", (object?)persona.Contacto?.TelFijo ?? DBNull.Value);
@@ -104,6 +103,7 @@ namespace TesterProject.DataAccess.InfoCredito
 
                     personas.Add(new InfoCreditoPersona
                     {
+                        IdPersona = Convert.ToInt32(reader["ID_PERSONA"]),
                         Documento = Convert.ToInt32(reader["DOCUMENTO"]),
                         PrimerNombre = reader["PRIMER_NOMBRE"]?.ToString() ?? string.Empty,
                         SegundoNombre = reader["SEGUNDO_NOMBRE"] as string ?? string.Empty,

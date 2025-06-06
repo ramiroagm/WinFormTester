@@ -4,6 +4,7 @@ namespace TesterBlazor.Models.InfoCredito
 {
     public class Persona
     {
+        public int? IdPersona { get; set; }
         [Required(ErrorMessage = "El número de documento es obligatorio.")]
         public int? NroDocumento { get; set; }
 

@@ -1,0 +1,13 @@
+﻿CREATE PROCEDURE [dbo].[InfoCredito_InsertarPersonaNucleo]
+    @ID_PERSONA INT,
+    @ID_NUCLEO INT
+AS
+BEGIN
+    SET ANSI_NULLS ON;
+    SET QUOTED_IDENTIFIER ON;
+    SET NOCOUNT ON;
+
+    INSERT INTO [dbo].[InfoCredito_PersonasNucleo] ([ID_PERSONA], [ID_NUCLEO])
+    VALUES (@ID_PERSONA, @ID_NUCLEO);
+END;
+GO

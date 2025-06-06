@@ -2,6 +2,7 @@
 {
     public class InfoCreditoPersona
     {
+        public int? IdPersona { get; set; }
         public required int Documento { get; set; }
         public required string PrimerNombre { get; set; }
         public string? SegundoNombre { get; set; }

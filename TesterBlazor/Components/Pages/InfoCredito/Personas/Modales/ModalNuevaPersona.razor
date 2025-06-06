@@ -396,6 +396,7 @@
         // Mapear InfoCreditoPersona a Persona (modelo de edición)
         NuevaPersona = new Persona
         {
+            IdPersona = persona.IdPersona,
             NroDocumento = persona.Documento,
             Nombre1 = persona.PrimerNombre,
             Nombre2 = persona.SegundoNombre,
@@ -603,6 +604,7 @@
     {
         return new InfoCreditoPersona
             {
+                IdPersona = persona.IdPersona,
                 Documento = persona.NroDocumento ?? 0,
                 PrimerNombre = persona.Nombre1,
                 SegundoNombre = persona.Nombre2,

@@ -1,4 +1,5 @@
-﻿using TesterProject.BusinessEntities.InfoCredito;
+﻿using Serilog.Core;
+using TesterProject.BusinessEntities.InfoCredito;
 using TesterProject.BusinessLogic.Interfaces.InfoCredito;
 using TesterProject.DataAccess.InfoCredito;
 
@@ -6,15 +7,19 @@ namespace TesterProject.BusinessLogic.InfoCredito.Nucleos
 {
     public class NucleosDatabaseInformation : INucleos
     {
-        public void CrearNucleo(InfoCreditoNucleo nucleo)
+        public async Task CrearNucleo(InfoCreditoNucleo nucleo)
         {
-            try
+            int idNucleo = await NucleosDb.CrearNucleo(nucleo);
+            if (idNucleo >= -1)
             {
-                NucleosDb.CrearNucleo(nucleo);
+                foreach (InfoCreditoPersona persona in nucleo.Personas)
+                {
+                    await NucleosDb.AgregarPersonaNucleo(persona, idNucleo);
+                }
             }
-            catch
+            else
             {
-
+                throw new Exception("No se pudo crear el nucleo");
             }
         }
 

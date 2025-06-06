@@ -1,6 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using TesterProject.BusinessEntities.InfoCredito;
 using TesterProject.BusinessEntities.Utils;
+using TesterProject.BusinessLogic.Interfaces.InfoCredito;
 
 namespace TesterProject.DataAccess.InfoCredito
 {
@@ -8,22 +10,46 @@ namespace TesterProject.DataAccess.InfoCredito
     {
         private static readonly string _connectionString = ConnectionString;
 
-        public static void CrearNucleo(InfoCreditoNucleo nucleo)
+        public static async Task<int> CrearNucleo(InfoCreditoNucleo nucleo)
         {
-            foreach (InfoCreditoPersona persona in nucleo.Personas)
+            string? _connectionString = await GetConnectionStringAsync();
+            using SqlConnection connection = new(_connectionString);
+            SqlCommand command = new("InfoCredito_InsertNucleo", connection)
             {
-                using SqlConnection connection = new(_connectionString);
-                SqlCommand command = new("InfoCredito_InsertNucleo", connection)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
 
-                _ = command.Parameters.AddWithValue("@DOCUMENTO", persona.Documento);
-                _ = command.Parameters.AddWithValue("@ID_RELACION", nucleo.Relacion.IdRelacion);
+            _ = command.Parameters.AddWithValue("@ID_RELACION", nucleo.Relacion.IdRelacion);
+            SqlParameter outputIdParam = new("@ID_NUCLEO", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            };
+            _ = command.Parameters.Add(outputIdParam);
 
-                connection.Open();
-                _ = command.ExecuteNonQuery();
+            connection.Open();
+            _ = command.ExecuteNonQuery();
+            if (int.TryParse(outputIdParam.ToString(), out int id))
+            {
+                return id;
             }
+            else
+            {
+                return -10;
+            }
+        }
+
+        public static async Task AgregarPersonaNucleo(InfoCreditoPersona Persona, int IdNucleo)
+        {
+            string? _connectionString = await GetConnectionStringAsync();
+            using SqlConnection connection = new(_connectionString);
+            SqlCommand command = new("InfoCredito_InsertarPersonaNucleo", connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            _ = command.Parameters.AddWithValue("@ID_PERSONA", Persona.Documento);
+            _ = command.Parameters.AddWithValue("@ID_NUCLEO", IdNucleo);
+            connection.Open();
+            _ = command.ExecuteNonQuery();
         }
 
         public static async Task<List<InfoCreditoPersona>> ObtenerPersonasPorNucleo(int? idNucleo = null, int? documento = null)

@@ -343,4 +343,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="IdAdjunto" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="41e5aca3-9765-42c0-8e9d-62c52af26558" ChangeDateTime="06/06/2025 04:04:56">
+    <Property Name="ElementName" Value="[dbo].[InfoCredito_ConfigNucleos].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InfoCredito_ConfigNucleos]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ID_CONFIG" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="56cd9255-84e5-4291-abb1-edb0c000026f" ChangeDateTime="06/06/2025 04:20:26">
+    <Property Name="ElementName" Value="[dbo].[InfoCredito_PersonasNucleo].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[InfoCredito_PersonasNucleo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DOCUMENTO" />
+  </Operation>
 </Operations>

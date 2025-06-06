@@ -1,22 +1,14 @@
 ﻿CREATE PROCEDURE [dbo].[InfoCredito_CrearNucleo]
-    @ID_NUCLEO INT,
-    @DOCUMENTO INT,
-    @ID_RELACION INT
+    @ID_RELACION INT,
+    @ID_NUCLEO INT OUTPUT
 AS
 BEGIN
     SET ANSI_NULLS ON;
     SET QUOTED_IDENTIFIER ON;
     SET NOCOUNT ON;
 
-    INSERT INTO [dbo].[InfoCredito_Nucleos] (
-        [ID_NUCLEO],
-        [DOCUMENTO],
-        [ID_RELACION]
-    )
-    VALUES (
-        @ID_NUCLEO,
-        @DOCUMENTO,
-        @ID_RELACION
-    );
-END
+    INSERT INTO [dbo].[InfoCredito_Nucleos] ([ID_RELACION])
+    VALUES (@ID_RELACION);
+    SET @ID_NUCLEO = SCOPE_IDENTITY();
+END;
 GO
