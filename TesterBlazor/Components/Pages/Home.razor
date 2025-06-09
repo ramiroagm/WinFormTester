@@ -2,7 +2,7 @@
 
 @page "/home"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Inicio aplicación de prueba</PageTitle>
 
 <h1>Bienvenidos a la aplicación de pruebas Blazor 👋🏻</h1>
 <div>
@@ -54,6 +54,7 @@
     {
         if (firstRender)
         {
+            // await JSRuntime.InvokeVoidAsync("disposePopovers");
             await JSRuntime.InvokeVoidAsync("initializePopovers");
         }
     }

@@ -35,7 +35,7 @@
     <div class="form-floating flex-grow-1 me-3">
         <div class="form-floating mb-3">
             <select class="form-select"
-                @bind="SelectedRelacionId" >
+            @bind="SelectedRelacionId" >
                 <option value="">Seleccione la relación...</option>
                 @foreach (var relacion in Relaciones)
                 {
@@ -49,10 +49,11 @@
 </fieldset>
 
 <TesterBlazor.Components.Pages.InfoCredito.Nucleos.Modales.ModalNuevoNucleo 
-    @ref="ModalNuevoNucleoRef"
-    TipoRelacion="@SelectedRelacionId" />
+@ref="ModalNuevoNucleoRef"
+TipoRelacion="@SelectedRelacionId" />
 
 @code {
+    private int? TipoRelacion { get; set; }
     private string? NucleoBusqueda { get; set; }
     private string? PersonaBusqueda { get; set; }
     private int? nucleoId = null;

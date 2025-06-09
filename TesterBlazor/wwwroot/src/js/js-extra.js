@@ -1,7 +1,6 @@
 ﻿function initializePopovers() {
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-    console.log("Popovers reinitialized:", popoverList);
 }
 
 window.initializeModals = (modalId) => {
@@ -10,6 +9,17 @@ window.initializeModals = (modalId) => {
         modalElement.addEventListener('shown.bs.modal', () => {
         });
     }
+};
+
+// TODO: Arreglo para dispose entre páginas
+window.disposePopovers = function () {
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach(function (popoverEl) {
+        var popoverInstance = bootstrap.Popover.getInstance(popoverEl);
+        if (popoverInstance) {
+            popoverInstance.dispose();
+            popoverEl.removeAttribute("data-bs-toggle");
+        }
+    });
 };
 
 window.showModal = (modalId) => {

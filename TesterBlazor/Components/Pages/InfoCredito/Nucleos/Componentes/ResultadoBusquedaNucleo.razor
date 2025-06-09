@@ -1,0 +1,93 @@
+﻿@inject IPersonas PersonasService
+@inject INucleos NucleosService
+
+@using TesterBlazor.Models.InfoCredito
+@using TesterProject.BusinessEntities.InfoCredito
+
+<legend>
+    Núcleo ID: @nucleo.IdNucleo | Relación: @nucleo.Relacion.IdRelacion
+    <button style="margin-left:15px" type="button" class="btn btn-sm btn-outline-primary" @onclick="AgregarPersona">Agregar persona</button>
+</legend>
+<table class="table table-hover mt-3">
+    <thead>
+        <tr>
+            <th>Documento</th>
+            <th>Nombre completo</th>
+            <th>Porcentaje deuda</th>
+            <th>Ver</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in personas)
+        {
+            <tr>
+                <td><span class="fw-bold">@p.NroDocumento</span></td>
+                <td>@p.NombreCompleto</td>
+                <td>15</td>
+                <td>
+                    <button type="button" class="btn btn-outline-info" @onclick="() => VerPersona(p)">Ver</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger" @onclick="()=> QuitarPersona(p)">🗑️</button>
+                </td>
+            </tr>
+        }
+
+        @if (agregarNuevaPersona)
+        {
+            <tr>
+                <td>
+                    <input type="number" class="form-control" placeholder="Documento" @bind="@nuevaPersona.NroDocumento" />
+                </td>
+                <td>
+                    <input type="text" class="form-control" placeholder="Nombre completo" />
+                </td>
+                <td>
+                    <input type="number" class="form-control" placeholder="Porcentaje deuda" />
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger" @onclick="()=> QuitarPersona(nuevaPersona)">🗑️</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Persona> personas = new List<Persona>();
+    private InfoCreditoNucleo nucleo = new InfoCreditoNucleo()
+    {
+            // TODO: Cambiar
+            Relacion = new()
+            {
+                IdRelacion = 0,
+                DescripcionRelacion = "Seleccione una relación"
+            },
+            Personas = new List<InfoCreditoPersona>()
+    };
+    private bool agregarNuevaPersona = false;
+    private Persona nuevaPersona = new Persona();
+
+    private void AgregarPersona()
+    {
+        agregarNuevaPersona = true;
+        nuevaPersona = new Persona();
+    }
+
+    private void QuitarPersona(Persona persona)
+    {
+        personas.Remove(persona);
+    }
+
+    private async Task GuardarPersona()
+    {
+        personas.Add(nuevaPersona);
+        agregarNuevaPersona = false;
+    }
+
+    private void VerPersona(Persona persona)
+    {
+        // Lógica para mostrar detalles de la persona
+    }
+}

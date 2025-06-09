@@ -2,8 +2,7 @@
 {
     public class Relacion
     {
-        public required int IdRelacion { get; set; }
-        public required string DescripcionRelacion { get; set; }
-        public bool Activo { get; set; }
+        public int IdRelacion { get; set; }
+        public string? DescripcionRelacion { get; set; }
     }
 }

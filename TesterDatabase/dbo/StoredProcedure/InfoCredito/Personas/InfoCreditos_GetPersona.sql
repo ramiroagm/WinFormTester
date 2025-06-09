@@ -3,6 +3,7 @@
 AS
 BEGIN
     SELECT
+        p.[ID_PERSONA],
         p.[DOCUMENTO],
         p.[PRIMER_NOMBRE],
         p.[SEGUNDO_NOMBRE],

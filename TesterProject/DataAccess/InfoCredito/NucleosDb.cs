@@ -14,7 +14,7 @@ namespace TesterProject.DataAccess.InfoCredito
         {
             string? _connectionString = await GetConnectionStringAsync();
             using SqlConnection connection = new(_connectionString);
-            SqlCommand command = new("InfoCredito_InsertNucleo", connection)
+            SqlCommand command = new("InfoCredito_CrearNucleo", connection)
             {
                 CommandType = System.Data.CommandType.StoredProcedure
             };
@@ -28,7 +28,7 @@ namespace TesterProject.DataAccess.InfoCredito
 
             connection.Open();
             _ = command.ExecuteNonQuery();
-            if (int.TryParse(outputIdParam.ToString(), out int id))
+            if (int.TryParse(outputIdParam.Value.ToString(), out int id))
             {
                 return id;
             }
@@ -38,7 +38,7 @@ namespace TesterProject.DataAccess.InfoCredito
             }
         }
 
-        public static async Task AgregarPersonaNucleo(InfoCreditoPersona Persona, int IdNucleo)
+        public static async Task<bool> AgregarPersonaNucleo(InfoCreditoPersona Persona, int IdNucleo)
         {
             string? _connectionString = await GetConnectionStringAsync();
             using SqlConnection connection = new(_connectionString);
@@ -49,7 +49,8 @@ namespace TesterProject.DataAccess.InfoCredito
             _ = command.Parameters.AddWithValue("@ID_PERSONA", Persona.Documento);
             _ = command.Parameters.AddWithValue("@ID_NUCLEO", IdNucleo);
             connection.Open();
-            _ = command.ExecuteNonQuery();
+            int sqlret = command.ExecuteNonQuery();
+            return sqlret >= -1;
         }
 
         public static async Task<List<InfoCreditoPersona>> ObtenerPersonasPorNucleo(int? idNucleo = null, int? documento = null)
