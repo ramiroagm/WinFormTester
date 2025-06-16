@@ -14,7 +14,7 @@
             <th>Documento</th>
             <th>Nombre completo</th>
             <th>Porcentaje deuda</th>
-            <th>Ver</th>
+            <th>Detalles</th>
             <th>Eliminar</th>
         </tr>
     </thead>
@@ -41,10 +41,20 @@
                     <input type="number" class="form-control" placeholder="Documento" @bind="@nuevaPersona.NroDocumento" />
                 </td>
                 <td>
-                    <input type="text" class="form-control" placeholder="Nombre completo" />
+                    @if (!validado)
+                    {
+                        <span class="badge text-bg-warning">Falta validar documento</span>
+                    }
+                    @nuevaPersona.NombreCompleto
+                </td>
+                <td>         
+                    <div class="input-group mb-2">
+                        <span class="input-group-text" style="text-align: center;">%</span>
+                        <input style="width:20%" type="number" class="form-control" placeholder="Porcentaje deuda" />
+                    </div>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Porcentaje deuda" />
+                    <button type="button" class="btn btn-outline-success">Validar</button>
                 </td>
                 <td>
                     <button type="button" class="btn btn-outline-danger" @onclick="()=> QuitarPersona(nuevaPersona)">🗑️</button>
@@ -58,7 +68,7 @@
     private List<Persona> personas = new List<Persona>();
     private InfoCreditoNucleo nucleo = new InfoCreditoNucleo()
     {
-            // TODO: Cambiar
+        // TODO: Cambiar
             Relacion = new()
             {
                 IdRelacion = 0,
@@ -66,6 +76,8 @@
             },
             Personas = new List<InfoCreditoPersona>()
     };
+
+    private bool validado = false;
     private bool agregarNuevaPersona = false;
     private Persona nuevaPersona = new Persona();
 

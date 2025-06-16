@@ -218,14 +218,9 @@
     <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_InsertarPersonaNucleo.sql" />
   </ItemGroup>
   <ItemGroup>
-    <RefactorLog Include="TesterDatabase.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Snapshots\TesterDatabase_20250316_20-23-00.dacpac" />
-    <None Include="TesterDatabase.publish.xml" />
-    <None Include="TesterDatabase_1.publish.xml" />
-    <None Include="TesterDatabase_2.publish.xml" />
     <None Include="MemitoDB_GCloud.publish.xml" />
+    <None Include="MemitoDB.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Utils\GenUtils_PostDeploy.sql" />

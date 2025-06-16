@@ -13,5 +13,8 @@
 
         // InfoCredito Key Values
         public static readonly string IC_PathToSave = "C:\\lib\\bugreport";
+
+        // Windows Credential Manager
+        public static readonly string CM_ConnectionString = "connection_string";
     }
 }
