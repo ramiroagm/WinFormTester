@@ -65,9 +65,9 @@ namespace TesterProject.BusinessLogic.PasswordManager
                     int error = Marshal.GetLastWin32Error();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                throw;
             }
             finally
             {
