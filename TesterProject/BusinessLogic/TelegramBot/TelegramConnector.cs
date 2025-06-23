@@ -28,7 +28,8 @@ namespace TesterProject.BusinessLogic.TelegramBot
         {
             if (bot == null)
             {
-                string token = await SecretManagerHelper.AccessSecret(ConstantValues.G_ProjectId, ConstantValues.G_TelegramKey);
+                //string token = await SecretManagerHelper.AccessSecret(ConstantValues.G_ProjectId, ConstantValues.G_TelegramKey);
+                string token = await Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_TelegramKey) ?? throw new Exception("No se configuró correctamente el mensaje en Credential Manager"));
                 using CancellationTokenSource cts = new();
                 bot = new(token, cancellationToken: cts.Token);
 

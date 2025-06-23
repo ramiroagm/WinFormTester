@@ -96,5 +96,11 @@ namespace WinFormTester
                 UseShellExecute = true
             });
         }
+
+        private void spotifyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Spotify create = new();
+            create.Show();
+        }
     }
 }

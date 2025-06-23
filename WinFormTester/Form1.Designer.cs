@@ -54,6 +54,7 @@
             label3 = new Label();
             linkLabel2 = new LinkLabel();
             linkLabel1 = new LinkLabel();
+            spotifyToolStripMenuItem = new ToolStripMenuItem();
             testing1.SuspendLayout();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
@@ -161,7 +162,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { consultasABaseDirectoToolStripMenuItem, consultasPorServicioToolStripMenuItem, botTelegramToolStripMenuItem, instagramToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { consultasABaseDirectoToolStripMenuItem, consultasPorServicioToolStripMenuItem, botTelegramToolStripMenuItem, instagramToolStripMenuItem, spotifyToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(971, 24);
@@ -264,6 +265,13 @@
             linkLabel1.Text = "URL LinkedIn";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked_1;
             // 
+            // spotifyToolStripMenuItem
+            // 
+            spotifyToolStripMenuItem.Name = "spotifyToolStripMenuItem";
+            spotifyToolStripMenuItem.Size = new Size(56, 20);
+            spotifyToolStripMenuItem.Text = "Spotify";
+            spotifyToolStripMenuItem.Click += spotifyToolStripMenuItem_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -274,7 +282,6 @@
             Controls.Add(groupBox1);
             Controls.Add(testing1);
             Controls.Add(menuStrip1);
-            Cursor = Cursors.Arrow;
             FormBorderStyle = FormBorderStyle.Fixed3D;
             HelpButton = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -322,5 +329,6 @@
         private LinkLabel linkLabel2;
         private LinkLabel linkLabel1;
         private Label label3;
+        private ToolStripMenuItem spotifyToolStripMenuItem;
     }
 }

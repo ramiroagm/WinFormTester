@@ -1,4 +1,7 @@
-﻿@layout EmptyLayout
+﻿@inject SessionState Session
+@inject NavigationManager Nav
+
+@layout EmptyLayout
 @page "/"
 
 <PageTitle>Inicio - Ramiro Gallo</PageTitle>
@@ -27,11 +30,6 @@
                 <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true">
                     <li class="nav-item"><a class="nav-link link text-black text-primary display-4" href="assets/files/2024-ES-CVRamiroG.pdf" target="_blank">Descarga CV</a></li>
                     <li class="nav-item">
-                        <a class="nav-link link text-black text-primary display-4" href="/home" onclick="setTimeout(()=>location.href=this.href, 10); return false;">
-                            Sitio de prueba
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link link text-black text-primary display-4" href="#contacts2-3">Contacto</a>
                     </li>
                 </ul>
@@ -59,7 +57,7 @@
                     También podrán ver un sitio Blazor de prueba [en desarrollo]. Por más información y las útlimas actualizaciones: visiten el repositorio público del mismo.
                 </p>
                 <div class="mbr-section-btn mt-3">
-                    <a class="btn btn-warning display-4" href="/home" onclick="location.href='/home'"><span class="mobi-mbri mobi-mbri-globe-2 mbr-iconfont mbr-iconfont-btn"></span>Ir al sitio de prueba</a>
+                    <a class="btn btn-warning display-4" @onclick="IrAlSitioDePrueba"><span class="mobi-mbri mobi-mbri-globe-2 mbr-iconfont mbr-iconfont-btn"></span>Ir al sitio de prueba</a>
                     <a class="btn btn-success-outline display-4" href="https://github.com/ramiroagm/WinFormTester">Ver repositorio público &gt;</a>
                 </div>
             </div>
@@ -426,3 +424,13 @@
 
 <div id="scrollToTop" class="scrollToTop mbr-arrow-up"><a style="text-align: center;"><i class="mbr-arrow-up-icon mbr-arrow-up-icon-cm cm-icon cm-icon-smallarrow-up"></i></a></div>
 <input name="animation" type="hidden">
+
+@code {
+    private void IrAlSitioDePrueba()
+    {
+        if (Session.IsAuthenticated)
+            Nav.NavigateTo("/home", true);
+        else
+            Nav.NavigateTo("/login", true);
+    }
+}

@@ -10,7 +10,6 @@ namespace TesterProject.BusinessLogic.PasswordManager
         private const int CRED_ENUM_ALL = 1;
         private const int CRED_FLAGS_USERNAME_TARGET_SAME_AS_TARGET = 4;
 
-        // Structure for CREDENTIAL (defined in wincred.h)
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct CREDENTIAL
         {

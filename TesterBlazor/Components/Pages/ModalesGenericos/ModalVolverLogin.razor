@@ -1,0 +1,45 @@
+﻿@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="modal fade" id="unauthorized" tabindex="-1" role="dialog" aria-labelledby="unauthorizedLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered align-items-center" role="document" style="max-width:340px; max-height:200px;">
+        <div class="modal-content border-danger shadow-lg" style="min-height:unset;">
+            <div class="modal-header bg-danger text-white py-1" style="min-height:unset;">
+                <h5 class="modal-title" id="unauthorizedLabel" style="font-size:1.1rem;">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Sin permisos
+                </h5>
+            </div>
+            <div class="modal-body text-center p-1" style="min-height:unset;">
+                <span>
+                    <i class="fas fa-user-lock fa-lg text-danger"></i>
+                </span>
+                <div style="font-weight:500;">
+                    Este usuario no tiene permisos para acceder a esta sección.
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between py-1" style="min-height:unset;">
+                <button type="button" class="btn btn-outline-danger btn-sm" @onclick="CerrarModal">
+                    <i class="fas fa-home mr-1"></i> Volver al inicio
+                </button>
+                <button type="button" class="btn btn-success btn-sm" @onclick="IniciarSesion">
+                    <i class="fas fa-sign-in-alt mr-1"></i> Iniciar sesión
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private async Task CerrarModal()
+    {
+        await JSRuntime.InvokeVoidAsync("closeModal", "unauthorized");
+        Navigation.NavigateTo("/");
+    }
+
+    private async Task IniciarSesion()
+    {
+        await JSRuntime.InvokeVoidAsync("closeModal", "unauthorized");
+        Navigation.NavigateTo("/login");
+    }
+}

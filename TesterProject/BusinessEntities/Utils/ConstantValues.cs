@@ -16,5 +16,8 @@
 
         // Windows Credential Manager
         public static readonly string CM_ConnectionString = "connection_string";
+        public static readonly string CM_TelegramKey = "telegram_api_key";
+        public static readonly string CM_SpotifyClientId = "spotify_client_id";
+        public static readonly string CM_SpotifyClientSecret = "spotify_client_secret";
     }
 }

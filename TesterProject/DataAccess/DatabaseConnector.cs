@@ -7,9 +7,9 @@ namespace TesterProject.DataAccess
     {
         public static string? ConnectionString { get; }
 
-        public static Task<string> GetConnectionStringAsync()
+        public static Task<string?> GetConnectionStringAsync()
         {
-            return Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_ConnectionString) ?? throw new Exception("No se configuró correctamente el mensaje en Credential Manager"));
+            return Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_ConnectionString));
         }
 
         [Obsolete("Reutilizar este método solo para consultas por GCLOUD")]

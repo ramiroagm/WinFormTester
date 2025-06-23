@@ -1,0 +1,27 @@
+﻿@using TesterProject.DataAccess.Utils
+
+@inject SessionState Session
+@inject AuthService AuthService
+@inject NavigationManager Nav
+@layout EmptyLayout
+
+@code {
+
+    [Parameter] public string Ruta { get; set; } = "";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    bool a = false;
+    protected async override void OnInitialized()
+    {
+        a = await AuthService.UsuarioTieneAcceso(Session.UsuarioActual!, Ruta);
+        if (Session.UsuarioActual == null || !Session.IsAuthenticated || !a)
+        {
+            Nav.NavigateTo("/unauthorized");
+        }
+    }
+}
+
+@if (Session.IsAuthenticated && a)
+{
+    @ChildContent
+}

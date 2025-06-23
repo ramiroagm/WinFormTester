@@ -1,9 +1,11 @@
-﻿using TesterProject.BusinessLogic.InfoCredito.Nucleos;
+﻿using TesterBlazor.Models;
+using TesterProject.BusinessLogic.InfoCredito.Nucleos;
 using TesterProject.BusinessLogic.InfoCredito.Personas;
 using TesterProject.BusinessLogic.Interfaces.InfoCredito;
-using TesterProject.BusinessLogic.TelegramBot;
 using TesterProject.BusinessLogic.Interfaces.Utils;
+using TesterProject.BusinessLogic.TelegramBot;
 using TesterProject.BusinessLogic.Utils;
+using TesterProject.DataAccess.Utils;
 
 namespace TesterBlazor
 {
@@ -15,7 +17,8 @@ namespace TesterBlazor
             services.AddScoped<IPersonas, PersonasDatabaseInformation>();
             services.AddScoped<INucleos, NucleosDatabaseInformation>();
             services.AddScoped<IUtils, Utils>();
-
+            services.AddScoped<SessionState>();
+            services.AddScoped<AuthService>();
             return services;
         }
     }

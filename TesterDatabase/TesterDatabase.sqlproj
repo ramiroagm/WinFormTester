@@ -216,6 +216,12 @@
     <Build Include="dbo\StoredProcedure\Utils\InsertAdjuntoBugReport.sql" />
     <Build Include="dbo\Tables\InfoCredito\InfoCredito_PersonasNucleo.sql" />
     <Build Include="dbo\StoredProcedure\InfoCredito\Nucleos\InfoCredito_InsertarPersonaNucleo.sql" />
+    <Build Include="dbo\Tables\Utils\Usuarios.sql" />
+    <Build Include="dbo\Tables\Utils\Roles.sql" />
+    <Build Include="dbo\Tables\Utils\UsuarioRoles.sql" />
+    <Build Include="dbo\Tables\Utils\PaginaRoles.sql" />
+    <Build Include="dbo\StoredProcedure\Utils\GetUsuarioPorNombreUsuario.sql" />
+    <Build Include="dbo\StoredProcedure\Utils\GetUsuarioPassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Snapshots\TesterDatabase_20250316_20-23-00.dacpac" />
@@ -224,5 +230,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Utils\GenUtils_PostDeploy.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="TesterDatabase.refactorlog" />
   </ItemGroup>
 </Project>

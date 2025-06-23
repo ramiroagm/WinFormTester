@@ -1,0 +1,6 @@
+﻿CREATE TABLE PaginaRoles (
+    Id INT IDENTITY PRIMARY KEY,
+    Ruta NVARCHAR(100) NOT NULL, -- Ej: '/home'
+    RolId INT NOT NULL,
+    FOREIGN KEY (RolId) REFERENCES Roles(Id)
+);
