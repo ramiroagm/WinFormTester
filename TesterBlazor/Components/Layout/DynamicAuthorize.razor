@@ -1,27 +1,29 @@
-﻿@using TesterProject.DataAccess.Utils
+﻿@using TesterProject.DataAccess.Utils  
 
-@inject SessionState Session
-@inject AuthService AuthService
-@inject NavigationManager Nav
-@layout EmptyLayout
+@inject SessionState Session  
+@inject AuthService AuthService  
+@inject NavigationManager Nav  
+@inject ILogin Login  
+@layout EmptyLayout  
 
-@code {
+@code {  
 
-    [Parameter] public string Ruta { get; set; } = "";
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Ruta { get; set; } = "";  
+    [Parameter] public RenderFragment? ChildContent { get; set; }  
 
-    bool a = false;
-    protected async override void OnInitialized()
-    {
-        a = await AuthService.UsuarioTieneAcceso(Session.UsuarioActual!, Ruta);
-        if (Session.UsuarioActual == null || !Session.IsAuthenticated || !a)
-        {
-            Nav.NavigateTo("/unauthorized");
-        }
-    }
-}
+    bool? userPermitido = false;  
+    protected override void OnInitialized()  
+    {  
+        List<int> rolesPermitidos = Login.GetRolesPermitidosParaPagina(Ruta);  
+        userPermitido = Session.UsuarioActual?.Roles.Any(r => rolesPermitidos.Contains(r.Id));  
+        if (Session.UsuarioActual == null || !Session.IsAuthenticated || !userPermitido.Value)  
+        {  
+            Nav.NavigateTo("/unauthorized");  
+        }  
+    }  
+}  
 
-@if (Session.IsAuthenticated && a)
-{
-    @ChildContent
+@if (Session.IsAuthenticated && userPermitido.Value)  
+{  
+    @ChildContent  
 }

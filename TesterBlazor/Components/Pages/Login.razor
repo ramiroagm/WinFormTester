@@ -4,6 +4,7 @@
 
 @layout EmptyLayout
 
+@inject ILogin Logins
 @inject IJSRuntime JSRuntime
 @inject SessionState Session
 @inject NavigationManager Nav
@@ -16,7 +17,6 @@
                 <input @bind="loginModel.UserName" type="text" placeholder="Usuario" />
                 <input @bind="loginModel.Password" type="password" placeholder="Contraseña" />
                 <button type="submit" class="btn btn-primary">Ingresar al sitio</button>
-                <button type="button" style="margin-top:10px" class="btn btn-secondary" @onclick="VolverAlInicio">Volver al inicio</button>
             </div>
         </div>
         <div class="overlay-container">
@@ -25,6 +25,7 @@
                     <h1>O entrar con un usuario de prueba</h1>
                     <p style="font-size:27px">¡Presione debajo para revelar los usuarios de prueba!</p>
                     <button class="ghost" id="verUsuarios">Ver usuarios</button>
+                    <button type="button" class="btn-secondary-outline" id="volver" href="/">Volver</button>
                 </div>
             </div>
         </div>
@@ -45,7 +46,7 @@
     {
         try
         {
-            Usuario? usuario = await TesterProject.BusinessLogic.Utils.Login.VerifyLoginAsync(loginModel.UserName, loginModel.Password);
+            Usuario? usuario = await Logins.VerifyLogin(loginModel.UserName, loginModel.Password);
             if (usuario == null)
             {
                 error = "Usuario o contraseña incorrectos";

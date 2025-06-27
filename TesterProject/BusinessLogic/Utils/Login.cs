@@ -1,12 +1,13 @@
 ﻿using TesterProject.BusinessEntities.Utils;
+using TesterProject.BusinessLogic.Interfaces.Utils;
 using TesterProject.BusinessLogic.PasswordManager;
 using TesterProject.DataAccess.Utils;
 
 namespace TesterProject.BusinessLogic.Utils
 {
-    public class Login
+    public class Login : ILogin
     {
-        public static async Task<Usuario?> VerifyLoginAsync(string userName, string password)
+        public async Task<Usuario?> VerifyLogin(string userName, string password)
         {
             AuthService authService = new();
             try
@@ -26,6 +27,19 @@ namespace TesterProject.BusinessLogic.Utils
                 }
 
                 return user;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public  List<int> GetRolesPermitidosParaPagina(string pageRoute)
+        {
+            AuthService authService = new();
+            try
+            {
+                return authService.GetRolesPermitidosParaPagina(pageRoute);
             }
             catch
             {

@@ -17,6 +17,7 @@ namespace TesterBlazor
             services.AddScoped<IPersonas, PersonasDatabaseInformation>();
             services.AddScoped<INucleos, NucleosDatabaseInformation>();
             services.AddScoped<IUtils, Utils>();
+            services.AddScoped<ILogin, TesterProject.BusinessLogic.Utils.Login>();
             services.AddScoped<SessionState>();
             services.AddScoped<AuthService>();
             return services;

@@ -12,6 +12,11 @@ namespace TesterProject.DataAccess
             return Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_ConnectionString));
         }
 
+        public static string? GetConnectionString()
+        {
+            return CredentialManagerHelper.ReadSecret(ConstantValues.CM_ConnectionString);
+        }
+
         [Obsolete("Reutilizar este método solo para consultas por GCLOUD")]
         public static async Task<string> GetGoogleCloudConnectionStringAsync()
         {
