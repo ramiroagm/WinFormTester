@@ -9,8 +9,8 @@
 @inject SessionState Session
 @inject NavigationManager Nav
 
-<EditForm Model="@loginModel" OnValidSubmit="OnLogin">
-    <div class="container" id="container">
+<div class="container" id="container">
+    <EditForm Model="@loginModel" OnValidSubmit="OnLogin">
         <div class="form-container sign-in-container">
             <div class="styled-form">
                 <h1>Entrar al servicio</h1>
@@ -19,24 +19,55 @@
                 <button type="submit" class="btn btn-primary">Ingresar al sitio</button>
             </div>
         </div>
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-right">
-                    <h1>O entrar con un usuario de prueba</h1>
+    </EditForm>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-right">
+                <h1>O entrar con un usuario de prueba</h1>
+                <div>
                     <p style="font-size:27px">¡Presione debajo para revelar los usuarios de prueba!</p>
-                    <button class="ghost" id="verUsuarios">Ver usuarios</button>
-                    <button type="button" class="btn-secondary-outline" id="volver" href="/">Volver</button>
+                    <button class="ghost" type="button" @onclick="MostrarUsuarios">Ver usuarios</button>
+                </div>
+                <div style="margin-top:10px">
+                    <button type="button" class="ghost" @onclick="VolverAlInicio">Volver</button>
                 </div>
             </div>
         </div>
-
     </div>
-</EditForm>
+</div>
 
-@if (error != null)
-{
-    <div style="color:red">@error</div>
-}
+<!-- Modal para usuarios de prueba -->
+<div class="modal fade" id="usuariosModal" tabindex="-1" aria-labelledby="usuariosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="usuariosModalLabel">Usuarios de Prueba</h5>
+            </div>
+            <div class="modal-body">
+                Lista de usuarios de prueba disponibles: <br />
+                testeo: 1234 <br />
+                beta: 1234
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para errores de login -->
+<div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="loginErrorModalLabel">Error de inicio de sesión</h5>
+            </div>
+            <div class="modal-body">
+                @if (!string.IsNullOrEmpty(error))
+                {
+                    @error
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private Models.Login loginModel = new();
@@ -50,20 +81,32 @@
             if (usuario == null)
             {
                 error = "Usuario o contraseña incorrectos";
+                await JSRuntime.InvokeVoidAsync("showModal", "loginErrorModal");
                 return;
             }
 
-            Session.UsuarioActual = usuario;
+            await Session.SetUserAsync(usuario);
             Nav.NavigateTo("/home");
         }
         catch (Exception ex)
         {
             error = $"Error al iniciar sesión: {ex.Message}";
+            await JSRuntime.InvokeVoidAsync("showModal", "loginErrorModal");
         }
     }
 
     private void VolverAlInicio()
     {
         Nav.NavigateTo("/");
+    }
+
+    private async Task MostrarUsuarios()
+    {
+        await JSRuntime.InvokeVoidAsync("showModal", "usuariosModal");
+    }
+
+    private async Task CerrarModal()
+    {
+        await JSRuntime.InvokeVoidAsync("closeModal", "usuariosModal");
     }
 }

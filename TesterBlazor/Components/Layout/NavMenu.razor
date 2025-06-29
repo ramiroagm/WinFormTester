@@ -4,125 +4,136 @@
 @inject NavigationManager NavigationManager
 @inject SessionState Session
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/home">Librería Memito 🐈‍</a>
+@if (!_sessionInitialized)
+{
+    <div>Cargando...</div>
+}
+else
+{
+    <div class="top-row ps-3 navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home">Librería Memito 🐈‍</a>
+        </div>
     </div>
-</div>
 
-<input type="checkbox" title="Menú de navegación principal" class="navbar-toggler" />
+    <input type="checkbox" title="Menú de navegación principal" class="navbar-toggler" />
 
-<div class="navbar nav-scrollable" style="margin-top:10px">
-    <nav class="nav flex-column">
-        <div class="nav-item px-2">
-            <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
-            </NavLink>
-        </div>
-
-        @if (GetAccess(BlazorConst.Telegram))
-        {
+    <div class="navbar nav-scrollable" style="margin-top:10px">
+        <nav class="nav flex-column">
             <div class="nav-item px-2">
-                <NavLink class="nav-link" href="@BlazorConst.Telegram">
-                    <span class="bi bi-telegram-ico-figma" aria-hidden="true"></span> Telegram
+                <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
                 </NavLink>
             </div>
-        }
 
-        @if (GetAccess(BlazorConst.Instagram))
-        {
-            <div class="nav-item px-2">
-                <NavLink class="nav-link" href="@BlazorConst.Instagram">
-                    <span class="bi bi-instagram-ico-figma" aria-hidden="true"></span> Instagram
-                </NavLink>
-            </div>
-        }
-
-        @if (GetAccess(BlazorConst.Spotify))
-        {
-            <div class="nav-item px-2">
-                <NavLink class="nav-link" href="@BlazorConst.Spotify">
-                    <span class="bi bi-new-spotify" aria-hidden="true"></span> Spotify
-                </NavLink>
-            </div>
-        }
-
-        @if (GetAccess(BlazorConst.AgregarCredito))
-        {
-            <div class="nav-item px-2">
-                <div class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#submenuCredito" aria-expanded="false">
-                    <span class="bi bi-folder-ico-figma" aria-hidden="true"></span>Información de crédito
+            @if (GetAccess(BlazorConst.Telegram))
+            {
+                <div class="nav-item px-2">
+                    <NavLink class="nav-link" href="@BlazorConst.Telegram">
+                        <span class="bi bi-telegram-ico-figma" aria-hidden="true"></span> Telegram
+                    </NavLink>
                 </div>
-                <div id="submenuCredito" class="collapse">
-                    @if (GetAccess(BlazorConst.AgregarCredito))
-                    {
-                        <div class="nav-item px-3">
-                            <NavLink class="nav-link" href="infoCredito/personas">
-                                <span class="bi bi-new-pers-ico-figma" aria-hidden="true"></span>Personas
-                            </NavLink>
-                        </div>
-                        <div class="nav-item px-3">
-                            <NavLink class="nav-link" href="infoCredito/nucleos">
-                                <span class="bi bi-new-nucleo" aria-hidden="true"></span>Nucelo
-                            </NavLink>
-                        </div>
-                    }
-                    @if (GetAccess(BlazorConst.AgregarCredito))
-                    {
-                        <div class="nav-item px-3">
-                            <NavLink class="nav-link" href="infoCredito/agregarCredito">
-                                <span class="bi bi-new-credit-ico-figma" aria-hidden="true"></span>Nuevo crédito
-                            </NavLink>
-                        </div>
-                        <div class="nav-item px-3">
-                            <div class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#submenuConfig" aria-expanded="false">
-                                <span class="bi bi-config" aria-hidden="true"></span>Configuración
-                            </div>
-                            <div id="submenuConfig" class="collapse">
-                                <NavLink class="nav-link px-4" href="infoCredito/configNucleo">
-                                    <span class="bi bi-new-config-nuc" aria-hidden="true"></span>Nucleo
-                                </NavLink>
-                                <NavLink class="nav-link px-4" href="infoCredito/configPersona">
-                                    <span class="bi bi-config-pers-ico-figma" aria-hidden="true"></span>Persona
+            }
+
+            @if (GetAccess(BlazorConst.Instagram))
+            {
+                <div class="nav-item px-2">
+                    <NavLink class="nav-link" href="@BlazorConst.Instagram">
+                        <span class="bi bi-instagram-ico-figma" aria-hidden="true"></span> Instagram
+                    </NavLink>
+                </div>
+            }
+
+            @if (GetAccess(BlazorConst.Spotify))
+            {
+                <div class="nav-item px-2">
+                    <NavLink class="nav-link" href="@BlazorConst.Spotify">
+                        <span class="bi bi-new-spotify" aria-hidden="true"></span> Spotify
+                    </NavLink>
+                </div>
+            }
+
+            @if (GetAccess(BlazorConst.AgregarCredito))
+            {
+                <div class="nav-item px-2">
+                    <div class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#submenuCredito" aria-expanded="false">
+                        <span class="bi bi-folder-ico-figma" aria-hidden="true"></span>Información de crédito
+                    </div>
+                    <div id="submenuCredito" class="collapse">
+                        @if (GetAccess(BlazorConst.AgregarCredito))
+                        {
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="infoCredito/personas">
+                                    <span class="bi bi-new-pers-ico-figma" aria-hidden="true"></span>Personas
                                 </NavLink>
                             </div>
-                        </div>
-                    }
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="infoCredito/nucleos">
+                                    <span class="bi bi-new-nucleo" aria-hidden="true"></span>Nucelo
+                                </NavLink>
+                            </div>
+                        }
+                        @if (GetAccess(BlazorConst.AgregarCredito))
+                        {
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="infoCredito/agregarCredito">
+                                    <span class="bi bi-new-credit-ico-figma" aria-hidden="true"></span>Nuevo crédito
+                                </NavLink>
+                            </div>
+                            <div class="nav-item px-3">
+                                <div class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#submenuConfig" aria-expanded="false">
+                                    <span class="bi bi-config" aria-hidden="true"></span>Configuración
+                                </div>
+                                <div id="submenuConfig" class="collapse">
+                                    <NavLink class="nav-link px-4" href="infoCredito/configNucleo">
+                                        <span class="bi bi-new-config-nuc" aria-hidden="true"></span>Nucleo
+                                    </NavLink>
+                                    <NavLink class="nav-link px-4" href="infoCredito/configPersona">
+                                        <span class="bi bi-config-pers-ico-figma" aria-hidden="true"></span>Persona
+                                    </NavLink>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-        }
+            }
 
-        <div class="nav-item px-2">
-            <NavLink class="nav-link" href="bugreport">
-                <span class="bi bi-bug-icon" aria-hidden="true"></span> Reporte de BUG
-            </NavLink>
-        </div>
-
-        @if (Session.UsuarioActual != null)
-        {
             <div class="nav-item px-2">
-                <button class="nav-link" @onclick="Logout">
-                    <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Cerrar sesión
-                </button>
+                <NavLink class="nav-link" href="bugreport">
+                    <span class="bi bi-bug-icon" aria-hidden="true"></span> Reporte de BUG
+                </NavLink>
             </div>
-        }
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link px-4 px-3 fixed-bottom" href="/">
-                <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span>Volver
-            </NavLink>
-        </div>
-    </nav>
-</div>
+            @if (Session.UsuarioActual != null)
+            {
+                <div class="nav-item px-2">
+                    <NavLink class="nav-link" @onclick="Logout">
+                        <span class="bi bi-new-lock-icon" aria-hidden="true"></span> Cerrar sesión
+                    </NavLink>
+                </div>
+            }
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link px-4 px-3 fixed-bottom" href="/">
+                    <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span>Volver
+                </NavLink>
+            </div>
+        </nav>
+    </div>
+}
+
 
 @code {
     private string? currentUrl;
     private bool isLoading = false;
+    private bool _initialized;
+    private bool _sessionInitialized = false;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+        _initialized = true;
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -152,13 +163,23 @@
 
     private async Task Logout()
     {
-        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "user");
-        Session.UsuarioActual = null;
-        NavigationManager.NavigateTo("/login");
+        await Session.SetUserAsync(null);
+        NavigationManager.NavigateTo("/login", replace: true);
     }
 
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_sessionInitialized)
+        {
+            await Session.InitializeAsync();
+            await Session.InitializeClientSideAsync();
+            _sessionInitialized = true;
+            StateHasChanged();
+        }
     }
 }

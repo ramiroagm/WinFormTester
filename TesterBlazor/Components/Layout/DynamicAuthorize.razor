@@ -1,29 +1,56 @@
-﻿@using TesterProject.DataAccess.Utils  
+﻿@inject SessionState Session
+@inject NavigationManager Nav
+@inject ILogin Login
+@layout EmptyLayout
 
-@inject SessionState Session  
-@inject AuthService AuthService  
-@inject NavigationManager Nav  
-@inject ILogin Login  
-@layout EmptyLayout  
+@if (_loading)
+{
+    <div>Cargando...</div>
+}
+else if (_authorized)
+{
+    @ChildContent
+}
 
-@code {  
+@code {
+    [Parameter] public string Ruta { get; set; } = "";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    [Parameter] public string Ruta { get; set; } = "";  
-    [Parameter] public RenderFragment? ChildContent { get; set; }  
+    private bool _loading = true;
+    private bool _authorized;
+    private bool _shouldRedirect = false;
 
-    bool? userPermitido = false;  
-    protected override void OnInitialized()  
-    {  
-        List<int> rolesPermitidos = Login.GetRolesPermitidosParaPagina(Ruta);  
-        userPermitido = Session.UsuarioActual?.Roles.Any(r => rolesPermitidos.Contains(r.Id));  
-        if (Session.UsuarioActual == null || !Session.IsAuthenticated || !userPermitido.Value)  
-        {  
-            Nav.NavigateTo("/unauthorized");  
-        }  
-    }  
-}  
+    protected override async Task OnInitializedAsync()
+    {
+        await Session.InitializeAsync();
+    }
 
-@if (Session.IsAuthenticated && userPermitido.Value)  
-{  
-    @ChildContent  
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Session.InitializeClientSideAsync();
+
+            List<int> rolesPermitidos = Login.GetRolesPermitidosParaPagina(Ruta);
+            var userPermitido = Session.UsuarioActual?.Roles.Any(r => rolesPermitidos.Contains(r.Id));
+
+            if (Session.UsuarioActual == null || !Session.IsAuthenticated || !userPermitido.GetValueOrDefault())
+            {
+                _shouldRedirect = true;
+            }
+            else
+            {
+                _authorized = true;
+            }
+
+            _loading = false;
+            StateHasChanged();
+        }
+
+        if (_shouldRedirect)
+        {
+            _shouldRedirect = false;
+            Nav.NavigateTo("/unauthorized", replace: true);
+        }
+    }
 }
