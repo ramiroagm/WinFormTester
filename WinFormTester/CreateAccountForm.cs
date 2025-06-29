@@ -44,7 +44,7 @@ namespace WinFormTester
 
         private bool StoreUserInDatabase(string username, string hashedPassword, byte[] salt)
         {
-            // TODO: Use stored procedure or ORM instead of inline SQL
+            // TODO: Sacar inline SQL
             using SqlConnection connection = new(_connectionString);
             SqlCommand command = new("INSERT INTO Test_Users (Test_UserName, Test_PasswordHash, Test_Salt) VALUES (@username, @passwordHash, @salt)", connection);
             command.Parameters.AddWithValue("@username", username);

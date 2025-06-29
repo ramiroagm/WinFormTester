@@ -11,7 +11,7 @@ namespace WinFormTester
 {
     static class Program
     {
-        // TODO: Mask the connection string
+        // TODO: Conn String ya inválido
         private static readonly string connectionString = "Data Source=MP200;TrustServerCertificate=True;Integrated Security=SSPI;Initial Catalog=TesterGen";
        
         [STAThread]
