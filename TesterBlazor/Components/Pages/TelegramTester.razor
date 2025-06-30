@@ -1,10 +1,10 @@
 ﻿@inject TesterProject.BusinessLogic.TelegramBot.TelegramConnector TelegramConnector
 @inject TelegramService TelegramService
-
 @inject IJSRuntime JSRuntime
 
 @page "/telegram"
 
+<DynamicAuthorize Ruta="/telegram" />
 <PageTitle>Tester de Telegram</PageTitle>
 
 <h2> 🤖 Tester de Telegram</h2>

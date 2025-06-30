@@ -10,10 +10,18 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
+USE MemitoDB;
+
 -- PARA DIRECCIONES
 TRUNCATE TABLE Localidades;
 TRUNCATE TABLE Departamentos;
 TRUNCATE TABLE Paises;
+
+DROP TABLE Paginas;
+DROP TABLE PaginaRoles;
+DROP TABLE Roles;
+DROP TABLE UsuarioRoles;
+DROP TABLE Usuarios;
 
 INSERT INTO Paises (Nombre) VALUES 
 ('Afganistán'), ('Albania'), ('Alemania'), ('Andorra'), ('Angola'), ('Antigua y Barbuda'), ('Arabia Saudita'), ('Argelia'), ('Argentina'), ('Armenia'), ('Australia'), ('Austria'), ('Azerbaiyán'), ('Bahamas'), ('Bangladés'), ('Barbados'), ('Baréin'), ('Bélgica'), ('Belice'), ('Benín'), ('Bielorrusia'), ('Birmania'), ('Bolivia'), ('Bosnia y Herzegovina'), ('Botsuana'), ('Brasil'), ('Brunéi'), ('Bulgaria'), ('Burkina Faso'), ('Burundi'), ('Bután'), ('Cabo Verde'), ('Camboya'), ('Camerún'), ('Canadá'), ('Catar'), ('Chad'), ('Chile'), ('China'), ('Chipre'), ('Colombia'), ('Comoras'), ('Corea del Norte'), ('Corea del Sur'), ('Costa de Marfil'), ('Costa Rica'), ('Croacia'), ('Cuba'), ('Dinamarca'), ('Dominica'), ('Ecuador'), ('Egipto'), ('El Salvador'), ('Emiratos Árabes Unidos'), ('Eritrea'), ('Eslovaquia'), ('Eslovenia'), ('España'), ('Estados Unidos'), ('Estonia'), ('Etiopía'), ('Filipinas'), ('Finlandia'), ('Fiyi'), ('Francia'), ('Gabón'), ('Gambia'), ('Georgia'), ('Ghana'), ('Granada'), ('Grecia'), ('Guatemala'), ('Guinea'), ('Guinea-Bisáu'), ('Guinea Ecuatorial'), ('Guyana'), ('Haití'), ('Honduras'), ('Hungría'), ('India'), ('Indonesia'), ('Irak'), ('Irán'), ('Irlanda'), ('Islandia'), ('Israel'), ('Italia'), ('Jamaica'), ('Japón'), ('Jordania'), ('Kazajistán'), ('Kenia'), ('Kirguistán'), ('Kiribati'), ('Kuwait'), ('Laos'), ('Lesoto'), ('Letonia'), ('Líbano'), ('Liberia'), ('Libia'), ('Liechtenstein'), ('Lituania'), ('Luxemburgo'), ('Madagascar'), ('Malasia'), ('Malaui'), ('Maldivas'), ('Malí'), ('Malta'), ('Marruecos'), ('Mauricio'), ('Mauritania'), ('México'), ('Micronesia'), ('Moldavia'), ('Mónaco'), ('Mongolia'), ('Montenegro'), ('Mozambique'), ('Namibia'), ('Nauru'), ('Nepal'), ('Nicaragua'), ('Níger'), ('Nigeria'), ('Noruega'), ('Nueva Zelanda'), ('Omán'), ('Países Bajos'), ('Pakistán'), ('Palaos'), ('Panamá'), ('Papúa Nueva Guinea'), ('Paraguay'), ('Perú'), ('Polonia'), ('Portugal'), ('Reino Unido'), ('República Centroafricana'), ('República Checa'), ('República del Congo'), ('República Democrática del Congo'), ('República Dominicana'), ('Ruanda'), ('Rumania'), ('Rusia'), ('Samoa'), ('San Cristóbal y Nieves'), ('San Marino'), ('San Vicente y las Granadinas'), ('Santa Lucía'), ('Santo Tomé y Príncipe'), ('Senegal'), ('Serbia'), ('Seychelles'), ('Sierra Leona'), ('Singapur'), ('Siria'), ('Somalia'), ('Sri Lanka'), ('Sudáfrica'), ('Sudán'), ('Sudán del Sur'), ('Suecia'), ('Suiza'), ('Surinam'), ('Tailandia'), ('Tanzania'), ('Tayikistán'), ('Timor Oriental'), ('Togo'), ('Tonga'), ('Trinidad y Tobago'), ('Túnez'), ('Turkmenistán'), ('Turquía'), ('Tuvalu'), ('Ucrania'), ('Uganda'), ('Uruguay'), ('Uzbekistán'), ('Vanuatu'), ('Vaticano'), ('Venezuela'), ('Vietnam'), ('Yemen'), ('Yibuti'), ('Zambia'), ('Zimbabue');
@@ -114,6 +122,49 @@ INSERT INTO Localidades (Nombre, IdDepartamento) VALUES
 INSERT INTO Relacion (IdRelacion, NombreRelacion, Activo) VALUES 
 (0, 'Ninguno', 1), (1, 'Amigos', 1), (2, 'Compañeros', 1), (3, 'Familia', 1), (4, 'Novios', 1);
 
+INSERT INTO USUARIOS VALUES ('admin', '1I8OYtkS7EBVjhwS3mUDcA/O3PorhejJuljbIITqbFsbXEO8', 0xD48F0E62D912EC40558E1C12DE650370, GETDATE()),
+('testeo', '1I8OYtkS7EBVjhwS3mUDcA/O3PorhejJuljbIITqbFsbXEO8', 0xD48F0E62D912EC40558E1C12DE650370, GETDATE()),
+('beta', '1I8OYtkS7EBVjhwS3mUDcA/O3PorhejJuljbIITqbFsbXEO8', 0xD48F0E62D912EC40558E1C12DE650370, GETDATE());
+
+INSERT INTO ROLES VALUES ('admin'), ('testeo'), ('beta');
+
+INSERT INTO USUARIOROLES VALUES (1, 1), (2, 2), (3, 3);
+
+INSERT INTO PAGINAS VALUES ('home', 'Inicio de la página'),
+('telegram', 'Sistema de BOT Telegram'),
+('instagram', 'API pública de Instagram'),
+('infoCredito/personas', 'Consulta de personas InfoCredito'),
+('infoCredito/nucleos', 'Consulta de nucleos InfoCredito'),
+('infoCredito/agregarCredito', 'Agregar nuevo crédito InfoCredito'),
+('infoCredito/configNucleo', 'Configuración del nucleo InfoCredito'),
+('infoCredito/configPersona', 'Configuración de la persona InfoCredito'),
+('bugreport', 'Reporte de errores público'),
+('spotify', 'API pública de Spotify');
+
+INSERT INTO PAGINAROLES VALUES (1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(1, 2),
+(2, 2),
+(4, 2),
+(5, 2),
+(10, 2),
+(2, 3),
+(3, 3),
+(4, 3),
+(5, 3),
+(6, 3),
+(7, 3),
+(8, 3),
+(9, 3),
+(10, 3);
 
 SET ANSI_NULLS ON
 GO;

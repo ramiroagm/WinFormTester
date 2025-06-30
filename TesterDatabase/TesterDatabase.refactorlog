@@ -42,4 +42,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PasswordSalt" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="646f9ae2-b416-464b-a0a9-ca5cd6dcbfd1" ChangeDateTime="06/30/2025 01:03:19">
+    <Property Name="ElementName" Value="[dbo].[PaginaRoles].[Ruta]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PaginaRoles]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IdRuta" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="24fe31d8-b540-4d19-826b-91957bb1c4de" ChangeDateTime="06/30/2025 01:03:36">
+    <Property Name="ElementName" Value="[dbo].[PaginaRoles].[IdRuta]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PaginaRoles]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RutaId" />
+  </Operation>
 </Operations>

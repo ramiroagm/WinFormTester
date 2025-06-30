@@ -15,8 +15,8 @@ namespace TesterProject.BusinessLogic.Spotify
         {
             try
             {
-                string? clientId = await Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_SpotifyClientId));
-                string? clientSecret = await Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_SpotifyClientSecret));
+                string? clientId = await SecretManagerHelper.AccessSecretAsync(ConstantValues.G_ProjectId, ConstantValues.G_SpotifyClientId);
+                string? clientSecret = await SecretManagerHelper.AccessSecretAsync(ConstantValues.G_ProjectId, ConstantValues.G_SpotifyClientSecret);
                 SpotifyClientConfig? config = SpotifyClientConfig
                     .CreateDefault()
                     .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret));
@@ -36,8 +36,8 @@ namespace TesterProject.BusinessLogic.Spotify
         {
             try
             {
-                string? clientId = await Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_SpotifyClientId));
-                string? clientSecret = await Task.FromResult(CredentialManagerHelper.ReadSecret(ConstantValues.CM_SpotifyClientSecret));
+                string? clientId = await SecretManagerHelper.AccessSecretAsync(ConstantValues.G_ProjectId, ConstantValues.G_SpotifyClientId);
+                string? clientSecret = await SecretManagerHelper.AccessSecretAsync(ConstantValues.G_ProjectId, ConstantValues.G_SpotifyClientSecret);
                 string redirectUri = "http://127.0.0.1:5000/callback/";
 
                 LoginRequest loginRequest = new(new Uri(redirectUri), clientId ?? throw new Exception("No hay clientId"), LoginRequest.ResponseType.Code)

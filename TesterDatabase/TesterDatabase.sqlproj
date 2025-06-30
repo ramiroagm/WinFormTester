@@ -222,6 +222,7 @@
     <Build Include="dbo\Tables\Utils\PaginaRoles.sql" />
     <Build Include="dbo\StoredProcedure\Utils\GetUsuarioPorNombreUsuario.sql" />
     <Build Include="dbo\StoredProcedure\Utils\GetUsuarioPassword.sql" />
+    <Build Include="dbo\Tables\Utils\Paginas.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Snapshots\TesterDatabase_20250316_20-23-00.dacpac" />

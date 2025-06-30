@@ -184,3 +184,8 @@ input {
     height: 100%;
     text-align: center;
 }
+
+.modal-short .modal-content {
+    max-height: 300px;
+    overflow-y: auto;
+}
