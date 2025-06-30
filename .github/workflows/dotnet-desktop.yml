@@ -8,184 +8,207 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        configuration: [Release]
-
     runs-on: windows-latest
-
     env:
       Solution_Name: WinFormTester.sln
-
-      Blazor_Project_Path: TesterBlazor/TesterBlazor.csproj
-      Library_Project_Path: TesterProject/TesterProject.csproj
-      Api_Project_Path: TesterApi/TesterApi.csproj
-      Worker_Project_Path: TesterWorkerService/TesterWorkerService.csproj
-      Test_Project_Path: TestPro/TestPro.csproj 
       DatabaseProj: TesterDatabase/TesterDatabase.sqlproj
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Remove SSDT project from solution
+        run: dotnet sln ${{ env.Solution_Name }} remove ${{ env.DatabaseProj }}
+
+      - name: Install dependencies
+        run: dotnet restore ${{ env.Solution_Name }}
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build solution
+        run: dotnet build ${{ env.Solution_Name }} -c Release
+
+  test:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Run Unit Tests
+        run: dotnet test TestPro/TestPro.csproj -c Release
+
+  publish-library:
+    runs-on: windows-latest
+    needs: test
+    env:
+      Library_Project_Path: TesterProject/TesterProject.csproj
+      Publish_Output: ./deploy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - run: mkdir -p ${{ env.Publish_Output }}
+      - run: dotnet publish ${{ env.Library_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterProject
+
+  publish-blazor:
+    runs-on: windows-latest
+    needs: test
+    env:
+      Blazor_Project_Path: TesterBlazor/TesterBlazor.csproj
+      Publish_Output: ./deploy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - run: mkdir -p ${{ env.Publish_Output }}
+      - run: dotnet publish ${{ env.Blazor_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterBlazor
+
+  publish-api:
+    runs-on: windows-latest
+    needs: test
+    env:
+      Api_Project_Path: TesterApi/TesterApi.csproj
+      Publish_Output: ./deploy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - run: mkdir -p ${{ env.Publish_Output }}
+      - run: dotnet publish ${{ env.Api_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterApi
+
+  publish-worker:
+    runs-on: windows-latest
+    needs: test
+    env:
+      Worker_Project_Path: TesterWorkerService/TesterWorkerService.csproj
+      Publish_Output: ./deploy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - run: mkdir -p ${{ env.Publish_Output }}
+      - run: dotnet publish ${{ env.Worker_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterWorkerService
+
+  deploy:
+    runs-on: windows-latest
+    needs: [publish-library, publish-blazor, publish-api, publish-worker]
+    env:
       Publish_Output: ./deploy
       WINDOWS_SERVER_IP: ${{ secrets.WINDOWS_SERVER_IP }}
       WINDOWS_SERVER_USERNAME: ${{ secrets.WINDOWS_SERVER_USERNAME }}
       WINDOWS_SERVER_PASSWORD: ${{ secrets.WINDOWS_SERVER_PASSWORD }}
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
+      - name: Enable WinRM Unencrypted Traffic
+        run: |
+          Set-Item WSMan:\localhost\Client\AllowUnencrypted -Value true
+          Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
+        shell: pwsh
 
-    - name: Remove SSDT project from solution
-      run: dotnet sln ${{ env.Solution_Name }} remove ${{ env.DatabaseProj }}
-
-    - name: Install dependencies
-      run: dotnet restore ${{ env.Solution_Name }}
-
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Build solution
-      run: dotnet build ${{ env.Solution_Name }} -c ${{ matrix.configuration }}
-
-    - name: Execute unit tests
-      run: dotnet test -c Release
-
-    - name: Create Deploy Directory
-      run: mkdir -p ${{ env.Publish_Output }}
-
-    - name: Publish All Projects
-      run: |
-        dotnet publish ${{ env.Library_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterProject
-        dotnet publish ${{ env.Blazor_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterBlazor
-        dotnet publish ${{ env.Api_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterApi
-        dotnet publish ${{ env.Worker_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterWorkerService
-
-    - name: Enable WinRM Unencrypted Traffic
-      run: |
-        Set-Item WSMan:\localhost\Client\AllowUnencrypted -Value true
-        Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
-      shell: pwsh
-
-    - name: Stop Blazor Process on Server
-      run: |
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-
-        Invoke-Command -Session $session -ScriptBlock {
-          $proc = Get-Process -Name "dotnet" -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "*TesterBlazor*" }
-          if ($proc) {
-            $proc | Stop-Process -Force
-            Write-Host "Blazor process stopped."
-            Start-Sleep -Seconds 5
-          } else {
-            Write-Host "No Blazor process running."
+      - name: Stop Blazor Process on Server
+        run: |
+          $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+          $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+          $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+          $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+          Invoke-Command -Session $session -ScriptBlock {
+            $proc = Get-Process -Name "dotnet" -ErrorAction SilentlyContinue | Where-Object { $_.Path -like "*TesterBlazor*" }
+            if ($proc) {
+              $proc | Stop-Process -Force
+              Start-Sleep -Seconds 5
+            }
           }
-        }
+          Remove-PSSession -Session $session
+        shell: pwsh
 
-        Remove-PSSession -Session $session
-      shell: pwsh
+      - name: Stop Worker Service on Remote Server
+        run: |
+          $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+          $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+          $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+          $serviceName = "TesterWorkerService"
+          $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+          Invoke-Command -Session $session -ScriptBlock {
+            param($serviceName)
+            $service = Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+            if ($service -and $service.Status -eq 'Running') {
+              Stop-Service -Name $serviceName -Force
+              Start-Sleep -Seconds 5
+            }
+          } -ArgumentList $serviceName
+          Remove-PSSession -Session $session
+        shell: pwsh
 
-    - name: Stop Worker Service on Remote Server
-      run: |
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-        $serviceName = "TesterWorkerService"
-
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-
-        Invoke-Command -Session $session -ScriptBlock {
-          param($serviceName)
-          $service = Get-Service -Name $serviceName -ErrorAction SilentlyContinue
-          if ($service -and $service.Status -eq 'Running') {
-            Stop-Service -Name $serviceName -Force
-            Write-Host "Worker service $serviceName stopped."
-            Start-Sleep -Seconds 5
-          } else {
-            Write-Host "Worker service $serviceName is not running or not found."
+      - name: Transfer Files Using Robocopy with Cleanup and Authenticated PSDrive
+        run: |
+          $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+          $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+          $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+          $deployRoot = "${{ github.workspace }}\${{ env.Publish_Output }}"
+          $projects = @("TesterProject", "TesterBlazor", "TesterApi", "TesterWorkerService")
+          $netDrive = "Z:"
+          if (Test-Path $netDrive) {
+              Remove-PSDrive -Name "Z" -Force
           }
-        } -ArgumentList $serviceName
+          New-PSDrive -Name "Z" -PSProvider FileSystem -Root "\\$server_ip\c$" -Credential $cred -Persist
+          foreach ($project in $projects) {
+              $source = Join-Path $deployRoot $project
+              $destination = "Z:\lib\$project"
+              if (Test-Path $destination) {
+                  Get-ChildItem $destination -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+              } else {
+                  New-Item -ItemType Directory -Path $destination | Out-Null
+              }
+              $maxAttempts = 5
+              $attempt = 1
+              $success = $false
+              while (-not $success -and $attempt -le $maxAttempts) {
+                  robocopy $source $destination /E /R:2 /W:3 /NFL /NDL /NP
+                  if ($LASTEXITCODE -lt 1) {
+                      $success = $true
+                  } else {
+                      Start-Sleep -Seconds 5
+                      $attempt++
+                  }
+              }
+              if (-not $success) {
+                  throw "Robocopy failed for $project after $maxAttempts attempts."
+              }
+          }
+          Remove-PSDrive -Name "Z" -Force
+        shell: pwsh
 
-        Remove-PSSession -Session $session
-      shell: pwsh
-
-    - name: Transfer Files Using Robocopy with Cleanup and Authenticated PSDrive
-      run: |
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-        $deployRoot = "${{ github.workspace }}\${{ env.Publish_Output }}"
-        $projects = @("TesterProject", "TesterBlazor", "TesterApi", "TesterWorkerService")
-        $netDrive = "Z:"
-
-        if (Test-Path $netDrive) {
-            Remove-PSDrive -Name "Z" -Force
-        }
-
-        New-PSDrive -Name "Z" -PSProvider FileSystem -Root "\\$server_ip\c$" -Credential $cred -Persist
-
-        foreach ($project in $projects) {
-            $source = Join-Path $deployRoot $project
-            $destination = "Z:\lib\$project"
-
-            # Delete remote files first
-            if (Test-Path $destination) {
-                Get-ChildItem $destination -Recurse -Force | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
-                Write-Host "Cleaned remote directory $destination"
-            } else {
-                New-Item -ItemType Directory -Path $destination | Out-Null
-            }
-
-            # Copy files using robocopy with retry logic
-            $maxAttempts = 5
-            $attempt = 1
-            $success = $false
-
-            while (-not $success -and $attempt -le $maxAttempts) {
-                Write-Host "Robocopy attempt $attempt for $project"
-                robocopy $source $destination /E /R:2 /W:3 /NFL /NDL /NP
-                if ($LASTEXITCODE -lt 1) {
-                    Write-Host "$project copied successfully."
-                    $success = $true
-                } else {
-                    Write-Host "Robocopy failed for $project (exit code $LASTEXITCODE). Retrying in 5 seconds..."
-                    Start-Sleep -Seconds 5
-                    $attempt++
-                }
-            }
-
-            if (-not $success) {
-                throw "Robocopy failed for $project after $maxAttempts attempts."
-            }
-        }
-
-        Remove-PSDrive -Name "Z" -Force
-      shell: pwsh
-
-    - name: Restart Worker Service
-      run: |
-        $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
-        $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($username, $password)
-        $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
-        $serviceName = "TesterWorkerService"
-
-        $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
-
-        Invoke-Command -Session $session -ScriptBlock {
-          param($serviceName)
-          Restart-Service -Name $serviceName -Force
-          Write-Host "Worker service restarted."
-        } -ArgumentList $serviceName
-
-        Remove-PSSession -Session $session
-      shell: pwsh
+      - name: Restart Worker Service
+        run: |
+          $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
+          $password = ConvertTo-SecureString "${{ secrets.WINDOWS_SERVER_PASSWORD }}" -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential($username, $password)
+          $server_ip = "${{ secrets.WINDOWS_SERVER_IP }}"
+          $serviceName = "TesterWorkerService"
+          $session = New-PSSession -ComputerName $server_ip -Credential $cred -Authentication Basic
+          Invoke-Command -Session $session -ScriptBlock {
+            param($serviceName)
+            Restart-Service -Name $serviceName -Force
+          } -ArgumentList $serviceName
+          Remove-PSSession -Session $session
+        shell: pwsh
