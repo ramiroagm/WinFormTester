@@ -59,7 +59,8 @@ namespace TesterProject.DataAccess.Utils
             using SqlCommand cmd = new(@"
                     SELECT r.Id FROM PaginaRoles pr
                     INNER JOIN Roles r ON r.Id = pr.RolId
-                    WHERE pr.Ruta = @Ruta", connection);
+                    INNER JOIN Paginas p ON p.Id = pr.RutaId
+                    WHERE p.PaginaRuta = @Ruta", connection);
             _ = cmd.Parameters.AddWithValue("@Ruta", ruta);
             using SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())

@@ -1,0 +1,27 @@
+﻿body {
+    background-color: #111;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-screen-spinner {
+    border: 0.8rem solid #333;
+    border-top: 0.8rem solid #007bff;
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

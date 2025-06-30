@@ -130,7 +130,7 @@ INSERT INTO ROLES VALUES ('admin'), ('testeo'), ('beta');
 
 INSERT INTO USUARIOROLES VALUES (1, 1), (2, 2), (3, 3);
 
-INSERT INTO PAGINAS VALUES ('home', 'Inicio de la página'),
+INSERT INTO PAGINAS (PaginaRuta, Descripcion) VALUES ('home', 'Inicio de la página'),
 ('telegram', 'Sistema de BOT Telegram'),
 ('instagram', 'API pública de Instagram'),
 ('infoCredito/personas', 'Consulta de personas InfoCredito'),
