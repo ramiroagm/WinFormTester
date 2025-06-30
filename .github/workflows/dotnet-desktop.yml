@@ -15,21 +15,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-
       - name: Remove SSDT project from solution
         run: dotnet sln ${{ env.Solution_Name }} remove ${{ env.DatabaseProj }}
-
       - name: Install dependencies
         run: dotnet restore ${{ env.Solution_Name }}
-
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v2
-
       - name: Build solution
         run: dotnet build ${{ env.Solution_Name }} -c Release
 
@@ -39,12 +34,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-
       - name: Run Unit Tests
         run: dotnet test TestPro/TestPro.csproj -c Release
 
@@ -61,6 +54,11 @@ jobs:
           dotnet-version: 9.0.x
       - run: mkdir -p ${{ env.Publish_Output }}
       - run: dotnet publish ${{ env.Library_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterProject
+      - name: Upload Published Library
+        uses: actions/upload-artifact@v4
+        with:
+          name: TesterProject
+          path: ./deploy/TesterProject
 
   publish-blazor:
     runs-on: windows-latest
@@ -75,6 +73,11 @@ jobs:
           dotnet-version: 9.0.x
       - run: mkdir -p ${{ env.Publish_Output }}
       - run: dotnet publish ${{ env.Blazor_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterBlazor
+      - name: Upload Published Blazor
+        uses: actions/upload-artifact@v4
+        with:
+          name: TesterBlazor
+          path: ./deploy/TesterBlazor
 
   publish-api:
     runs-on: windows-latest
@@ -89,6 +92,11 @@ jobs:
           dotnet-version: 9.0.x
       - run: mkdir -p ${{ env.Publish_Output }}
       - run: dotnet publish ${{ env.Api_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterApi
+      - name: Upload Published Api
+        uses: actions/upload-artifact@v4
+        with:
+          name: TesterApi
+          path: ./deploy/TesterApi
 
   publish-worker:
     runs-on: windows-latest
@@ -103,6 +111,11 @@ jobs:
           dotnet-version: 9.0.x
       - run: mkdir -p ${{ env.Publish_Output }}
       - run: dotnet publish ${{ env.Worker_Project_Path }} -c Release -o ${{ env.Publish_Output }}/TesterWorkerService
+      - name: Upload Published Worker
+        uses: actions/upload-artifact@v4
+        with:
+          name: TesterWorkerService
+          path: ./deploy/TesterWorkerService
 
   deploy:
     runs-on: windows-latest
@@ -115,13 +128,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      - name: Download Published Library
+        uses: actions/download-artifact@v4
+        with:
+          name: TesterProject
+          path: ./deploy/TesterProject
+      - name: Download Published Blazor
+        uses: actions/download-artifact@v4
+        with:
+          name: TesterBlazor
+          path: ./deploy/TesterBlazor
+      - name: Download Published Api
+        uses: actions/download-artifact@v4
+        with:
+          name: TesterApi
+          path: ./deploy/TesterApi
+      - name: Download Published Worker
+        uses: actions/download-artifact@v4
+        with:
+          name: TesterWorkerService
+          path: ./deploy/TesterWorkerService
       - name: Enable WinRM Unencrypted Traffic
         run: |
           Set-Item WSMan:\localhost\Client\AllowUnencrypted -Value true
           Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
         shell: pwsh
-
       - name: Stop Blazor Process on Server
         run: |
           $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
@@ -138,7 +169,6 @@ jobs:
           }
           Remove-PSSession -Session $session
         shell: pwsh
-
       - name: Stop Worker Service on Remote Server
         run: |
           $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
@@ -157,7 +187,6 @@ jobs:
           } -ArgumentList $serviceName
           Remove-PSSession -Session $session
         shell: pwsh
-
       - name: Transfer Files Using Robocopy with Cleanup and Authenticated PSDrive
         run: |
           $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
@@ -197,7 +226,6 @@ jobs:
           }
           Remove-PSDrive -Name "Z" -Force
         shell: pwsh
-
       - name: Restart Worker Service
         run: |
           $username = "${{ secrets.WINDOWS_SERVER_USERNAME }}"
