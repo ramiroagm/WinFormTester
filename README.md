@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="TesterBlazor/wwwroot/favicon.png" width="150" height="150">
+  <img src="TesterBlazor/wwwroot/src/memito_inverted.ico" width="150" height="150">
 </p>
 
 # Aplicación .NET con demostración de herramientas genéricas
