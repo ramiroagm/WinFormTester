@@ -54,11 +54,12 @@
                 <h1 class="mbr-section-title mbr-fonts-style mb-3 display-1"><strong>Bienvenidos a mi sitio</strong></h1>
                 <p class="mbr-text mbr-fonts-style display-7">
                     Podrán encontrar en el sitio un C.V. preparado; el mismo podrá ser descargado si fuera necesario. <br />
-                    También podrán ver un sitio Blazor de prueba [en desarrollo]. Por más información y las útlimas actualizaciones: visiten el repositorio público del mismo.
+                    @* También podrán ver un sitio Blazor de prueba [en desarrollo]. Por más información y las útlimas actualizaciones: visiten el repositorio público del mismo. *@
                 </p>
                 <div class="mbr-section-btn mt-3">
-                    <a class="btn btn-warning display-4" @onclick="IrAlSitioDePrueba"><span class="mobi-mbri mobi-mbri-globe-2 mbr-iconfont mbr-iconfont-btn"></span>Ir al sitio de prueba</a>
-                    <a class="btn btn-success-outline display-4" href="https://github.com/ramiroagm/WinFormTester">Ver repositorio público &gt;</a>
+                    @* <a class="btn btn-warning display-4" @onclick="IrAlSitioDePrueba"><span class="mobi-mbri mobi-mbri-globe-2 mbr-iconfont mbr-iconfont-btn"></span>Ir al sitio de prueba</a> *@
+                    <a class="btn btn-warning display-4" href="https://github.com/ramiroagm/WinFormTester"><span class="mobi-mbri mobi-mbri-globe-2 mbr-iconfont mbr-iconfont-btn"></span>Ver repositorio público </a>
+                    @* <a class="btn btn-success-outline display-4" href="https://github.com/ramiroagm/WinFormTester">Ver repositorio público &gt;</a> *@
                 </div>
             </div>
         </div>
@@ -152,9 +153,14 @@
                             <div class="panel-body">
                                 <p class="mbr-fonts-style panel-text display-4">
                                     Actualmente estoy desarrollando aplicaciones en C# usando los
-                                    frameworks .NET 3.5 y 4.5 para un cliente público nacional. Además, desarrollo aplicaciones y componentes en Visual Basic 6. Mi experiencia en
-                                    <br>desarrollo web incluye tanto formularios web .aspx como páginas .asp
-                                    clásicas. Utilizo la base de datos Oracle a diario para diversas tareas.
+                                    frameworks .NET 3.5 y 4.5 en una empresa local. Por otra parte, mantengo componentes en Visual Basic 6. Mi experiencia en
+                                    <br />
+                                    desarrollo web incluye tanto formularios web .aspx como páginas .asp clásicas. Utilizo la base de datos Oracle a diario para diversas tareas.
+                                    <br />
+                                    Por otra parte, estoy en constante desarrollo con nuevas tecnologías Microsoft. Esto incluye .NET 10 para backend y para estilos y herramientas utilizo
+                                    WinUI3, Blazor y MAUI.
+                                    <br />
+                                    Fuera de Microsoft trabajo con Go.
                                 </p>
                             </div>
                         </div>
@@ -288,7 +294,7 @@
                         <a class="nav-link mbr-fonts-style display-7" role="tab" data-toggle="tab" href="#tab3" aria-selected="false"><strong>Idiomas</strong></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mbr-fonts-style display-7" role="tab" data-toggle="tab" href="#tab4" aria-selected="false"><strong>Tecnologías</strong></a>
+                        <a class="nav-link mbr-fonts-style display-7" role="tab" data-toggle="tab" href="#tab4" aria-selected="false"><strong>Clientes</strong></a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -323,7 +329,9 @@
                     <div id="tab4" class="tab-pane fade" role="tabpanel">
                         <div class="row">
                             <div class="col-md-12">
-                                <p class="mbr-text mbr-fonts-style display-7">.NET, .NET Framework, C#, SQL Server, Oracle SQL, JavaScript, HTML Bootstrap, Blazor, WorkerServices, jQuery, MAUI</p>
+                                <p class="mbr-text mbr-fonts-style display-7">Desarrollé un stack completo de herramientas para patitasenfoco.uy, un sitio especializado en la entrega de fotografía digital. Alojada en un servidor Windows, junto a una herramienta
+                                    WinUI para el manejo y subida de archivos, una api que conecta una aplicación MAUI para Android, un sitio web con estilo único y un sistema que permite a sus clientes reservar, consultar, y visualizar el producto vendido, más descargar las mismas.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -378,13 +386,13 @@
             <div class="card col-12 col-md-6">
                 <div class="card-wrapper">
                     <div class="image-wrapper">
-                        <a href="mailto:ramirogm44@gmail.com" target="_blank"><span class="mbr-iconfont socicon-mail socicon"></span></a>
+                        <a href="mailto:info@memitosoftware.com" target="_blank"><span class="mbr-iconfont socicon-mail socicon"></span></a>
                     </div>
                     <div class="text-wrapper">
                         <h6 class="card-title mbr-fonts-style mb-1 display-5">
                             <strong>Correo electrónico</strong>
                         </h6>
-                        <p class="mbr-text mbr-fonts-style display-7"><a href="mailto:ramirogm44@gmail.com" class="text-primary" target="_blank">ramirogm44@gmail.com</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+                        <p class="mbr-text mbr-fonts-style display-7"><a href="mailto:info@memitosoftware.com" class="text-primary" target="_blank">info@memitosoftware.com</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
                     </div>
                 </div>
             </div>
@@ -416,7 +424,7 @@
                 </ul>
             </div>
             <div class="row row-copirayt">
-                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">Esta página fue desarrollada con Mobirise y embebida en Blazor. Por más información: consultar el repositorio [en progreso].<br>© Copyright 2025 MemitoSoftware. Todos los derechos reservados.</p>
+                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">Esta página fue desarrollada con Mobirise y embebida en Blazor. Por más información: consultar el repositorio [en progreso].<br>© Copyright @DateTime.Now.Year MemitoSoftware. Todos los derechos reservados.</p>
             </div>
         </div>
     </div>

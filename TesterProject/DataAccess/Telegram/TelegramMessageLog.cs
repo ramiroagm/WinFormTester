@@ -6,7 +6,7 @@ namespace TesterProject.DataAccess.Telegram
 {
     public class TelegramMessageLog : DatabaseConnector
     {
-        private static readonly string _connectionString = ConnectionString;
+        private static readonly string _connectionString = ConnectionString ?? throw new InvalidOperationException("ConnectionString cannot be null.");
 
         public static void TelegramLogInformation(TelegramResult result)
         {
@@ -40,7 +40,7 @@ namespace TesterProject.DataAccess.Telegram
 
             connection.Open();
             SqlDataReader reader = await command.ExecuteReaderAsync();
-            
+
             while (await reader.ReadAsync())
             {
                 results.Add(new TelegramResult
@@ -60,6 +60,5 @@ namespace TesterProject.DataAccess.Telegram
         {
             command.Parameters.AddWithValue(parameterName, value ?? DBNull.Value);
         }
-
     }
 }
